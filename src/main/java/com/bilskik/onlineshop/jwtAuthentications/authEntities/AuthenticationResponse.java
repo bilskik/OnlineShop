@@ -1,5 +1,4 @@
-package com.bilskik.onlineshop.controllers;
-
+package com.bilskik.onlineshop.jwtAuthentications.authEntities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class AuthenticationRequest {
-    private String email;
-    String password;
+public class AuthenticationResponse {
+    private String token;
 }

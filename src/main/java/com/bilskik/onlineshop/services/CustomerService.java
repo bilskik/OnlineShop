@@ -1,9 +1,9 @@
 package com.bilskik.onlineshop.services;
 
-import com.bilskik.onlineshop.config.JwtService;
-import com.bilskik.onlineshop.controllers.AuthenticationRequest;
-import com.bilskik.onlineshop.controllers.AuthenticationResponse;
-import com.bilskik.onlineshop.controllers.RegisterRequest;
+import com.bilskik.onlineshop.jwtAuthentications.JwtService;
+import com.bilskik.onlineshop.jwtAuthentications.authEntities.AuthenticationRequest;
+import com.bilskik.onlineshop.jwtAuthentications.authEntities.AuthenticationResponse;
+import com.bilskik.onlineshop.jwtAuthentications.authEntities.RegisterRequest;
 import com.bilskik.onlineshop.entities.Customer;
 import com.bilskik.onlineshop.entities.Role;
 import com.bilskik.onlineshop.repositories.CustomerRepository;
@@ -21,16 +21,15 @@ public class CustomerService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     public AuthenticationResponse register(RegisterRequest request) {
-        System.out.println("dzialas?");
-        var user = Customer.builder()
-                .name(request.getFirstName())
+        Customer user = Customer.builder()
+                .name(request.getName())
                 .lastname(request.getLastName())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .build();
-        System.out.println("user = " + user);
-        var jwtToken = jwtService.generateToken(user);
+        customerRepository.save(user);
+        String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -43,9 +42,9 @@ public class CustomerService {
                         request.getPassword()
                 )
         );
-        var user = customerRepository.findByEmail(request.getEmail())
+        Customer user = customerRepository.findByEmail(request.getEmail())
                 .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

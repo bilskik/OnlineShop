@@ -2,7 +2,6 @@ package com.bilskik.onlineshop.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,10 +17,19 @@ import java.util.List;
 @Builder
 public class Customer implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(
+            name = "seq_generator",
+            sequenceName = "seq_generator",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            generator = "seq_generator",
+            strategy = GenerationType.SEQUENCE
+    )
     private int id;
     private String name;
     private String lastname;
+    @Column(unique = true)
     private String email;
     private String password;
     @Enumerated(EnumType.STRING)

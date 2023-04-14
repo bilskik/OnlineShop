@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @GetMapping("/get")
     public String getName() {
-        System.out.println("SIEMAAAAAAAA");
         return "hello";
     }
 }
