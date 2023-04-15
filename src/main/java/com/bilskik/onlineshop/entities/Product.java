@@ -27,7 +27,7 @@ public class Product {
     private String productName;
     private int amount;
     private double price;
-    @JsonManagedReference
+    @JsonBackReference
     @ManyToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER

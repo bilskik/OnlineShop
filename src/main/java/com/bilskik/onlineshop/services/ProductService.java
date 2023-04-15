@@ -1,6 +1,7 @@
 package com.bilskik.onlineshop.services;
 
 import com.bilskik.onlineshop.entities.Product;
+import com.bilskik.onlineshop.entities.ProductCategory;
 import com.bilskik.onlineshop.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,14 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         List<Product> list = productRepository.findAll();
-        for (Product product : list) {
-            System.out.println(product);
+        List<Product> toReturn = List.copyOf(list);
+        for(int i=0; i<list.size(); i++) {
+            toReturn.get(i).setProductCategory(list.get(i).getProductCategory());
         }
-        return list;
+        for(int i=0; i<list.size(); i++) {
+            System.out.println(list.get(i).getProductCategory().getCategory());
+        }
+        return toReturn;
     }
 
     public Product saveProduct(Product product) {

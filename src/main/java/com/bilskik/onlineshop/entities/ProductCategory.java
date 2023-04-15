@@ -3,6 +3,7 @@ package com.bilskik.onlineshop.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,7 +29,7 @@ public class ProductCategory {
     )
     public int categoryId;
     private String category;
-    @JsonBackReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "productCategory", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> productList;
 

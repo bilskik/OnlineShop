@@ -19,7 +19,10 @@ public class ProductCategoryService {
     }
 
     public List<Product> getAllProductsWithGivenCategory(String category) {
-        Optional<ProductCategory> category1 = productCategoryRepository.findByCategory(category);
-        return category1.map(ProductCategory::getProductList).orElse(null);
+        Optional<ProductCategory> productCategory = productCategoryRepository.findByCategory(category);
+        if(!productCategory.isPresent()) {
+            throw new IllegalStateException(category + " is not found!");
+        }
+        return productCategory.get().getProductList();
     }
 }
