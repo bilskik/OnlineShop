@@ -1,6 +1,6 @@
 package com.bilskik.onlineshop.config;
 
-import com.bilskik.onlineshop.jwtAuthentications.JWTAuthenticationFilter;
+import com.bilskik.onlineshop.jwtAuthentications.authEntities.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ public class SecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/login", "/register")
+                .requestMatchers("/login", "/register","/get","/categories/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

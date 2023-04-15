@@ -1,6 +1,6 @@
 package com.bilskik.onlineshop.services;
 
-import com.bilskik.onlineshop.jwtAuthentications.JwtService;
+import com.bilskik.onlineshop.jwtAuthentications.authEntities.JwtService;
 import com.bilskik.onlineshop.jwtAuthentications.authEntities.AuthenticationRequest;
 import com.bilskik.onlineshop.jwtAuthentications.authEntities.AuthenticationResponse;
 import com.bilskik.onlineshop.jwtAuthentications.authEntities.RegisterRequest;

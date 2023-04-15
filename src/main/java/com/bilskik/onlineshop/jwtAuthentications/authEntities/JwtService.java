@@ -1,4 +1,4 @@
-package com.bilskik.onlineshop.jwtAuthentications;
+package com.bilskik.onlineshop.jwtAuthentications.authEntities;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

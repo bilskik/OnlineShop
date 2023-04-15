@@ -1,4 +1,4 @@
-package com.bilskik.onlineshop.jwtAuthentications;
+package com.bilskik.onlineshop.jwtAuthentications.authEntities;
 
 import com.bilskik.onlineshop.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
