@@ -25,4 +25,8 @@ public class ProductCategoryService {
         }
         return productCategory.get().getProductList();
     }
+
+    public ProductCategory createProductCategory(ProductCategory productCategory) {
+        return productCategoryRepository.save(productCategory);
+    }
 }

@@ -4,10 +4,8 @@ import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.entities.ProductCategory;
 import com.bilskik.onlineshop.services.ProductCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +22,10 @@ public class ProductCategoryController {
     public List<Product> getAllProductsBySpecifiedCategory(@PathVariable String category) {
         System.out.println(category);
         return productCategoryService.getAllProductsWithGivenCategory(category);
+    }
+    @PostMapping()
+    public ResponseEntity<ProductCategory> createCategory(@RequestBody ProductCategory productCategory) {
+        return ResponseEntity.ok(productCategoryService.createProductCategory(productCategory));
     }
 
 }
