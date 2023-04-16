@@ -21,7 +21,7 @@ public class Product {
     )
     @GeneratedValue(
             generator = "seq_product",
-            strategy = GenerationType.SEQUENCE
+            strategy = GenerationType.IDENTITY
     )
     private int productId;
     private String productName;

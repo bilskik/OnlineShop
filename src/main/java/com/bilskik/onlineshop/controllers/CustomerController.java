@@ -25,4 +25,9 @@ public class CustomerController {
     ) {
         return ResponseEntity.ok(service.authenticate(request));
     }
+    @GetMapping("/hello")
+    public String hello() {
+        return "hello";
+    }
+
 }

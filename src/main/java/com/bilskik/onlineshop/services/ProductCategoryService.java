@@ -15,7 +15,11 @@ public class ProductCategoryService {
     public ProductCategoryRepository productCategoryRepository;
 
     public List<ProductCategory> getAllCategories() {
-        return productCategoryRepository.findAll();
+        List<ProductCategory> productCategoryList = productCategoryRepository.findAll();
+        if(productCategoryList.isEmpty()) {
+            throw new IllegalStateException("There is not productCategory!");
+        }
+        return productCategoryList;
     }
 
     public List<Product> getAllProductsWithGivenCategory(String category) {

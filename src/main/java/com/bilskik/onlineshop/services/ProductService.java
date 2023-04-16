@@ -19,14 +19,10 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         List<Product> list = productRepository.findAll();
-        List<Product> toReturn = List.copyOf(list);
-        for(int i=0; i<list.size(); i++) {
-            toReturn.get(i).setProductCategory(list.get(i).getProductCategory());
+        if(list.isEmpty()) {
+            throw new IllegalStateException("There is no product available!");
         }
-        for(int i=0; i<list.size(); i++) {
-            System.out.println(list.get(i).getProductCategory().getCategory());
-        }
-        return toReturn;
+        return list;
     }
 
     public Product saveProduct(Product product) {

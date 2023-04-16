@@ -1,5 +1,6 @@
 package com.bilskik.onlineshop.services;
 
+import com.bilskik.onlineshop.entities.User;
 import com.bilskik.onlineshop.jwtAuthentications.authEntities.JwtService;
 import com.bilskik.onlineshop.jwtAuthentications.authEntities.AuthenticationRequest;
 import com.bilskik.onlineshop.jwtAuthentications.authEntities.AuthenticationResponse;
@@ -21,15 +22,16 @@ public class CustomerService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     public AuthenticationResponse register(RegisterRequest request) {
-        Customer user = Customer.builder()
-                .name(request.getName())
-                .lastname(request.getLastName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.USER)
-                .build();
-        customerRepository.save(user);
-        String jwtToken = jwtService.generateToken(user);
+
+        Customer customer = new Customer();
+        customer.setName(request.getName());
+        customer.setLastName(request.getLastName());
+        customer.setEmail(request.getEmail());
+        customer.setPassword(passwordEncoder.encode(request.getPassword()));
+        customer.setRole(Role.CUSTOMER);
+
+        customerRepository.save(customer);
+        String jwtToken = jwtService.generateToken(customer);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();

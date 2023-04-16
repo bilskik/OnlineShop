@@ -1,6 +1,7 @@
 package com.bilskik.onlineshop.entities;
 
 public enum Role {
-    USER,
+    CUSTOMER,
+    SELLER,
     ADMIN
 }

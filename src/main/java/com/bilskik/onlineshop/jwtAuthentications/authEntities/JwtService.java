@@ -1,10 +1,10 @@
 package com.bilskik.onlineshop.jwtAuthentications.authEntities;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.bilskik.onlineshop.exception.JwtException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -54,12 +54,25 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSiginingKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts
+                    .parserBuilder()
+                    .setSigningKey(getSiginingKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        }
+        catch(MalformedJwtException | SignatureException e) {
+            throw new JwtException("Token is not valid", e);
+        }
+        catch(UnsupportedJwtException e) {
+            throw new JwtException("Token format is not supported",e);
+        }
+        catch(ExpiredJwtException e) {
+            throw new JwtException("Token has expired",e);
+        } catch(Exception e) {
+            throw new JwtException("Unable to parse Jwt token",e);
+        }
     }
 
     private Key getSiginingKey() {

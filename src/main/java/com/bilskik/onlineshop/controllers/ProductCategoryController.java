@@ -20,7 +20,6 @@ public class ProductCategoryController {
     }
     @GetMapping("/{category}")
     public List<Product> getAllProductsBySpecifiedCategory(@PathVariable String category) {
-        System.out.println(category);
         return productCategoryService.getAllProductsWithGivenCategory(category);
     }
     @PostMapping()
