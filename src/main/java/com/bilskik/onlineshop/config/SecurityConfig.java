@@ -1,6 +1,6 @@
 package com.bilskik.onlineshop.config;
 
-import com.bilskik.onlineshop.jwtAuthentications.authEntities.JWTAuthenticationFilter;
+import com.bilskik.onlineshop.auth.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

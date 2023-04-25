@@ -1,4 +1,4 @@
-package com.bilskik.onlineshop.jwtAuthentications.authEntities;
+package com.bilskik.onlineshop.http;
 
 
 import lombok.*;

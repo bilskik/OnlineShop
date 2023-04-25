@@ -1,11 +1,21 @@
 package com.bilskik.onlineshop.entities;
 
-import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.intellij.lang.annotations.RegExp;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,21 +26,21 @@ import java.util.List;
 @Builder
 @MappedSuperclass
 public class User implements UserDetails {
-    @Id
-    @SequenceGenerator(
-            name = "user_generator",
-            sequenceName = "user_generator",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            generator = "user_generator",
-            strategy = GenerationType.SEQUENCE
-    )
-    public int id;
+
+    @NotNull(message = "username cannot be null!")
     public String name;
-    public String lastName;
+    @NotNull(message = "surename cannot be null!")
+    public String surename;
     @Column(unique = true)
+    @Email(message = "invalid email address!")
     public String email;
+    @NotNull(message = "gender cannot be null!")
+    public String gender;
+    @JsonProperty("dateOfBirth")
+    @JsonFormat(pattern = "dd-MM-yyyy")
+    @NotNull(message = "Date of birth cannot be null!")
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    public LocalDate dateOfBirth;
     public String password;
     @Enumerated(EnumType.STRING)
     public Role role;

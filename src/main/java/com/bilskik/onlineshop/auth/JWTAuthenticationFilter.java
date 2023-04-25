@@ -1,4 +1,4 @@
-package com.bilskik.onlineshop.jwtAuthentications.authEntities;
+package com.bilskik.onlineshop.auth;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
