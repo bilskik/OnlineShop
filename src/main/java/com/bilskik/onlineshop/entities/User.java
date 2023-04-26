@@ -23,7 +23,6 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @MappedSuperclass
 public class User implements UserDetails {
 

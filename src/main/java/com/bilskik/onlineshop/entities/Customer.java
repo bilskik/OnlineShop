@@ -3,9 +3,12 @@ package com.bilskik.onlineshop.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Setter
 @Getter
+@NoArgsConstructor
 @Table(name = "CUSTOMER_TBL")
 public class Customer extends User {
     @Id
@@ -19,4 +22,16 @@ public class Customer extends User {
             strategy = GenerationType.SEQUENCE
     )
     public int customerId;
+    @Builder
+    public Customer(String name, String surename, String email, String gender, LocalDate dateOfBirth, String password, Role role, Cart cart) {
+        super(name,surename,email,gender,dateOfBirth,password,role);
+        this.cart = cart;
+    }
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(
+            name = "cartId",
+            referencedColumnName = "cartId"
+    )
+    public Cart cart;
+
 }

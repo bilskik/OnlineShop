@@ -1,6 +1,7 @@
 package com.bilskik.onlineshop.http;
 
 
+import com.bilskik.onlineshop.entities.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
@@ -25,5 +26,6 @@ public class RegisterRequest {
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate dateOfBirth;
     private String gender;
+    private Role role;
     private String password;
 }

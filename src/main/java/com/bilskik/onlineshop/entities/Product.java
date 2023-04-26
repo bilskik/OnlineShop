@@ -27,7 +27,7 @@ public class Product {
     private String productName;
     private int amount;
     private double price;
-    @JsonBackReference
+    @JsonBackReference(value = "product_category")
     @ManyToOne(
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER
@@ -37,6 +37,14 @@ public class Product {
             referencedColumnName = "categoryId"
     )
     private ProductCategory productCategory;
+
+    @JsonBackReference(value = "product_cart")
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(
+            name = "cartId",
+            referencedColumnName = "cartId"
+    )
+    private Cart cart;
     @Embedded
     private ProductDetails productDetails;
 

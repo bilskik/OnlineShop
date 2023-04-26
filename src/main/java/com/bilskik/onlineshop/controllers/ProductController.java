@@ -17,11 +17,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping()
+    @GetMapping("/products")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
-    @PostMapping()
+    @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
 
         return  ResponseEntity.ok(productService.saveProduct(product));

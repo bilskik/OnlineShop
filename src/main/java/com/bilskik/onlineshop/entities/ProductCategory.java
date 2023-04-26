@@ -29,7 +29,7 @@ public class ProductCategory {
     )
     public int categoryId;
     private String category;
-    @JsonManagedReference
+    @JsonManagedReference(value = "product_category")
     @OneToMany(mappedBy = "productCategory", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> productList;
 

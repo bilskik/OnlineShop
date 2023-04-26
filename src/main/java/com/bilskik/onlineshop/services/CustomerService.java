@@ -1,6 +1,7 @@
 package com.bilskik.onlineshop.services;
 
 import com.bilskik.onlineshop.auth.JwtService;
+import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.http.AuthenticationRequest;
 import com.bilskik.onlineshop.http.AuthenticationResponse;
 import com.bilskik.onlineshop.http.RegisterRequest;
@@ -29,7 +30,8 @@ public class CustomerService {
     private final AuthenticationManager authenticationManager;
     private final ModelMapper modelMapper;
     public AuthenticationResponse register(RegisterRequest request) {
-
+        //to refactor
+        //change RequestPassword to encoded
         Customer customer = new Customer();
         customer.setName(request.getName());
         customer.setSurename(request.getSurename());
@@ -38,6 +40,7 @@ public class CustomerService {
         customer.setGender(request.getGender());
         customer.setPassword(passwordEncoder.encode(request.getPassword()));
         customer.setRole(Role.CUSTOMER);
+        customer.setCart(new Cart());
 
         customerRepository.save(customer);
         String jwtToken = jwtService.generateToken(customer);

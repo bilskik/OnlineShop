@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Seller extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,5 +18,4 @@ public class Seller extends User {
     public Seller(String name, String surename, String email, String gender, LocalDate dateOfBirth, String password, Role role) {
         super(name,surename,email,gender,dateOfBirth,password,role);
     }
-
 }
