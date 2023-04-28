@@ -1,5 +1,6 @@
 package com.bilskik.onlineshop.controllers;
 
+import com.bilskik.onlineshop.dto.ProductDTO;
 import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.services.ProductService;
 import org.apache.coyote.Response;

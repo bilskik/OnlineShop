@@ -29,6 +29,7 @@ public class ProductService {
 
     public List<Product> getAllProducts() {
         List<Product> list = productRepository.findAll();
+
         if(list.isEmpty()) {
             throw new NoSuchElementException("There is no product available!");
         }

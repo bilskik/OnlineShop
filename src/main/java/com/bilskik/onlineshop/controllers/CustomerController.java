@@ -27,15 +27,12 @@ public class CustomerController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
-//        System.out.println("request.getEmail() = " + request.getEmail());
         return ResponseEntity.ok(service.register(request));
     }
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> auth(
             @Valid @RequestBody AuthenticationRequest request
     ) {
-        logger.info("Request email : " + request.getEmail());
-//        System.out.println("SIEMAAAAAAAAAAAA!");
         return ResponseEntity.ok(service.authenticate(request));
     }
     @GetMapping("/customers")

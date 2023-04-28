@@ -8,6 +8,7 @@ import com.bilskik.onlineshop.http.RegisterRequest;
 import com.bilskik.onlineshop.dto.CustomerDTO;
 import com.bilskik.onlineshop.entities.Customer;
 import com.bilskik.onlineshop.entities.Role;
+import com.bilskik.onlineshop.mapper.Mapper;
 import com.bilskik.onlineshop.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,20 +29,19 @@ public class CustomerService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final ModelMapper modelMapper;
+//    private final ModelMapper modelMapper;
+    private final Mapper<Customer,CustomerDTO> mapper;
     public AuthenticationResponse register(RegisterRequest request) {
-        //to refactor
-        //change RequestPassword to encoded
-        Customer customer = new Customer();
-        customer.setName(request.getName());
-        customer.setSurename(request.getSurename());
-        customer.setEmail(request.getEmail());
-        customer.setDateOfBirth(request.getDateOfBirth());
-        customer.setGender(request.getGender());
-        customer.setPassword(passwordEncoder.encode(request.getPassword()));
-        customer.setRole(Role.CUSTOMER);
-        customer.setCart(new Cart());
-
+        Customer customer = Customer.builder()
+                .name(request.getName())
+                .surename(request.getSurename())
+                .email(request.getEmail())
+                .dateOfBirth(request.getDateOfBirth())
+                .gender(request.getGender())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.CUSTOMER)
+                .cart(new Cart())
+                .build();
         customerRepository.save(customer);
         String jwtToken = jwtService.generateToken(customer);
         return AuthenticationResponse.builder()
@@ -58,7 +58,6 @@ public class CustomerService {
         );
         Customer user = customerRepository.findByEmail(request.getEmail())
                 .orElseThrow();
-        System.out.println(user.getEmail());
         String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
@@ -68,18 +67,19 @@ public class CustomerService {
     public List<CustomerDTO> getCustomersList() {
         List<Customer> customerList = customerRepository.findAll();
         return customerList.stream()
-                .map(this::convertEntityToDTO)
+                .map(mapper::toDTO)
                 .collect(Collectors.toList());
     }
 
     public CustomerDTO getCustomerById(int id) {
         Optional<Customer> customer = customerRepository.findById(id);
-        CustomerDTO customerDTO = convertEntityToDTO(customer.get());
-        System.out.println(customerDTO.getDateOfBirth());
-        return convertEntityToDTO(customer.get());
+        if(customer.isEmpty()) {
+            throw new NoSuchElementException("There is no such an element!");
+        }
+        return mapper.toDTO(customer.get());
     }
 
-    private CustomerDTO convertEntityToDTO(Customer customer) {
-        return modelMapper.map(customer,CustomerDTO.class);
-    }
+//    private CustomerDTO convertEntityToDTO(Customer customer) {
+//        return modelMapper.map(customer,CustomerDTO.class);
+//    }
 }
