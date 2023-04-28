@@ -7,6 +7,8 @@ import com.bilskik.onlineshop.dto.CustomerDTO;
 import com.bilskik.onlineshop.services.CustomerService;
 import jakarta.validation.Valid;
 //import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +20,7 @@ import java.util.List;
 @RestController
 public class CustomerController {
 
-//    Logger logger = (Logger) LoggerFactory.getLogger(CustomerController.class);
+    Logger logger = LoggerFactory.getLogger(CustomerController.class);
     @Autowired
     private CustomerService service;
     @PostMapping("/register")
@@ -26,15 +28,14 @@ public class CustomerController {
             @RequestBody RegisterRequest request
     ) {
 //        System.out.println("request.getEmail() = " + request.getEmail());
-//        logger.config("SIEMA");
-//        logger.config(request.getEmail());
         return ResponseEntity.ok(service.register(request));
     }
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> auth(
             @Valid @RequestBody AuthenticationRequest request
     ) {
-        System.out.println("request.getEmail() = " + request.getEmail());
+        logger.info("Request email : " + request.getEmail());
+//        System.out.println("SIEMAAAAAAAAAAAA!");
         return ResponseEntity.ok(service.authenticate(request));
     }
     @GetMapping("/customers")

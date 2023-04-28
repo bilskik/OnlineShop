@@ -20,7 +20,8 @@ public class CartController {
         return new ResponseEntity<>(cartService.addProductToCart(product,customerId), HttpStatusCode.valueOf(200));
     }
     @DeleteMapping(path = "/customers/{customerId}/cart/{productId}")
-    public ResponseEntity<String> deleteProductFromCart(@PathVariable int customerId, @PathVariable int productId) {
-        return new ResponseEntity<>(cartService.deleteProductFromCart(customerId, productId), HttpStatusCode.valueOf(200));
+    public ResponseEntity<Void> deleteProductFromCart(@PathVariable int customerId, @PathVariable int productId) {
+        cartService.deleteProductFromCart(customerId,productId);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(240));
     }
 }

@@ -13,7 +13,6 @@ import java.lang.module.ResolutionException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
 public class ProductController {
     @Autowired
     private ProductService productService;
@@ -24,11 +23,15 @@ public class ProductController {
     }
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        return  ResponseEntity.ok(productService.saveProduct(product));
+        return ResponseEntity.ok(productService.saveProduct(product));
     }
-//    @PutMapping
+    @PutMapping("/products")
+    public ResponseEntity<Product> updateProduct(@RequestBody() Product product) {
+        return new ResponseEntity<>(productService.updateProduct(product), HttpStatusCode.valueOf(200));
+    }
     @DeleteMapping("/products/{productId}")
-    public ResponseEntity<String> deleteProduct(@PathVariable int productId) {
-        return new ResponseEntity<>(productService.deleteProduct(productId), HttpStatusCode.valueOf(200));
+    public ResponseEntity<Void> deleteProduct(@PathVariable int productId) {
+        productService.deleteProduct(productId);
+        return new ResponseEntity<>(HttpStatusCode.valueOf(240));
     }
 }

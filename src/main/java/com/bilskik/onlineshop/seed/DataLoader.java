@@ -90,5 +90,4 @@ public class DataLoader implements CommandLineRunner {
                 .build();
         customerRepository.save(customer);
     }
-
 }
