@@ -58,6 +58,7 @@ public class CustomerService {
         );
         Customer user = customerRepository.findByEmail(request.getEmail())
                 .orElseThrow();
+        System.out.println(user.getEmail());
         String jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(jwtToken)

@@ -14,15 +14,15 @@ import lombok.*;
 @Builder
 public class Product {
     @Id
-    @SequenceGenerator(
-            name = "seq_product",
-            sequenceName = "seq_product",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            generator = "seq_product",
-            strategy = GenerationType.IDENTITY
-    )
+//    @SequenceGenerator(
+//            name = "seq_product",
+//            sequenceName = "seq_product",
+//            allocationSize = 1
+//    )
+//    @GeneratedValue(
+//            generator = "seq_product",
+//            strategy = GenerationType.IDENTITY
+//    )
     private int productId;
     private String productName;
     private int amount;

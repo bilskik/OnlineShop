@@ -1,0 +1,16 @@
+<configuration>
+        <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%highlight(%d{HH:mm:ss.SSS}) [%highlight(%thread)] %highlight(%-5level) %cyan(%logger{15}) - %msg%n</pattern>
+                <highlight key="TRACE" foreground="cyan"/>
+                <highlight key="DEBUG" foreground="green"/>
+                <highlight key="INFO" foreground="blue"/>
+                <highlight key="WARN" foreground="yellow"/>
+                <highlight key="ERROR" foreground="red"/>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+</configuration>

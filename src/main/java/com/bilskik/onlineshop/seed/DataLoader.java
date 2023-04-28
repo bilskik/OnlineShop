@@ -28,32 +28,43 @@ public class DataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        productRepository.deleteAll();
+        customerRepository.deleteAll();
         loadData();
     }
 
     private void loadData() {
         Cart cart = loadCart();
-        loadCustomer();
-        loadProduct();
+        loadProduct(cart);
+        loadCustomer(cart);
     }
 
     private Cart loadCart() {
-            return null;
+        Cart cart = Cart.builder()
+                .cartId(1)
+                .productList(new ArrayList<>())
+                .build();
+        return cart;
     }
 
-    private void loadProduct() {
+    private void loadProduct(Cart cart) {
         //not added details and product category
         Product product1 = Product.builder()
+                .productId(1)
                 .productName("Gazeta")
                 .amount(1)
                 .price(10)
+                .cart(cart)
                 .build();
         Product product2 = Product.builder()
+                .productId(2)
                 .productName("Ksiazka")
                 .amount(1)
                 .price(10)
+                .cart(cart)
                 .build();
         Product product3 = Product.builder()
+                .productId(3)
                 .productName("Pismo")
                 .amount(1)
                 .price(12)
@@ -64,11 +75,10 @@ public class DataLoader implements CommandLineRunner {
 
     }
 
-    private void loadCustomer() {
-        Cart cart = Cart.builder()
-                .productList(new ArrayList<>())
-                .build();
+    private void loadCustomer(Cart cart) {
+
         Customer customer = Customer.builder()
+                .customerId(1)
                 .name("Kamil")
                 .surename("Bilski")
                 .email("kamil@gmail.com")

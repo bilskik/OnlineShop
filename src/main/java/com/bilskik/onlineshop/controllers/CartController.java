@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.*;
 public class CartController {
     @Autowired
     public CartService cartService;
-    @GetMapping("/{customerId}/basket")
-    public ResponseEntity<Cart> getBasketFromCustomer(@PathVariable int customerId) {
-        return new ResponseEntity<>(cartService.getCartWithGivenId(customerId), HttpStatusCode.valueOf(200));
+    @GetMapping("/customers/{customerId}/cart")
+    public ResponseEntity<Cart> getCartFromCustomer(@PathVariable int customerId) {
+        return new ResponseEntity<>(cartService.getAllProductsFromCart(customerId), HttpStatusCode.valueOf(200));
     }
-    @PostMapping(path = "/customers/{customerId}/basket")
-    public ResponseEntity<Product> addProductToBasket(@PathVariable int customerId, @RequestBody Product product) {
+    @PostMapping(path = "/customers/{customerId}/cart")
+    public ResponseEntity<Product> addProductToCart(@PathVariable int customerId, @RequestBody Product product) {
         return new ResponseEntity<>(cartService.addProductToCart(product,customerId), HttpStatusCode.valueOf(200));
+    }
+    @DeleteMapping(path = "/customers/{customerId}/cart/{productId}")
+    public ResponseEntity<String> deleteProductFromCart(@PathVariable int customerId, @PathVariable int productId) {
+        return new ResponseEntity<>(cartService.deleteProductFromCart(customerId, productId), HttpStatusCode.valueOf(200));
     }
 }

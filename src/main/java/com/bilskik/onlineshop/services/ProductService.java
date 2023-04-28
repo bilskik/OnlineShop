@@ -36,4 +36,9 @@ public class ProductService {
         }
         return productRepository.save(product);
     }
+
+    public String deleteProduct(int productId) {
+        productRepository.deleteById(productId);
+        return "delete Gituwa!";
+    }
 }

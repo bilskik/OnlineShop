@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.module.ResolutionException;
 import java.util.List;
 
 @RestController
@@ -18,13 +19,16 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts() {
+        return new ResponseEntity<>(productService.getAllProducts(),HttpStatusCode.valueOf(200));
     }
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-
         return  ResponseEntity.ok(productService.saveProduct(product));
     }
-
+//    @PutMapping
+    @DeleteMapping("/products/{productId}")
+    public ResponseEntity<String> deleteProduct(@PathVariable int productId) {
+        return new ResponseEntity<>(productService.deleteProduct(productId), HttpStatusCode.valueOf(200));
+    }
 }

@@ -20,7 +20,7 @@ public class CartService {
     public CartRepository cartRepository;
     @Autowired
     public ProductRepository productRepository;
-    public Cart getCartWithGivenId(int customerId) {
+    public Cart getAllProductsFromCart(int customerId) {
         //CartDTO?
         Optional<Customer> customer = customerRepository.findById(customerId);
         if(customer.isEmpty()) {
@@ -42,5 +42,19 @@ public class CartService {
         product.get().setCart(cart);
         productRepository.save(product.get());
         return product.get();
+    }
+
+    public String deleteProductFromCart(int customerId, int productId) {
+        Optional<Customer> customer = customerRepository.findById(customerId);
+        Optional<Product> product = productRepository.findById(productId);
+        if(product.isEmpty()) {
+            throw new NoSuchElementException("There is no product with given ID!");
+        }
+        if(customer.isEmpty()) {
+            throw new NoSuchElementException("There is no customer with given ID!");
+        }
+        product.get().setCart(null);
+        productRepository.save(product.get());
+        return "Deleted properly!";
     }
 }

@@ -6,28 +6,35 @@ import com.bilskik.onlineshop.http.RegisterRequest;
 import com.bilskik.onlineshop.dto.CustomerDTO;
 import com.bilskik.onlineshop.services.CustomerService;
 import jakarta.validation.Valid;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+//import java.util.logging.Logger;
 
 @RestController
 public class CustomerController {
 
+//    Logger logger = (Logger) LoggerFactory.getLogger(CustomerController.class);
     @Autowired
     private CustomerService service;
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
+//        System.out.println("request.getEmail() = " + request.getEmail());
+//        logger.config("SIEMA");
+//        logger.config(request.getEmail());
         return ResponseEntity.ok(service.register(request));
     }
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> auth(
             @Valid @RequestBody AuthenticationRequest request
     ) {
+        System.out.println("request.getEmail() = " + request.getEmail());
         return ResponseEntity.ok(service.authenticate(request));
     }
     @GetMapping("/customers")
