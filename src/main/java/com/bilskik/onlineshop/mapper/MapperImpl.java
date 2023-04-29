@@ -1,11 +1,13 @@
 package com.bilskik.onlineshop.mapper;
 
+import jakarta.annotation.PostConstruct;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
+@NoArgsConstructor
 public class MapperImpl<E,D> implements Mapper<E,D> {
     @Autowired
     private ModelMapper modelMapper;

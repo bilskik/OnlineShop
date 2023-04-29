@@ -9,9 +9,12 @@ import com.bilskik.onlineshop.dto.CustomerDTO;
 import com.bilskik.onlineshop.entities.Customer;
 import com.bilskik.onlineshop.entities.Role;
 import com.bilskik.onlineshop.mapper.Mapper;
+import com.bilskik.onlineshop.mapper.MapperImpl;
 import com.bilskik.onlineshop.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,8 +32,10 @@ public class CustomerService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-//    private final ModelMapper modelMapper;
-    private final Mapper<Customer,CustomerDTO> mapper;
+//    private final Mapper modelMapper;
+    @Autowired
+    private MapperImpl<Customer,CustomerDTO> customerMapper;
+//    private final Mapper<Customer,CustomerDTO> map;
     public AuthenticationResponse register(RegisterRequest request) {
         Customer customer = Customer.builder()
                 .name(request.getName())
@@ -67,7 +72,7 @@ public class CustomerService {
     public List<CustomerDTO> getCustomersList() {
         List<Customer> customerList = customerRepository.findAll();
         return customerList.stream()
-                .map(mapper::toDTO)
+                .map(customerMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
@@ -76,7 +81,7 @@ public class CustomerService {
         if(customer.isEmpty()) {
             throw new NoSuchElementException("There is no such an element!");
         }
-        return mapper.toDTO(customer.get());
+        return customerMapper.toDTO(customer.get());
     }
 
 //    private CustomerDTO convertEntityToDTO(Customer customer) {
