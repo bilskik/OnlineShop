@@ -1,7 +1,9 @@
 package com.bilskik.onlineshop.services;
 
+import com.bilskik.onlineshop.dto.ProductDTO;
 import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.entities.ProductCategory;
+import com.bilskik.onlineshop.mapper.MapperImpl;
 import com.bilskik.onlineshop.repositories.ProductCategoryRepository;
 import com.bilskik.onlineshop.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
@@ -17,6 +19,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -26,17 +29,28 @@ public class ProductService {
     private ProductRepository productRepository;
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
+    @Autowired
+    public MapperImpl<Product, ProductDTO> productMapper;
 
-    public List<Product> getAllProducts() {
+    public List<ProductDTO> getAllProducts() {
         List<Product> list = productRepository.findAll();
 
         if(list.isEmpty()) {
             throw new NoSuchElementException("There is no product available!");
         }
-        return list;
+        return list.stream()
+                .map(elem -> (productMapper.toDTO(elem)))
+                .collect(Collectors.toList());
+    }
+    public ProductDTO getProduct(int productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        if(product.isEmpty()) {
+            throw new NoSuchElementException("There is no product with given id!");
+        }
+        return productMapper.toDTO(product.get());
     }
 
-    public Product saveProduct(Product product) {
+    public ProductDTO saveProduct(Product product) {
         if(product.getProductCategory() != null) {
             ProductCategory productCategory = product.getProductCategory();
             Optional<ProductCategory> optionalProductCategory = productCategoryRepository
@@ -45,7 +59,8 @@ public class ProductService {
                 product.setProductCategory(optionalProductCategory.get());
             }
         }
-        return productRepository.save(product);
+        Product savedProduct = productRepository.save(product);
+        return productMapper.toDTO(savedProduct);
     }
 
     public void deleteProduct(int productId) {
@@ -59,20 +74,22 @@ public class ProductService {
     }
 
     @Transactional
-    public Product updateProduct(Product product) {
+    public ProductDTO updateProduct(Product product) {
         int result = productRepository.updateProduct(product.getProductId(), product.getProductName()
                 ,product.getAmount(),product.getPrice(),product.getProductDetails(), product.getProductCategory());
         if(result == 1) {
             Optional<Product> productOptional = productRepository.findById(product.getProductId());
             if(productOptional.isPresent()) {
-                return productOptional.get();
+                return productMapper.toDTO(productOptional.get());
             }
             else {
                 throw new NoSuchElementException("Product was not found!");
             }
         }
         else {
-            return product;
+            return productMapper.toDTO(product);
         }
     }
+
+
 }

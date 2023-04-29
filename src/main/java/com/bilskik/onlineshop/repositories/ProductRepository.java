@@ -2,7 +2,7 @@ package com.bilskik.onlineshop.repositories;
 
 import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.entities.ProductCategory;
-import com.bilskik.onlineshop.entities.embedded.ProductDetails;
+import com.bilskik.onlineshop.embedded.ProductDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

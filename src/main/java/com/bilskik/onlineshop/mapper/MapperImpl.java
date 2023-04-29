@@ -1,12 +1,14 @@
 package com.bilskik.onlineshop.mapper;
 
 import jakarta.annotation.PostConstruct;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Getter
 @NoArgsConstructor
 public class MapperImpl<E,D> implements Mapper<E,D> {
     @Autowired
@@ -26,5 +28,4 @@ public class MapperImpl<E,D> implements Mapper<E,D> {
     public E toEntity(D dto) {
         return modelMapper.map(dto,entityClass);
     }
-
 }

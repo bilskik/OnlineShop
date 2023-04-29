@@ -1,4 +1,4 @@
-package com.bilskik.onlineshop.entities;
+package com.bilskik.onlineshop.enumeration;
 
 public enum Role {
     CUSTOMER,

@@ -1,4 +1,4 @@
-package com.bilskik.onlineshop.entities.embedded;
+package com.bilskik.onlineshop.embedded;
 
 
 import jakarta.persistence.Embeddable;

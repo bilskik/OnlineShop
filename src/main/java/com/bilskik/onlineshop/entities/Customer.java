@@ -1,5 +1,6 @@
 package com.bilskik.onlineshop.entities;
 
+import com.bilskik.onlineshop.enumeration.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

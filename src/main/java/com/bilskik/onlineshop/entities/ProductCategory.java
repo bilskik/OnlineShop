@@ -30,7 +30,7 @@ public class ProductCategory {
     public int categoryId;
     private String category;
     @JsonManagedReference(value = "product_category")
-    @OneToMany(mappedBy = "productCategory", orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productCategory",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> productList;
 
     public void addProduct(Product p) {

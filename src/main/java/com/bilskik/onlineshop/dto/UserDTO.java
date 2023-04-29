@@ -1,7 +1,7 @@
 package com.bilskik.onlineshop.dto;
 
 
-import com.bilskik.onlineshop.entities.Role;
+import com.bilskik.onlineshop.enumeration.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;

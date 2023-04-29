@@ -1,12 +1,12 @@
 package com.bilskik.onlineshop.dto;
 
 import com.bilskik.onlineshop.entities.ProductCategory;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
     //to change(to remove productId)
@@ -14,5 +14,4 @@ public class ProductDTO {
     private String productName;
     private int amount;
     private double price;
-    private ProductCategory productCategory;
 }

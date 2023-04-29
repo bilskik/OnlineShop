@@ -1,8 +1,8 @@
 package com.bilskik.onlineshop.entities;
 
+import com.bilskik.onlineshop.enumeration.Role;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 

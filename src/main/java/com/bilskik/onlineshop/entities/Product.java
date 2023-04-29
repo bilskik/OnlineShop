@@ -1,8 +1,7 @@
 package com.bilskik.onlineshop.entities;
 
-import com.bilskik.onlineshop.entities.embedded.ProductDetails;
+import com.bilskik.onlineshop.embedded.ProductDetails;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
