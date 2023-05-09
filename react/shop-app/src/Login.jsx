@@ -1,12 +1,22 @@
 import React, { useState } from "react"
 
-export const Login = () => {
+export const Login = (props) => {
     const[email,setEmail] = useState('');
     const[pass,setPass] = useState('');
 
+    const loginEndpoint = 'siema';
+    
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(email);
+        const userLogin = { email, pass};
+        fetch(loginEndpoint, {
+            method: 'POST',
+            headers : {
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(userLogin)
+        });
     }
     return (
         <>
@@ -17,7 +27,7 @@ export const Login = () => {
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="*******" id="password" name="password"/>
                 <button type="submit">Log In</button>
             </form>
-            <button>Already have an account? Register here</button>
+            <button onClick={() => props.onFormSwitch('register')}>Already have an account? Register here</button>
         </>
     )
 }
