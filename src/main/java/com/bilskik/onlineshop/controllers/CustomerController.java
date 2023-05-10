@@ -18,6 +18,7 @@ import java.util.List;
 //import java.util.logging.Logger;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class CustomerController {
 
     Logger logger = LoggerFactory.getLogger(CustomerController.class);
@@ -27,6 +28,8 @@ public class CustomerController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
+        System.out.println(request);
+        logger.info(request.toString());
         return ResponseEntity.ok(service.register(request));
     }
     @PostMapping("/login")

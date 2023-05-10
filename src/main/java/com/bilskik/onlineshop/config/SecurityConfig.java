@@ -10,6 +10,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -21,6 +26,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf()
+                .disable()
+                .cors()
                 .disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/error","/login", "/register","/seller/**")
@@ -35,5 +42,16 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+    @Bean
+    public CorsFilter corsConfiguration() {
+        var cors = new CorsConfiguration();
+        cors.setAllowCredentials(true);
+        cors.addAllowedOrigin("http://localhost:3000");
+        cors.addAllowedHeader("*");
+        cors.setAllowedMethods(List.of("GET","POST","DELETE","PUT","PATCH"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", cors);
+        return new CorsFilter(source);
     }
 }

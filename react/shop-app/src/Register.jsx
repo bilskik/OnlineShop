@@ -1,19 +1,44 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { myAxios } from "./api/axios";
+import { Navigate, useNavigate } from "react-router-dom";
+
+const REGISTER_URL = '/register';
 
 export const Register = (props) => {
-    const [name, setName] = useState();
-    const [surename, setSurename] = useState();
-    const [gender,setGender] = useState();
-    const [day,setDay] = useState();
-    const [month,setMonth] = useState();
-    const [year,setYear] = useState();
-    const [email, setEmail] = useState();
-    const [pass, setPass] = useState();
+    const [name, setName] = useState('');
+    const [surename, setSurename] = useState('');
+    const [gender,setGender] = useState('male');
+    const [day,setDay] = useState('');
+    const [month,setMonth] = useState('');
+    const [year,setYear] = useState('');
+    const [email, setEmail] = useState('');
+    const [pass, setPass] = useState('');
+    const [date,setDate] = useState('');
 
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        try {
+            const response = await myAxios.post(REGISTER_URL,
+                {name,surename,email,dateOfBirth: date,gender,password:pass}, {
+                    headers: { 'Content-Type' : 'application/json'},
+                    withCredentials: true
+                }
+                )
+                console.log(response.data)
+                console.log(response.accessToken)
+                console.log(JSON.stringify(response))
+                navigate('/products')
+        }
+        catch(err) {
+
+        }
+
     }
+    useEffect(() => {
+        setDate(day + "-" + month + "-" + year);
+    },[day,month,year])
 
     return (
         <>
@@ -25,7 +50,7 @@ export const Register = (props) => {
                 <label htmlFor="email">email</label>
                 <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" placeholder="email" id="email" name="email" />
                 <label>gender</label>
-                <select>
+                <select value={gender} onChange={(e) => setGender(e.target.value)}>
                     <option value="male">male</option>
                     <option value="female">female</option>
                 </select>
@@ -37,6 +62,7 @@ export const Register = (props) => {
                 <input value={year} onChange={(e) => setYear(e.target.value)} placeholder="yyyy" id="year" name="year"/>
                 <label htmlFor="password">password</label>
                 <input value={pass} onChange={(e) => setPass(e.target.value)} type="password" placeholder="password" id="password" name="password" />
+                <button type="submit">Register</button>
             </form>
             <button onClick={() => props.onFormSwitch('login')}>Already have an account? Login here.</button>
 

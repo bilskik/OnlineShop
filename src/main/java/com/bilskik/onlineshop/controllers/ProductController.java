@@ -14,11 +14,13 @@ import java.lang.module.ResolutionException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"})
 public class ProductController {
     @Autowired
     private ProductService productService;
 
     @GetMapping("/products")
+    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
         return new ResponseEntity<>(productService.getAllProducts(),HttpStatusCode.valueOf(200));
     }
