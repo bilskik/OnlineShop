@@ -14,7 +14,7 @@ import java.lang.module.ResolutionException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000"})
+@CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
 public class ProductController {
     @Autowired
     private ProductService productService;
