@@ -1,5 +1,6 @@
 package com.bilskik.onlineshop.dto;
 
+import com.bilskik.onlineshop.embedded.ProductDetails;
 import com.bilskik.onlineshop.entities.ProductCategory;
 import lombok.*;
 
@@ -14,4 +15,5 @@ public class ProductDTO {
     private String productName;
     private int amount;
     private double price;
+    private ProductDetails productDetails;
 }

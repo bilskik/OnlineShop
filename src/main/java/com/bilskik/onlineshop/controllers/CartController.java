@@ -5,21 +5,27 @@ import com.bilskik.onlineshop.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
+@CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
 public class CartController {
     @Autowired
     public CartService cartService;
-    @GetMapping("/customers/{customerId}/cart")
-    public ResponseEntity<Cart> getCartFromCustomer(@PathVariable int customerId) {
-        return new ResponseEntity<>(cartService.getAllProductsFromCart(customerId), HttpStatusCode.valueOf(200));
+    @GetMapping("/cart")
+    public ResponseEntity<Cart> getCartFromCustomer() {
+        return new ResponseEntity<>(cartService.getAllProductsFromCart(), HttpStatusCode.valueOf(200));
     }
-    @PostMapping(path = "/customers/{customerId}/cart")
-    public ResponseEntity<Product> addProductToCart(@PathVariable int customerId, @RequestBody Product product) {
-        return new ResponseEntity<>(cartService.addProductToCart(product,customerId), HttpStatusCode.valueOf(200));
+    @PostMapping(path = "/cart")
+    @PreAuthorize("hasRole('CUSTOMER')")
+    public ResponseEntity<Product> addProductToCart(@RequestBody Map<String,Integer> request) {
+        int product = request.get("productId");
+        return new ResponseEntity<>(cartService.addProductToCart(product), HttpStatusCode.valueOf(201));
     }
-    @DeleteMapping(path = "/customers/{customerId}/cart/{productId}")
+    @DeleteMapping(path = "/cart")
     public ResponseEntity<Void> deleteProductFromCart(@PathVariable int customerId, @PathVariable int productId) {
         cartService.deleteProductFromCart(customerId,productId);
         return new ResponseEntity<>(HttpStatusCode.valueOf(240));

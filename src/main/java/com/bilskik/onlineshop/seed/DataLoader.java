@@ -1,6 +1,7 @@
 package com.bilskik.onlineshop.seed;
 
 
+import com.bilskik.onlineshop.embedded.ProductDetails;
 import com.bilskik.onlineshop.entities.*;
 import com.bilskik.onlineshop.enumeration.OrderStatus;
 import com.bilskik.onlineshop.enumeration.Role;
@@ -10,6 +11,7 @@ import com.bilskik.onlineshop.repositories.OrderRepository;
 import com.bilskik.onlineshop.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -27,6 +29,8 @@ public class DataLoader implements CommandLineRunner {
     private ProductRepository productRepository;
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -60,7 +64,8 @@ public class DataLoader implements CommandLineRunner {
                 .productName("Gazeta")
                 .amount(1)
                 .price(10)
-                .cart(cart)
+//                .cart(cart)
+                .productDetails(new ProductDetails("Gazeta wyborcza", "giga super gazeta!"))
                 .productCategory(c.get(0))
                 .build();
         Product product2 = Product.builder()
@@ -68,21 +73,24 @@ public class DataLoader implements CommandLineRunner {
                 .productName("Ksiazka")
                 .amount(1)
                 .price(10)
-                .cart(cart)
+//                .cart(cart)
+                .productDetails(new ProductDetails("Ksiazka do języka Angielskiego poziom C1", "SUPER GIGA CHAD KSIAZKA!!"))
                 .productCategory(c.get(0))
                 .build();
         Product product3 = Product.builder()
                 .productId(3)
-                .productName("Pismo")
+                .productName("Laptop")
                 .amount(1)
                 .price(12)
                 .productCategory(c.get(0))
+                .productDetails(new ProductDetails("Laptop HP", "GIGA OP LAPEK"))
                 .build();
         Product product4 = Product.builder()
                 .productId(4)
                 .productName("Komputer")
                 .amount(1)
                 .price(1200)
+                .productDetails(new ProductDetails("Komputer Lenovo","GIGA Op kompek"))
                 .productCategory(c.get(1))
                 .build();
         productRepository.save(product1);
@@ -97,11 +105,11 @@ public class DataLoader implements CommandLineRunner {
                 .customerId(1)
                 .name("Kamil")
                 .surename("Bilski")
-                .email("kamil@gmail.com")
-                .gender("mezczyzna")
+                .email("test@123")
+                .gender("male")
                 .dateOfBirth(LocalDate.of(2002, 7, 5))
                 .role(Role.CUSTOMER)
-                .password("123")
+                .password(passwordEncoder.encode("123"))
                 .cart(cart)
                 .build();
         customerRepository.save(customer);

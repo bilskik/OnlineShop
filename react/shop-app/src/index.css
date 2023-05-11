@@ -1,4 +1,6 @@
-* {
-    margin: 0;
-    color: red;
+table,tr,th, td,caption {
+    border: 1px solid #2e2a2a;
+    font-family: 'Courier New', Courier, monospace;
+    border-collapse: collapse;
+    padding: 0.5rem;
 }

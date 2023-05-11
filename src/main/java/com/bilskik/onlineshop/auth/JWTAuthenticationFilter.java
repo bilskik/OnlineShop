@@ -1,5 +1,6 @@
 package com.bilskik.onlineshop.auth;
 
+import com.bilskik.onlineshop.dto.UserEmailDTO;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final UserEmailDTO userEmailDTO;
 
     @Override
     protected void doFilterInternal(
@@ -30,7 +32,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        System.out.println(authHeader);
+        System.out.println("token: " + authHeader);
         final String jwt;
         final String userEmail;
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -40,7 +42,8 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         final int BEGIN_JWT_INDEX = 7;
         jwt = authHeader.substring(BEGIN_JWT_INDEX);
         userEmail = jwtService.extractUsername(jwt);
-        System.out.println(userEmail);
+        userEmailDTO.setEmail(userEmail);
+        System.out.println("userEmail = " + userEmail);
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             if(jwtService.isTokenValid(jwt,userDetails)) {
@@ -53,8 +56,10 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                System.out.println("DIZLAAS?????" );
             }
         }
+
         filterChain.doFilter(request,response);
     }
 }

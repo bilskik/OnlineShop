@@ -26,9 +26,10 @@ export const Register = (props) => {
                     withCredentials: true
                 }
                 )
-                console.log(response.data)
-                console.log(response.accessToken)
-                console.log(JSON.stringify(response))
+                // console.log(response.data)
+                // console.log(response.accessToken)
+                // console.log(JSON.stringify(response))
+                localStorage.setItem('token', response.data.token);
                 navigate('/products')
         }
         catch(err) {
