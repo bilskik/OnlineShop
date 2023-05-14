@@ -1,8 +1,8 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
-import { myAxios } from "./api/axios"
+import { myAxios } from "../api/axios"
 import { useNavigate } from "react-router-dom";
-import  ProductList  from "./components/ProductList"
+import  ProductList  from "./ProductList"
 
 const PRODUCT_URL = '/products';
 

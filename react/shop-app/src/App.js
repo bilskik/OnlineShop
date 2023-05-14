@@ -1,9 +1,9 @@
 import  React,{ useState } from "react";
-import { Login } from './Login.jsx'
-import { Register } from './Register.jsx'
+import { Login } from './components/Login.jsx'
+import { Register } from './components/Register.jsx'
 import { useRoutes } from "react-router-dom";
-import { Product } from "./Product.jsx"
-import { Cart } from "./Cart.jsx"
+import { Product } from "./components/Product.jsx"
+import { Cart } from "./components/Cart.jsx"
 function App() {
   const [currentForm, setCurrentForm] = useState("login");
 

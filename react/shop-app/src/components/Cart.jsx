@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { myAxios } from "./api/axios"
+import { myAxios } from "../api/axios"
 
 const CART_URL = "/cart";
 
@@ -10,7 +10,6 @@ export const Cart = () => {
     const[isLoading,setIsLoading] = useState(true);
 
     useEffect(() => {
-        console.log("SIEMA")
         let token = localStorage.getItem('token');
         token = "Bearer " + token;
         const headers = {
@@ -18,6 +17,7 @@ export const Cart = () => {
             'X-User-Role' : 'CUSTOMER'
         };
         const getCart = async () => {
+            let url = CART_URL + '${product.productId}';
             const response = await myAxios.get(CART_URL,{
                 headers
         })
@@ -29,8 +29,27 @@ export const Cart = () => {
 
     },[]) 
 
-    const deleteFromCart = () => {
-        
+    const deleteFromCart = (product) => {
+        let token = localStorage.getItem('token');
+        token = "Bearer " + token;
+        const headers = {
+            'Authorization' : token,
+            'X-User-Role' : 'CUSTOMER'
+        };
+        const deleteProductFromCart = async (product) => {
+            let url = CART_URL + '/' + product.productId;
+            console.log(url);
+            const response = await myAxios.delete(url,{
+                headers
+            });
+            deleteFromUseState(product.productId);
+        }
+        console.log(token);
+        deleteProductFromCart(product);
+    }
+    const deleteFromUseState = function (productId) {
+        const filteredData = productList.filter(item => item.productId !== productId);
+        setProductList(filteredData);
     }
 
     return (
@@ -63,7 +82,7 @@ export const Cart = () => {
                                             <button>zobacz</button>
                                         </td>
                                         <td>
-                                            <button onClick={deleteFromCart}>Usun</button>
+                                            <button onClick={() => deleteFromCart(product)}>Usun</button>
                                         </td>
                                     </tr>
                                     )

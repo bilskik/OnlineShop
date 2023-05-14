@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { myAxios } from "./api/axios";
+import { myAxios } from "../api/axios";
 import { Navigate, useNavigate } from "react-router-dom";
 
 const REGISTER_URL = '/register';

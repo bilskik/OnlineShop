@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react"
-import { myAxios } from "./api/axios";
+import { myAxios } from "../api/axios";
 import { useNavigate } from "react-router-dom";
-import useAuth from "./hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 const LOGIN_URL = '/login'
 
 export const Login = (props) => {
