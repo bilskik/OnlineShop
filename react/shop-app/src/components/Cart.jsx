@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react"
 import { myAxios } from "../api/axios"
-
+import { getHeaders } from "../api/getHeaders";
+import { Modal } from "./Modal"
 const CART_URL = "/cart";
-
+const PRODUCT_URL = '/products';
 
 export const Cart = () => {
     
     const[productList,setProductList] = useState([]);
     const[isLoading,setIsLoading] = useState(true);
-
+    const[openModal,setOpenModal] = useState(false);
+    const[modalProduct, setModalProduct] = useState({});
     useEffect(() => {
-        let token = localStorage.getItem('token');
-        token = "Bearer " + token;
-        const headers = {
-            'Authorization' : token,
-            'X-User-Role' : 'CUSTOMER'
-        };
+        const headers = getHeaders();
         const getCart = async () => {
             let url = CART_URL + '${product.productId}';
             const response = await myAxios.get(CART_URL,{
@@ -30,28 +27,41 @@ export const Cart = () => {
     },[]) 
 
     const deleteFromCart = (product) => {
-        let token = localStorage.getItem('token');
-        token = "Bearer " + token;
-        const headers = {
-            'Authorization' : token,
-            'X-User-Role' : 'CUSTOMER'
+        const updatedProduct = {
+            ...product,
+            amount : product.amount + product.cartItemsAmount,
+            cartItemsAmount : 0
         };
+        const headers = getHeaders();
         const deleteProductFromCart = async (product) => {
+            console.log(product);
             let url = CART_URL + '/' + product.productId;
-            console.log(url);
             const response = await myAxios.delete(url,{
                 headers
             });
-            deleteFromUseState(product.productId);
+            updateProduct(product);
         }
-        console.log(token);
-        deleteProductFromCart(product);
+        const updateProduct = async (product) => {
+            console.log(product);
+            const headers = getHeaders();
+            const response = await myAxios.put(PRODUCT_URL,
+                product, {
+                    headers
+                });
+
+        }
+        deleteProductFromCart(updatedProduct);
+        deleteFromUseState(product.productId);
+
     }
     const deleteFromUseState = function (productId) {
         const filteredData = productList.filter(item => item.productId !== productId);
         setProductList(filteredData);
     }
-
+    const setDetails = function(product) {
+        setOpenModal(true);
+        setModalProduct(product);
+    }
     return (
         <div>
             {
@@ -62,6 +72,7 @@ export const Cart = () => {
                         <thead>
                             <tr>
                                 <th>Nazwa Produktu:</th>
+                                <th>Ilosc Produktow:</th>
                                 <th>Cena Produktu:</th>
                                 <th>Zobacz Szczegóły</th>
                                 <th>Usun z koszyka</th>
@@ -76,10 +87,13 @@ export const Cart = () => {
                                             {product.productName}
                                         </td>
                                         <td>
-                                            {product.price}
+                                            {product.cartItemsAmount}
                                         </td>
                                         <td>
-                                            <button>zobacz</button>
+                                            {product.price} zł
+                                        </td>
+                                        <td>
+                                            <button onClick={() => setDetails(product)}>zobacz</button>
                                         </td>
                                         <td>
                                             <button onClick={() => deleteFromCart(product)}>Usun</button>
@@ -93,7 +107,7 @@ export const Cart = () => {
                     
                 )
             }
-
+            <Modal open={openModal} product={modalProduct} onClose={() => setOpenModal(false)} />
         </div>
     )
 }

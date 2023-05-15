@@ -5,8 +5,6 @@ export const Modal = ({open, product, onClose}) => {
     if(!open) {
         return null;
     }
-    // console.log(product === null);
-    // console.log(product);
     return (
         <div className="overlay" onClick={onClose}>
             <div className="modalContainer">

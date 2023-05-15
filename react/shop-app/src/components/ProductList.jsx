@@ -1,27 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import '../index.css'
 import Modal from './Modal';
 import { myAxios } from '../api/axios';
 import { useState } from "react"
 import '../css/Modal.css'
+import { getHeaders } from '../api/getHeaders';
 const CART_URL = '/cart';
+const PRODUCT_URL = '/products';
 
 export const ProductList = (props) => {
-    const productList = props.productList;
+    const [productList,setProductList] = useState(props.productList);
     const [clickedButtons, setClickedButtons] = useState({});
     const [openModal, setOpenModal] = useState(false);
     const [modalPoduct, setModalProduct] = useState({});
 
     const addToCart = async (product) => {
-        disableButton(product.productId);
-        let token = localStorage.getItem('token');
-        token = "Bearer " + token;
-        const headers = {
-            'Authorization' : token,
-            'X-User-Role' : "CUSTOMER",
-            'Content-Type' : 'application/json'
-        }
+        const headers = getHeaders();
         try {
+            console.log("przed response");
+            console.log(product);
             const response = await myAxios.post(CART_URL,
                 { productId : product.productId },
                 {
@@ -29,20 +26,55 @@ export const ProductList = (props) => {
                     withCredentials : true
                 }
             )
-        
+            checkIfDisable(product);
+
         }
         catch(err) {
             
         }
     }
-    const setDetails = (id) => {
-        const product = productList.filter(product => product.productId === id)
-        console.log(product[0]);
-        setModalProduct(product[0]);
+    const setDetails = (product) => {
+        setModalProduct(product);
         setOpenModal(true);
     }
     const disableButton = function(productId) {
         setClickedButtons({...clickedButtons, [productId] : true})
+    }
+    const checkIfDisable = function(product) {
+        const productId = product.productId;
+        const productIndex = productList.findIndex(product => product.productId === productId);
+
+        if(productId >= 0) {
+            let updatedProductList = [...productList];
+            let productUpdated = updatedProductList[productIndex];
+            console.log(productUpdated);
+            console.log(updatedProductList);
+            productUpdated.amount--;
+            productUpdated.cartItemsAmount++;
+            updatedProductList[productIndex] = productUpdated;
+            setProductList(updatedProductList);
+            updateProduct(updatedProductList[productIndex]);
+            if(productUpdated.amount === 0) {
+                disableButton(productId);
+            }
+
+        } 
+    }
+    const updateProduct = async (product) => {
+        console.log("PRODUCTTT");
+        console.log(product);
+        const headers = getHeaders();
+        console.log(headers.Authorization);
+        try {
+            const response = await myAxios.put(PRODUCT_URL,
+                product, 
+                {
+                headers,
+            })
+        }
+        catch(err) {
+            console.log(err);
+        }
     }
     return (
         <div className='table'>
@@ -51,6 +83,7 @@ export const ProductList = (props) => {
                     <tr>
                         <th>Nazwa Produktu:</th>
                         <th>Cena produktu:</th>
+                        <th>Ilość produktu</th>
                         <th>Zobacz szczegóły:</th>
                         <th>Dodaj do koszyka:</th>
                     </tr>
@@ -60,14 +93,17 @@ export const ProductList = (props) => {
                             return(
                                 <tr key = {product.productId}>                  
                                     <td>
-                                        {product.productId} + {product.productName}
+                                        {product.productName}
                                     </td>
                                     <td>
                                         {product.price} zł
                                     </td>
                                     <td>
+                                        {product.amount}
+                                    </td>
+                                    <td>
                                         {/* {product.productDetails.details} */}
-                                        <button onClick={() => setDetails(product.productId)}>Zobacz</button>
+                                        <button onClick={() => setDetails(product)}>Zobacz</button>
                                     </td>
                                     <td>
                                         <button onClick={() => addToCart(product)} disabled={clickedButtons[product.productId]}>Dodaj</button>
