@@ -1,4 +1,6 @@
 package com.bilskik.onlineshop.controllers;
+import com.bilskik.onlineshop.dto.CartDTO;
+import com.bilskik.onlineshop.dto.ProductDTO;
 import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.services.CartService;
@@ -21,13 +23,14 @@ public class CartController {
     }
     @PostMapping(path = "/cart")
     @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<Product> addProductToCart(@RequestBody Map<String,Integer> request) {
+    public ResponseEntity<ProductDTO> addProductToCart(@RequestBody Map<String,Integer> request) {
         int product = request.get("productId");
         return new ResponseEntity<>(cartService.addProductToCart(product), HttpStatusCode.valueOf(201));
     }
-    @DeleteMapping(path = "/cart")
-    public ResponseEntity<Void> deleteProductFromCart(@PathVariable int customerId, @PathVariable int productId) {
-        cartService.deleteProductFromCart(customerId,productId);
+    @DeleteMapping(path = "/cart/{product}")
+    public ResponseEntity<Cart> deleteProductFromCart(@PathVariable int product) {
+        System.out.println("product = " + product);
+        cartService.deleteProductFromCart(product);
         return new ResponseEntity<>(HttpStatusCode.valueOf(240));
     }
 }

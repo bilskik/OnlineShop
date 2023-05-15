@@ -1,10 +1,12 @@
 package com.bilskik.onlineshop.services;
 
+import com.bilskik.onlineshop.dto.ProductDTO;
 import com.bilskik.onlineshop.dto.UserEmailDTO;
 import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.entities.Customer;
 import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.entities.User;
+import com.bilskik.onlineshop.mapper.MapperImpl;
 import com.bilskik.onlineshop.repositories.CartRepository;
 import com.bilskik.onlineshop.repositories.CustomerRepository;
 import com.bilskik.onlineshop.repositories.ProductRepository;
@@ -25,6 +27,8 @@ public class CartService {
     public ProductRepository productRepository;
     @Autowired
     private UserEmailDTO userEmailDTO;
+    @Autowired
+    MapperImpl<Product,ProductDTO> productMapper;
     public Cart getAllProductsFromCart() {
         String email = userEmailDTO.getEmail();
         //CartDTO?
@@ -34,8 +38,7 @@ public class CartService {
         }
         return customer.get().cart;
     }
-    //ProductDTO?
-    public Product addProductToCart(int productId) {
+    public ProductDTO addProductToCart(int productId) {
         String email = userEmailDTO.getEmail();
         if(email == null) {
             throw new NoSuchElementException("Email is not proper!");
@@ -51,11 +54,12 @@ public class CartService {
         Cart cart = customer.get().cart;
         product.get().setCart(cart);
         productRepository.save(product.get());
-        return product.get();
+        return productMapper.toDTO(product.get());
     }
 
-    public String deleteProductFromCart(int customerId, int productId) {
-        Optional<Customer> customer = customerRepository.findById(customerId);
+    public String deleteProductFromCart(int productId) {
+        String email = userEmailDTO.getEmail();
+        Optional<Customer> customer = customerRepository.findByEmail(email);
         Optional<Product> product = productRepository.findById(productId);
         if(product.isEmpty()) {
             throw new NoSuchElementException("There is no product with given ID!");

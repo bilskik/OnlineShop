@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.lang.module.ResolutionException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
@@ -33,7 +34,8 @@ public class ProductController {
         return ResponseEntity.ok(productService.saveProduct(product));
     }
     @PutMapping("/products")
-    public ResponseEntity<ProductDTO> updateProduct(@RequestBody() Product product) {
+    public ResponseEntity<ProductDTO> updateProduct(@RequestBody Product product) {
+
         return new ResponseEntity<>(productService.updateProduct(product), HttpStatusCode.valueOf(200));
     }
     @DeleteMapping("/products/{productId}")

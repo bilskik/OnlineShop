@@ -62,7 +62,8 @@ public class DataLoader implements CommandLineRunner {
         Product product1 = Product.builder()
                 .productId(1)
                 .productName("Gazeta")
-                .amount(1)
+                .amount(10)
+                .cartItemsAmount(0)
                 .price(10)
 //                .cart(cart)
                 .productDetails(new ProductDetails("Gazeta wyborcza", "giga super gazeta!"))
@@ -71,7 +72,8 @@ public class DataLoader implements CommandLineRunner {
         Product product2 = Product.builder()
                 .productId(2)
                 .productName("Ksiazka")
-                .amount(1)
+                .amount(5)
+                .cartItemsAmount(0)
                 .price(10)
 //                .cart(cart)
                 .productDetails(new ProductDetails("Ksiazka do języka Angielskiego poziom C1", "SUPER GIGA CHAD KSIAZKA!!"))
@@ -80,7 +82,8 @@ public class DataLoader implements CommandLineRunner {
         Product product3 = Product.builder()
                 .productId(3)
                 .productName("Laptop")
-                .amount(1)
+                .amount(3)
+                .cartItemsAmount(0)
                 .price(12)
                 .productCategory(c.get(0))
                 .productDetails(new ProductDetails("Laptop HP", "GIGA OP LAPEK"))
@@ -89,6 +92,7 @@ public class DataLoader implements CommandLineRunner {
                 .productId(4)
                 .productName("Komputer")
                 .amount(1)
+                .cartItemsAmount(0)
                 .price(1200)
                 .productDetails(new ProductDetails("Komputer Lenovo","GIGA Op kompek"))
                 .productCategory(c.get(1))
@@ -112,7 +116,19 @@ public class DataLoader implements CommandLineRunner {
                 .password(passwordEncoder.encode("123"))
                 .cart(cart)
                 .build();
+        Customer customer2 = Customer.builder()
+                .customerId(2)
+                .name("tescik")
+                .surename("siemanko")
+                .email("123@123")
+                .gender("male")
+                .dateOfBirth(LocalDate.of(2002, 7, 5))
+                .role(Role.CUSTOMER)
+                .password(passwordEncoder.encode("123"))
+                .cart(cart)
+                .build();
         customerRepository.save(customer);
+        customerRepository.save(customer2);
         return customer;
 
     }

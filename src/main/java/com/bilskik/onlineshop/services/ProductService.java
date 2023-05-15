@@ -68,6 +68,8 @@ public class ProductService {
         if(product.isEmpty()) {
             throw new NoSuchElementException("There is no product available in DB!");
         }
+        logger.info(String.valueOf(product.get().getAmount()));
+        logger.info(String.valueOf(product.get().getCartItemsAmount()));
         product.get().setCart(null);
         productRepository.save(product.get());
         productRepository.deleteById(productId);
@@ -75,10 +77,15 @@ public class ProductService {
 
     @Transactional
     public ProductDTO updateProduct(Product product) {
+        System.out.println(product.getAmount());
+        System.out.println(product.getCartItemsAmount());
         int result = productRepository.updateProduct(product.getProductId(), product.getProductName()
-                ,product.getAmount(),product.getPrice(),product.getProductDetails(), product.getProductCategory());
+                ,product.getAmount(),product.getCartItemsAmount(),product.getPrice(),product.getProductDetails(),
+                product.getProductCategory());
+        System.out.println(result);
         if(result == 1) {
             Optional<Product> productOptional = productRepository.findById(product.getProductId());
+
             if(productOptional.isPresent()) {
                 return productMapper.toDTO(productOptional.get());
             }
