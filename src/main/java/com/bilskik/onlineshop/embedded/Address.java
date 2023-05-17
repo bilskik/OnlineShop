@@ -1,10 +1,15 @@
 package com.bilskik.onlineshop.embedded;
 
 import jakarta.persistence.Embeddable;
+import lombok.*;
 
 @Embeddable
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Address {
-    private int id;
     private String street;
     private String city;
     private String country;

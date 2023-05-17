@@ -35,5 +35,7 @@ public class Customer extends User {
             referencedColumnName = "cartId"
     )
     public Cart cart;
+    @OneToOne(mappedBy = "customer")
+    public Order order;
 
 }

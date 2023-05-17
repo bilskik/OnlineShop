@@ -14,6 +14,7 @@ export const Cart = () => {
     const [openModal,setOpenModal] = useState(false);
     const [modalProduct, setModalProduct] = useState({});
     const [sum,setSum] = useState(0);
+    const [isCartEmpty,setIsCartEmpty] = useState(false);
     const [cart,setCart] = useState({});
     const navigate = useNavigate();
 
@@ -29,6 +30,7 @@ export const Cart = () => {
                 setCart(response.data);
                 setIsLoading(false);
                 countInitialSum(response.data.productList);
+                checkIfProductListIsEmpty(response.data.productList);
             }) 
         }
         getCart();
@@ -72,10 +74,10 @@ export const Cart = () => {
         countDeletionSum(product);
         deleteProductFromCart(updatedProduct);
         deleteFromUseState(product.productId);
-
     }
     const deleteFromUseState = function (productId) {
         const filteredData = productList.filter(item => item.productId !== productId);
+        checkIfProductListIsEmpty(filteredData);
         setProductList(filteredData);
     }
     const setDetails = function(product) {
@@ -108,54 +110,73 @@ export const Cart = () => {
     //     const day = currDate.getDay().toString().padStart(2,'0');
     //     return day + "-" + month + "-" + year;
     // }
+    const checkIfProductListIsEmpty = (productList) => {
+        console.log(productList);
+        if(productList.length === 0) {
+            setIsCartEmpty(true);
+        }
+        else {
+            setIsCartEmpty(false);
+        }
+    }
     return (
         <div>
             {
                 isLoading ? (
                     <p>Is Loading...</p>
                 ) : (
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Nazwa Produktu:</th>
-                                <th>Ilosc Produktow:</th>
-                                <th>Cena Produktu:</th>
-                                <th>Zobacz Szczegóły</th>
-                                <th>Usun z koszyka</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                productList.map(product => {
-                                    return (
-                                    <tr key = {product.productId}>
-                                        <td>
-                                            {product.productName}
-                                        </td>
-                                        <td>
-                                            {product.cartItemsAmount}
-                                        </td>
-                                        <td>
-                                            {product.price} zł
-                                        </td>
-                                        <td>
-                                            <button onClick={() => setDetails(product)}>zobacz</button>
-                                        </td>
-                                        <td>
-                                            <button onClick={() => deleteFromCart(product)}>Usun</button>
-                                        </td>
+                    !isCartEmpty ? (
+                        <>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Nazwa Produktu:</th>
+                                        <th>Ilosc Produktow:</th>
+                                        <th>Cena Produktu:</th>
+                                        <th>Zobacz Szczegóły</th>
+                                        <th>Usun z koszyka</th>
                                     </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
+                                </thead>
+                                <tbody>
+                                    {
+                                        productList.map(product => {
+                                            return (
+                                            <tr key = {product.productId}>
+                                                <td>
+                                                    {product.productName}
+                                                </td>
+                                                <td>
+                                                    {product.cartItemsAmount}
+                                                </td>
+                                                <td>
+                                                    {product.price} zł
+                                                </td>
+                                                <td>
+                                                    <button onClick={() => setDetails(product)}>zobacz</button>
+                                                </td>
+                                                <td>
+                                                    <button onClick={() => deleteFromCart(product)}>Usun</button>
+                                                </td>
+                                            </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                            <Modal open={openModal} product={modalProduct} onClose={() => setOpenModal(false)} />
+                            <p>Suma: {sum}</p>
+                            <button onClick={goToOrder}>Przejdz do platnosci</button>
+
+                        </>
+                    ) : (
+                        <>
+                            <p>Twoj koszyk jest pusty!</p>
+                        </>
+                    )
                     
                 )
             }
-            <Modal open={openModal} product={modalProduct} onClose={() => setOpenModal(false)} />
-            <p>Suma: {sum}</p>
-            <button onClick={goToOrder}>Przejdz do platnosci</button>
+            
         </div>
     )
 }

@@ -77,12 +77,9 @@ public class ProductService {
 
     @Transactional
     public ProductDTO updateProduct(Product product) {
-        System.out.println(product.getAmount());
-        System.out.println(product.getCartItemsAmount());
         int result = productRepository.updateProduct(product.getProductId(), product.getProductName()
                 ,product.getAmount(),product.getCartItemsAmount(),product.getPrice(),product.getProductDetails(),
                 product.getProductCategory());
-        System.out.println(result);
         if(result == 1) {
             Optional<Product> productOptional = productRepository.findById(product.getProductId());
 

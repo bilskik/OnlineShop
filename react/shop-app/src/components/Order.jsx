@@ -18,6 +18,8 @@ export const Order = () => {
     const [mappedAddress, setMappedAddress] = useState({});
     const [reloadPage,setReloadPage] = useState(false);
     const [order,setOrder] = useState();
+    const [isOrderAvailable,setIsOrderAvailable] = useState(false);
+    const [isAddressEdited,setIsAddressEdited] = useState(false);
     const navigate = useNavigate();
     // useEffect(() => {
     //     const headers = getHeaders();
@@ -50,6 +52,7 @@ export const Order = () => {
                     setOrderState(true);
                     countPrice(response.data.productList);
                     mapNamesInAddress(response.data.address);
+                    checkIfProdutListIsEmpty(response.data.productList);
                 }
                 else {
                     loadDataFromURL();
@@ -65,6 +68,7 @@ export const Order = () => {
         setProductList(loadedData);
         setIsLoading(false);
         countPrice(loadedData);
+        checkIfProdutListIsEmpty(loadedData);
     }
     const countPrice = (productList) => {
         let sum = 0;
@@ -83,7 +87,6 @@ export const Order = () => {
             orderDate : date,
             address : address
         }
-        console.log(order);
         const headers = getHeaders();
         const postData = async () => {
             const response = await myAxios.post(ORDER_URL,
@@ -130,18 +133,42 @@ export const Order = () => {
         }
         navigate("/products");
     }
+    const editAddress = () => {
+        setOrderState(false);
+        setIsAddressEdited(true);
+    }
+
+        const checkIfProdutListIsEmpty = (productList) => {
+        if(productList.length === 0) {
+            setIsOrderAvailable(false);
+        }
+        else {
+            setIsOrderAvailable(true);
+        }
+    }
+    const handleAddressSubmit = (e) => {
+        e.preventDefault();
+        const headers = getHeaders();
+        const updateAddress = async () => {
+            const response = await myAxios.put(ORDER_URL,{headers});
+        }
+
+    }
     return (
         <div>
             {
                 isLoading ? ( 
                     <p>is loading...</p>
                 ) : (
+                    <>
+                    { isOrderAvailable ? (
+
                         <>
                             { !orderState ? (
                             <> 
                                 <Table productList={productList}/>
                                 <p>Do zaplaty: {price}</p>
-                                <form onSubmit={handleSubmit}>
+                                <form onSubmit={!isAddressEdited ? handleSubmit : handleAddressSubmit}>
                                     <label htmlFor='county'>Państwo</label>
                                     <input id='country' name='country' placeholder='city' onChange={(e) => setCountry(e.target.value)}/>
                                     <label htmlFor='city'>Miasto</label>
@@ -169,11 +196,19 @@ export const Order = () => {
                                             )
                                         })
                                     }
-                                    <p>Zrezygnuj z kupna:</p>
-                                    <button onClick={deleteOrder}>Zrezygnuj</button>
+                                    <button onClick={editAddress}>Edytuj dane</button>
+                                    
                                 </div>
                             )}
+                            <button onClick={deleteOrder}>Powrót</button>
                         </>
+                    ) : (
+                        <>
+                            <p>Nie ma wybranego produktu do kupienia!</p>
+                        </>  
+                    )}
+                    </>
+
                 )
             }
         </div>

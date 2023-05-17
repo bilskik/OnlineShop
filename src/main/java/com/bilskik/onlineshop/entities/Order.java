@@ -1,10 +1,10 @@
 package com.bilskik.onlineshop.entities;
 
+import com.bilskik.onlineshop.embedded.Address;
 import com.bilskik.onlineshop.enumeration.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -19,14 +19,26 @@ import java.time.LocalDate;
 @Table(name = "orders")
 public class Order {
     @Id
-    private int orderId;
+    @SequenceGenerator(
+            name = "seq_order",
+            sequenceName = "seq_order",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            generator = "seq_order",
+            strategy = GenerationType.SEQUENCE
+    )
+    @Column(name = "order_id")
+    public int orderId;
     @JsonProperty("orderDate")
     @JsonFormat(pattern = "dd-MM-yyyy")
-    @NotNull(message = "Date of order cannot be null!")
+//    @NotNull(message = "Date of order cannot be null!")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate orderDate;
-    @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus;
+//    @Enumerated(EnumType.STRING)
+//    private OrderStatus orderStatus;
+    @Embedded
+    private Address address;
     private Long total;
     @OneToOne
     @JoinColumn(

@@ -1,13 +1,19 @@
 package com.bilskik.onlineshop.services;
 
 import com.bilskik.onlineshop.dto.OrderDTO;
+import com.bilskik.onlineshop.dto.UserEmailDTO;
+import com.bilskik.onlineshop.entities.Cart;
+import com.bilskik.onlineshop.entities.Customer;
 import com.bilskik.onlineshop.entities.Order;
 import com.bilskik.onlineshop.mapper.MapperImpl;
 import com.bilskik.onlineshop.mapper.OrderMapper;
+import com.bilskik.onlineshop.repositories.CustomerRepository;
 import com.bilskik.onlineshop.repositories.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -23,24 +29,36 @@ public class OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private UserEmailDTO userEmailDTO;
 
-    public OrderDTO getOrder(int orderId) {
-        Optional<Order> order = orderRepository.findById(orderId);
-        if(order.isEmpty()) {
-            throw new NoSuchElementException("Order does not exist!");
+    public OrderDTO getOrder() {
+        Optional<Customer> customer = customerRepository.findByEmail(userEmailDTO.getEmail());
+        if(customer.isEmpty()) {
+            throw new NoSuchElementException("There is no customer!");
         }
-        Field[] fields = order.get().getClass().getDeclaredFields();
-        for(Field field : fields) {
-            field.setAccessible(true);
-            try {
-                Object value = field.get(order.get());
-                log.info(field.getName() + " " + value);
-            } catch (IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-            log.info(field.getName());
+        int customerId = customer.get().getCustomerId();
+        Optional<Order> order = orderRepository.findByCustomerId(customerId);
+        if(order.isEmpty()) {
+            return null;
         }
         return orderMapper.toDTO(order.get());
-//        return order.get();
+    }
+    public OrderDTO saveOrder(Order order) {
+        System.out.println(order.getAddress());
+        System.out.println(order.getOrderDate());
+        Optional<Customer> customer = customerRepository.findByEmail(userEmailDTO.getEmail());
+        if(customer.isEmpty()) {
+            throw new NoSuchElementException("There is no customer!");
+        }
+        if(order == null) {
+            throw new NoSuchElementException("Order does not exist!");
+        }
+        order.setCustomer(customer.get());
+        order.setCart(customer.get().getCart());
+        orderRepository.save(order);
+        return orderMapper.toDTO(order);
     }
 }

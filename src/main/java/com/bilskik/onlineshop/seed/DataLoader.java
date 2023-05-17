@@ -1,6 +1,7 @@
 package com.bilskik.onlineshop.seed;
 
 
+import com.bilskik.onlineshop.embedded.Address;
 import com.bilskik.onlineshop.embedded.ProductDetails;
 import com.bilskik.onlineshop.entities.*;
 import com.bilskik.onlineshop.enumeration.OrderStatus;
@@ -125,7 +126,7 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(2002, 7, 5))
                 .role(Role.CUSTOMER)
                 .password(passwordEncoder.encode("123"))
-                .cart(cart)
+//                .cart(cart)
                 .build();
         customerRepository.save(customer);
         customerRepository.save(customer2);
@@ -144,15 +145,23 @@ public class DataLoader implements CommandLineRunner {
         return List.of(category1,category2);
     }
     private void loadOrder(Customer customer, Cart cart) {
-        Order order = Order.builder()
-                .orderId(1)
-                .orderDate(LocalDate.of(2023,5,17))
-                .orderStatus(OrderStatus.PROCESSING)
-                .total(2000L)
-                .customer(customer)
-                .cart(cart)
-                .build();
-        orderRepository.save(order);
+//        Address address1 = Address.builder()
+//                .id(1)
+//                .street("Zielona")
+//                .city("Warszawa")
+//                .country("Polska")
+//                .zipCode("21-310")
+//                .build();
+//        Order order = Order.builder()
+//                .orderId(1)
+//                .orderDate(LocalDate.of(2023,5,17))
+//                .orderStatus(OrderStatus.PROCESSING)
+//                .total(2000L)
+//                .address(address1)
+//                .customer(customer)
+//                .cart(cart)
+//                .build();
+//        orderRepository.save(order);
     }
 
 }
