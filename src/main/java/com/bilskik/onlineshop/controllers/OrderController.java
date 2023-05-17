@@ -2,6 +2,7 @@ package com.bilskik.onlineshop.controllers;
 
 import com.bilskik.onlineshop.dto.AddressDTO;
 import com.bilskik.onlineshop.dto.OrderDTO;
+import com.bilskik.onlineshop.embedded.Address;
 import com.bilskik.onlineshop.entities.Order;
 import com.bilskik.onlineshop.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class OrderController {
         return new ResponseEntity<>(orderService.saveOrder(order), HttpStatusCode.valueOf(200));
     }
     @PutMapping("/orders")
-    public ResponseEntity<AddressDTO> updateOrder(@RequestBody Order order) {
-        return null;
+    public ResponseEntity<AddressDTO> updateAddress(@RequestBody Order order) {
+        return new ResponseEntity<>(orderService.updateAddress(order), HttpStatusCode.valueOf(200));
     }
 }

@@ -2,6 +2,7 @@ package com.bilskik.onlineshop.entities;
 
 import com.bilskik.onlineshop.embedded.Address;
 import com.bilskik.onlineshop.enumeration.OrderStatus;
+import com.bilskik.onlineshop.enumeration.PaymentType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -29,16 +30,15 @@ public class Order {
             strategy = GenerationType.SEQUENCE
     )
     @Column(name = "order_id")
-    public int orderId;
+    private int orderId;
     @JsonProperty("orderDate")
     @JsonFormat(pattern = "dd-MM-yyyy")
 //    @NotNull(message = "Date of order cannot be null!")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate orderDate;
-//    @Enumerated(EnumType.STRING)
-//    private OrderStatus orderStatus;
+    private String paymentType;
     @Embedded
-    private Address address;
+    public Address address;
     private Long total;
     @OneToOne
     @JoinColumn(

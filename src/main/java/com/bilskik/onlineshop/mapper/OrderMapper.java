@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 public class OrderMapper extends MapperImpl<Order, OrderDTO> {
     @Override
     public OrderDTO toDTO(Order order) {
-        System.out.println(order.getCart());
         OrderDTO orderDTO = getModelMapper().map(order,OrderDTO.class);
         orderDTO.setCustomer(orderDTO.getCustomer());
         orderDTO.setProductList(order.getCart().getProductList());

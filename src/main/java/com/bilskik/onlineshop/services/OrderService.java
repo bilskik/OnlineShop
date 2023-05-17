@@ -1,7 +1,9 @@
 package com.bilskik.onlineshop.services;
 
+import com.bilskik.onlineshop.dto.AddressDTO;
 import com.bilskik.onlineshop.dto.OrderDTO;
 import com.bilskik.onlineshop.dto.UserEmailDTO;
+import com.bilskik.onlineshop.embedded.Address;
 import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.entities.Customer;
 import com.bilskik.onlineshop.entities.Order;
@@ -33,6 +35,8 @@ public class OrderService {
     private CustomerRepository customerRepository;
     @Autowired
     private UserEmailDTO userEmailDTO;
+    @Autowired
+    private MapperImpl<Address,AddressDTO> addressMapper;
 
     public OrderDTO getOrder() {
         Optional<Customer> customer = customerRepository.findByEmail(userEmailDTO.getEmail());
@@ -60,5 +64,27 @@ public class OrderService {
         order.setCart(customer.get().getCart());
         orderRepository.save(order);
         return orderMapper.toDTO(order);
+    }
+    @Transactional
+    public AddressDTO updateAddress(Order responseOrder) {
+
+        Optional<Customer> customer = customerRepository.findByEmail(userEmailDTO.getEmail());
+        if(responseOrder == null) {
+            throw new NoSuchElementException("Passed address is null!");
+        }
+        if(customer.isEmpty()) {
+            throw new NoSuchElementException("There is no customer!");
+        }
+        int orderId = customer.get().getOrder().getOrderId();
+        Optional<Order> order = orderRepository.findById(orderId);
+        if(order.isEmpty()) {
+            throw new NoSuchElementException("There is no order available!");
+        }
+        order.get().setAddress(responseOrder.getAddress());
+        order.get().setPaymentType(responseOrder.getPaymentType());
+        orderRepository.save(order.get());
+//        orderRepository.updateOrder(orderId,address.getCountry(),address.getCity(), address.getStreet(), address.getZipCode());
+//        return addressMapper.toDTO(address);
+        return null;
     }
 }

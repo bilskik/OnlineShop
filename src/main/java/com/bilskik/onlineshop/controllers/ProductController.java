@@ -35,7 +35,6 @@ public class ProductController {
     }
     @PutMapping("/products")
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody Product product) {
-
         return new ResponseEntity<>(productService.updateProduct(product), HttpStatusCode.valueOf(200));
     }
     @DeleteMapping("/products/{productId}")

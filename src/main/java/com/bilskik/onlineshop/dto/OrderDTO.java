@@ -26,6 +26,7 @@ public class OrderDTO {
     private LocalDate orderDate;
     private Long total;
     private Address address;
+    private String paymentType;
     private CustomerDTO customer;
     private List<Product> productList;
 }
