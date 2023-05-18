@@ -1,0 +1,36 @@
+.alert {
+    font-family: 'Poppins', sans-serif;
+    background: #ffd080;
+    padding:20px 40px;
+    min-width: 420px;
+    position: absolute;
+    right: 0px;
+    top:10px;
+    border-radius: 4px;
+    border-left: 8px solid #ffa502;
+}
+.alert .fa-exclamation-circle {
+    position: absolute;
+    left: 20px;
+    top:50%;
+    transform: translateY(-50%);
+    color: #ce8500;
+    font-size: 30px;
+}
+.alert .msg {
+    padding: 0 20px;
+    font-size:18px;
+    color: #ce8500;
+}
+.alert .close-btn {
+    position: absolute;
+    right: 0px;
+    top:50%;
+    transform: translateY(-50%);
+    background: #ffd080;
+    padding: 20px 18px;
+}
+.close-btn .fa-times {
+    color: #ce8500;
+    font-size: 22px;
+}

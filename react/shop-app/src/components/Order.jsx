@@ -4,7 +4,7 @@ import { getHeaders } from '../api/getHeaders';
 import { json, useNavigate, useParams } from 'react-router-dom';
 import { Table } from "./Table"
 const ORDER_URL = '/orders';
-
+const PRODUCT_URL = '/products'
 
 //dodaj obsluge jak przycisk jest klikniety w momencie jak nie ma danych
 export const Order = () => {
@@ -186,6 +186,79 @@ export const Order = () => {
             setReloadPage(true);
         }
     }
+    const deleteProductList = () => {
+        performOperationOnProductList();
+    }
+    const performOperationOnProductList = async function() {
+        let productListWithAmountZero = productList.filter(product => product.amount === 0);
+        let productListWithAmountDifferThanZero = productList.filter(product => product.amount !== 0);
+        console.log("Product with zero amount:")
+        console.log(productListWithAmountZero);
+        console.log(productListWithAmountZero.length);
+
+        console.log("Product with amount different than zero:")
+        console.log(productListWithAmountDifferThanZero);
+        console.log(productListWithAmountDifferThanZero.length);
+
+        if(productListWithAmountZero.length === productList.length) { //delete logic
+            const productIdsListToDelete = mapToProductIdsList(productListWithAmountZero);
+            console.log(productIdsListToDelete);
+            deleteProductIdsFromDB(productIdsListToDelete)
+        }
+        else if(productListWithAmountZero.length !== 0) { //both logic
+            const productIdsListToDelete = mapToProductIdsList(productListWithAmountZero);
+            console.log(productIdsListToDelete);
+            deleteProductIdsFromDB(productIdsListToDelete)
+            updateProductInDB(productListWithAmountDifferThanZero);
+        }
+        else {   //update logic
+            updateProductInDB(productListWithAmountDifferThanZero);
+        }
+    }
+    const mapToProductIdsList = (productList) => {
+        console.log(productList)
+        const productIds = productList.map(product => product.productId); 
+        console.log(productIds);
+        return productIds;
+    }
+
+    
+    const deleteProductIdsFromDB = async(productIdsList) => {
+        const headers = getHeaders();
+        console.log("PRZED WYKONANIEM ");
+        console.log(productIdsList);
+        console.log(headers);
+        const deleteHttpMethod = async(productIdsList,headers) => {
+            const response = await myAxios.delete(PRODUCT_URL,    {
+                data: productIdsList,
+                headers: headers
+              }
+            )
+        }
+        deleteHttpMethod(productIdsList,headers);
+
+    }  
+
+
+
+    const updateProductInDB = async(productList) => {
+
+        const updateEachProduct = async (product,headers) => {
+            const deleteProduct = await myAxios.put(PRODUCT_URL, product,
+                {headers}
+            ).then(() => {
+    
+            })
+        }
+        const headers = getHeaders();
+        for(const key in productList) {
+            const product = productList[key];
+            product.cartItemsAmount = 0;
+            console.log(headers);
+            await updateEachProduct(product,headers);
+        }
+
+    }
     return (
         <div>
             {
@@ -241,6 +314,7 @@ export const Order = () => {
                                     
                                 </div>
                             )}
+                            <button onClick={deleteProductList}>Zapłać</button>
                             <button onClick={deleteOrder}>Powrót</button>
                         </>
                     ) : (
