@@ -18,19 +18,19 @@ import java.util.List;
 @Builder
 public class ProductCategory {
     @Id
-    @SequenceGenerator(
-            name = "seq_category",
-            sequenceName = "seq_category",
-            initialValue = 1
-    )
-    @GeneratedValue(
-            generator = "seq_category",
-            strategy = GenerationType.SEQUENCE
-    )
+//    @SequenceGenerator(
+//            name = "seq_category",
+//            sequenceName = "seq_category",
+//            initialValue = 1
+//    )
+//    @GeneratedValue(
+//            generator = "seq_category",
+//            strategy = GenerationType.SEQUENCE
+//    )
     public int categoryId;
     private String category;
     @JsonManagedReference(value = "product_category")
-    @OneToMany(mappedBy = "productCategory",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productCategory", fetch = FetchType.LAZY)
     private List<Product> productList;
 
     public void addProduct(Product p) {

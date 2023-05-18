@@ -1,5 +1,6 @@
 package com.bilskik.onlineshop.repositories;
 
+import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.entities.ProductCategory;
 import com.bilskik.onlineshop.embedded.ProductDetails;
@@ -18,4 +19,9 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
             "p.productDetails = :productDetails, p.productCategory = :productCategory where p.productId = :productId")
     int updateProduct(int productId,String productName, int amount,int cartItemAmount, double price,
                       ProductDetails productDetails, ProductCategory productCategory);
+    @Modifying
+    @Query("update Product p  set p.productName = :productName, p.amount = :amount, p.cartItemsAmount = :cartItemAmount, p.price = :price, " +
+            "p.productDetails = :productDetails, p.productCategory = :productCategory, p.cart = :cart where p.productId = :productId")
+    int updateProduct(int productId,String productName, int amount,int cartItemAmount, double price,
+                      ProductDetails productDetails, ProductCategory productCategory, Cart cart);
 }

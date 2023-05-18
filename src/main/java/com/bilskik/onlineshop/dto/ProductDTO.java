@@ -10,7 +10,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {
-    //to change(to remove productId)
     private int productId;
     private String productName;
     private int amount;

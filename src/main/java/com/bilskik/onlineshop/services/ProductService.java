@@ -1,6 +1,7 @@
 package com.bilskik.onlineshop.services;
 
 import com.bilskik.onlineshop.dto.ProductDTO;
+import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.entities.ProductCategory;
 import com.bilskik.onlineshop.mapper.MapperImpl;
@@ -68,18 +69,45 @@ public class ProductService {
         if(product.isEmpty()) {
             throw new NoSuchElementException("There is no product available in DB!");
         }
+        product.get().setCart(null);
         logger.info(String.valueOf(product.get().getAmount()));
         logger.info(String.valueOf(product.get().getCartItemsAmount()));
-        product.get().setCart(null);
-        productRepository.save(product.get());
         productRepository.deleteById(productId);
+    }
+    public void deleteProductList(List<Integer> productIdList) {
+        productIdList.forEach(System.out::println);
+        for(var productId : productIdList) {
+            logger.info(productId.toString());
+            Optional<Product> product = productRepository.findById(productId);
+            logger.info(String.valueOf(product.get().getProductId()));
+            if(product.isEmpty()) {
+                throw new NoSuchElementException("Product is not found");
+            }
+            product.get().setCart(null);
+//            Cart cart = product.get().getCart();
+//            if(cart != null) {
+//                cart.removeProduct(productId);
+//            }
+            productRepository.deleteById(productId);
+            System.out.println("SIEMA!!!");
+        }
     }
 
     @Transactional
     public ProductDTO updateProduct(Product product) {
-        int result = productRepository.updateProduct(product.getProductId(), product.getProductName()
-                ,product.getAmount(),product.getCartItemsAmount(),product.getPrice(),product.getProductDetails(),
-                product.getProductCategory());
+        if(product == null) {
+            throw new NoSuchElementException("Product is null!");
+        }
+        int result;
+        if(product.getCartItemsAmount() == 0) {
+            result = productRepository.updateProduct(product.getProductId(), product.getProductName()
+                    ,product.getAmount(),product.getCartItemsAmount(),product.getPrice(),product.getProductDetails(),
+                    product.getProductCategory(),null);
+        } else {
+            result = productRepository.updateProduct(product.getProductId(), product.getProductName()
+                    , product.getAmount(), product.getCartItemsAmount(), product.getPrice(), product.getProductDetails(),
+                    product.getProductCategory());
+        }
         if(result == 1) {
             Optional<Product> productOptional = productRepository.findById(product.getProductId());
 

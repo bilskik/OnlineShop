@@ -6,10 +6,7 @@ import com.bilskik.onlineshop.embedded.ProductDetails;
 import com.bilskik.onlineshop.entities.*;
 import com.bilskik.onlineshop.enumeration.OrderStatus;
 import com.bilskik.onlineshop.enumeration.Role;
-import com.bilskik.onlineshop.repositories.CartRepository;
-import com.bilskik.onlineshop.repositories.CustomerRepository;
-import com.bilskik.onlineshop.repositories.OrderRepository;
-import com.bilskik.onlineshop.repositories.ProductRepository;
+import com.bilskik.onlineshop.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +26,8 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
+    private ProductCategoryRepository productCategoryRepository;
+    @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -38,6 +37,7 @@ public class DataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         productRepository.deleteAll();
         customerRepository.deleteAll();
+        productCategoryRepository.deleteAll();
         loadData();
     }
 
@@ -60,6 +60,8 @@ public class DataLoader implements CommandLineRunner {
 
     private void loadProduct(Cart cart, List<ProductCategory> c) {
         //not added details and product category
+        System.out.println("ELEMNENT:");
+        System.out.println(c.get(0).getCategoryId());
         Product product1 = Product.builder()
                 .productId(1)
                 .productName("Gazeta")
@@ -98,6 +100,7 @@ public class DataLoader implements CommandLineRunner {
                 .productDetails(new ProductDetails("Komputer Lenovo","GIGA Op kompek"))
                 .productCategory(c.get(1))
                 .build();
+        System.out.println(product1.getProductCategory().getCategoryId());
         productRepository.save(product1);
         productRepository.save(product2);
         productRepository.save(product3);
@@ -142,6 +145,9 @@ public class DataLoader implements CommandLineRunner {
                 .categoryId(2)
                 .category("RTV-AGD")
                 .build();
+        productCategoryRepository.save(category1);
+        productCategoryRepository.save(category2);
+
         return List.of(category1,category2);
     }
     private void loadOrder(Customer customer, Cart cart) {

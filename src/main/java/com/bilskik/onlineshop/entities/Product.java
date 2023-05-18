@@ -29,8 +29,8 @@ public class Product {
     private double price;
     @JsonBackReference(value = "product_category")
     @ManyToOne(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.LAZY
     )
     @JoinColumn(
             name = "category_product_id",

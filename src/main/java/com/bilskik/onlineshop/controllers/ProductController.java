@@ -40,6 +40,16 @@ public class ProductController {
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable int productId) {
         productService.deleteProduct(productId);
-        return new ResponseEntity<>(HttpStatusCode.valueOf(240));
+        return new ResponseEntity<>(HttpStatusCode.valueOf(204));
+    }
+    @DeleteMapping("/products")
+    public ResponseEntity<String> deleteProductList(@RequestBody List<Integer> productIdList) {
+        try {
+            productService.deleteProductList(productIdList);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    "Failed to delete products " + e.getMessage());
+        }
+        return new ResponseEntity<>(HttpStatusCode.valueOf(204));
     }
 }
