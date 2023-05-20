@@ -1,0 +1,53 @@
+* {
+    margin:0;
+    padding:0;
+}
+.login-container-register {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 75vh;
+    width: 60vh;
+    border: 1px solid #ccc;
+    padding: 20px; 
+    box-sizing: border-box; 
+    border-radius: 30px;
+    background-color: white;
+}
+.p {
+    font-size: 1.7rem;
+    margin-top: 0;
+  }
+.radio-group {
+    width:50%;
+    display: flex;
+    justify-content: space-between;
+}
+.radio-option {
+    display: flex;
+    align-items: center;
+  }
+.radio-label {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    border-radius: 4px;
+}
+.radio-label input[type="radio"] {
+    margin-right: 5px;
+}
+.select-group-register {
+    margin-top:8px;
+    margin-bottom:5px;
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+.select-option select {
+    display: flex;
+    align-items: center;
+    transform: scale(1.3);
+}

@@ -52,9 +52,9 @@ public class DataLoader implements CommandLineRunner {
 
     private Cart loadCart() {
         Cart cart = Cart.builder()
-                .cartId(1)
                 .productList(new ArrayList<>())
                 .build();
+//        cartRepository.save(cart);
         return cart;
     }
 
@@ -108,9 +108,11 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private Customer loadCustomer(Cart cart) {
-
+        Cart cart2 = Cart.builder()
+                .productList(new ArrayList<>())
+                .build();
         Customer customer = Customer.builder()
-                .customerId(1)
+//                .customerId(1000)
                 .name("Kamil")
                 .surename("Bilski")
                 .email("test@123")
@@ -121,7 +123,7 @@ public class DataLoader implements CommandLineRunner {
                 .cart(cart)
                 .build();
         Customer customer2 = Customer.builder()
-                .customerId(2)
+//                .customerId(2000)
                 .name("tescik")
                 .surename("siemanko")
                 .email("123@123")
@@ -129,7 +131,7 @@ public class DataLoader implements CommandLineRunner {
                 .dateOfBirth(LocalDate.of(2002, 7, 5))
                 .role(Role.CUSTOMER)
                 .password(passwordEncoder.encode("123"))
-//                .cart(cart)
+                .cart(cart2)
                 .build();
         customerRepository.save(customer);
         customerRepository.save(customer2);

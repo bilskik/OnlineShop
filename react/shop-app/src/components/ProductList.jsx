@@ -47,8 +47,6 @@ export const ProductList = (props) => {
         if(productId >= 0) {
             let updatedProductList = [...productList];
             let productUpdated = updatedProductList[productIndex];
-            console.log(productUpdated);
-            console.log(updatedProductList);
             productUpdated.amount--;
             productUpdated.cartItemsAmount++;
             updatedProductList[productIndex] = productUpdated;

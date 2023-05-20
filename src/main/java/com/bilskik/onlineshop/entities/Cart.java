@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 @NoArgsConstructor
 public class Cart {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int cartId;
     @JsonManagedReference(value = "product_cart")
     @OneToMany(mappedBy = "cart",orphanRemoval = true)

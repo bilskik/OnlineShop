@@ -8,6 +8,7 @@
     align-items: center;
     min-height: 100vh;
     background: #dfe9f5;
+    overflow: auto;
 }
 .login-container {
     display: flex;
@@ -39,7 +40,7 @@
     width: 100%;
     height: 100%;
   }
-  .input {
+  .form input {
     font-size: 20px;
     padding: 5px;
     width: 100%;
@@ -50,7 +51,7 @@
     margin-bottom: 10px;
     align-items: center;
   }
-  .label {
+  .form label {
     font-size: 1.7rem;
     display: flex;
     align-items: center;

@@ -26,11 +26,12 @@ export const Cart = () => {
                 headers
             })
             .then(response => {
+                console.log(response.data)
+                checkIfProductListIsEmpty(response.data.productList);
                 setProductList(response.data.productList);
                 setCart(response.data);
-                setIsLoading(false);
                 countInitialSum(response.data.productList);
-                checkIfProductListIsEmpty(response.data.productList);
+                setIsLoading(false);
             }) 
         }
         getCart();

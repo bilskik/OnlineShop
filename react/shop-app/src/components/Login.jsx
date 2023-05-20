@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import '../css/Login.css'
 import '../css/Alert.css'
+import { Alert }  from "./Alert"
 const LOGIN_URL = '/login'
 
 export const Login = (props) => {
@@ -47,6 +48,7 @@ export const Login = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("SIEMA JESTEM HERe")
         try {
             
             const response = await myAxios.post(LOGIN_URL,
@@ -54,44 +56,46 @@ export const Login = (props) => {
                     headers: { 'Content-Type' : 'application/json'},
                     withCredentials: true
                 }
-            );
-            localStorage.setItem('token', response.data.token);
-            const accessToken = response.data.accessToken;
-            const roles = response.data.roles;
-            setAuth({ email, pass, accessToken});
-            setEmail('')
-            setPass('')
-            setSuccess(true);
-            navigate('/products')
+            ).then((response) => {
+                console.log(response);
+                    console.log("im here!")
+                    localStorage.setItem('token', response.data.token);
+                    const accessToken = response.data.accessToken;
+                    const roles = response.data.roles;
+                    setAuth({ email, pass, accessToken});
+                    setEmail('')
+                    setPass('')
+                    setSuccess(true);
+                    navigate('/products')
+            })
             //clear input fields
         }
         catch(err) {
+            console.log(err.response)
+
             setError(true);
-            setErrMsg('Registration failed!');
+            setErrMsg(err.response.data.message);
         }
+    }
+    const handleDataFromChild = () => {
+        setError(false);
     }
     return (
         <>
-            <div className="alert">
-                <span className="fas fa-exclamation-circle"></span> 
-                <span className="msg">SIEMA</span>
-                <div class="close-btn">
-                    <span class="fas fa-times"></span>
-                </div>
-            </div>
         <div className="page-container">
-            { error && (
-                <p>SIEMA</p>
-            )}
+            { error && 
+                <Alert defaultValue="show" sendDataToParent={handleDataFromChild} data={errMsg}/>
+
+            }
 
             <div className="login-container">
                 <h1 className="h1">Login</h1>
                 <section className="section">
                     <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive"></p>
                     <form onSubmit={handleSubmit} className="form">
-                        <label htmlFor="email" className="label">Email</label>
+                        <label htmlFor="email">Email</label>
                         <input 
-                            className="input"
+                            // className="input"
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)}
                             type="email" 
@@ -102,11 +106,11 @@ export const Login = (props) => {
                             autoComplete="off"
 
                         />
-                        <label htmlFor="password" className="label">Password</label>
+                        <label htmlFor="password">Password</label>
                         <input value={pass} onChange={(e) => setPass(e.target.value)} required autoComplete="off"
-                         type="password" placeholder="*******" id="password" name="password" className="input"/>
-                        <button type="submit" className="btn">Zaloguj się</button>
-                        <button onClick={() => props.onFormSwitch('register')} className="btn">Zarejstruj</button>
+                         type="password" placeholder="*******" id="password" name="password"/>
+                        <button type="submit" className="btn">Log in</button>
+                        <button onClick={() => props.onFormSwitch('register')} className="btn">Sign up</button>
                     </form>
                     
                 </section>

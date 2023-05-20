@@ -1,5 +1,4 @@
 package com.bilskik.onlineshop.controllers;
-import com.bilskik.onlineshop.dto.CartDTO;
 import com.bilskik.onlineshop.dto.ProductDTO;
 import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.entities.Product;
