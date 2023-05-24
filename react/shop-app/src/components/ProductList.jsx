@@ -5,6 +5,7 @@ import { myAxios } from '../api/axios';
 import { useState } from "react"
 import '../css/Modal.css'
 import { getHeaders } from '../api/getHeaders';
+
 const CART_URL = '/cart';
 const PRODUCT_URL = '/products';
 
@@ -33,10 +34,6 @@ export const ProductList = (props) => {
             
         }
     }
-    const setDetails = (product) => {
-        setModalProduct(product);
-        setOpenModal(true);
-    }
     const disableButton = function(productId) {
         setClickedButtons({...clickedButtons, [productId] : true})
     }
@@ -58,6 +55,10 @@ export const ProductList = (props) => {
 
         } 
     }
+    const setDetails = (product) => {
+        setModalProduct(product);
+        setOpenModal(true);
+    }
     const updateProduct = async (product) => {
         console.log("PRODUCTTT");
         console.log(product);
@@ -76,7 +77,7 @@ export const ProductList = (props) => {
     }
     return (
         <div className='table'>
-            <table>
+            {/* <table>
                 <thead>
                     <tr>
                         <th>Nazwa Produktu:</th>
@@ -100,7 +101,7 @@ export const ProductList = (props) => {
                                         {product.amount}
                                     </td>
                                     <td>
-                                        {/* {product.productDetails.details} */}
+                                        {product.productDetails.details}
                                         <button onClick={() => setDetails(product)}>Zobacz</button>
                                     </td>
                                     <td>
@@ -112,7 +113,28 @@ export const ProductList = (props) => {
                     }
                 </tbody>
             
-            </table>
+            </table> */}
+            <div className='grid-container'>
+                {productList.map((product) => {
+                    return (
+                    <div className="wrapper">
+                        <div className="image">
+                            <img src={product.image} alt="image" />
+                        </div>
+                        <div className="rest">
+                            <div className="p-container">
+                                <p className="price">{product.price} zł</p>
+                                <p>{product.productName}</p>
+                            </div>
+                            <div className='btn-container'>
+                                <button onClick={() => setDetails(product)}>Zobacz</button>
+                                <button onClick={() => addToCart(product)} disabled={clickedButtons[product.productId]}>Dodaj</button>
+                            </div>
+                        </div>
+                    </div>
+                    )
+                })}
+            </div>
             <Modal open={openModal} product={modalPoduct} onClose={() => setOpenModal(false)}/>
          </div>
     )

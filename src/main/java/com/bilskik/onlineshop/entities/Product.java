@@ -25,6 +25,7 @@ public class Product {
     private int productId;
     private String productName;
     private int amount;
+    private String image;
     private int cartItemsAmount;
     private double price;
     @JsonBackReference(value = "product_category")

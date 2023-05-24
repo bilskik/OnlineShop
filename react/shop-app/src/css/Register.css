@@ -7,7 +7,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 75vh;
+    height: 90vh;
     width: 60vh;
     border: 1px solid #ccc;
     padding: 20px; 
@@ -43,11 +43,10 @@
     margin-top:8px;
     margin-bottom:5px;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    width: 50%;
+    width: 65%;
 }
 .select-option select {
-    display: flex;
-    align-items: center;
     transform: scale(1.3);
 }

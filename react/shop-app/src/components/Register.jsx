@@ -122,7 +122,7 @@ export const Register = (props) => {
                     <p className="p">date:</p>
                     <div className="select-group-register">
                         <div className="select-option">
-                            <select value={day} onChange={(e) => setDay(e.target.value)}>
+                            <select value={day} onChange={(e) => setDay(e.target.value)} className="day">
                                 {
                                     dayData.map(day => {
                                         return (
@@ -133,7 +133,7 @@ export const Register = (props) => {
                             </select>
                         </div>
                         <div className="select-option">
-                            <select value={month} onChange={(e) => setMonth(e.target.value)}>
+                            <select value={month} onChange={(e) => setMonth(e.target.value)} className="month">
                                     {
                                         monthData.map(month => {
                                             return (
@@ -144,7 +144,7 @@ export const Register = (props) => {
                             </select>
                         </div>
                         <div className="select-option">
-                            <select value={year} onChange={(e) => setYear(e.target.value)}> 
+                            <select value={year} onChange={(e) => setYear(e.target.value)} className="year"> 
                                 {
                                     yearData.map(year => {
                                         return (

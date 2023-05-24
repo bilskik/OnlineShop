@@ -1,7 +1,6 @@
 package com.bilskik.onlineshop.controllers;
 import com.bilskik.onlineshop.dto.ProductDTO;
 import com.bilskik.onlineshop.entities.Cart;
-import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.services.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatusCode;
