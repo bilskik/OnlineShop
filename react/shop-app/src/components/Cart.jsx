@@ -101,31 +101,10 @@ export const Cart = () => {
         setModalProduct(product);
     }
     const goToOrder = () => {
-        // const date = getDate();
-        // const order = {
-        //     total : sum,
-        //     cart : cart,
-        //     orderDate : date
-        // }
-        // console.log(order);
-        // const headers = getHeaders();
-        // const createOrder = async () => {
-        //     const response = await myAxios.post(ORDER_URL,
-        //         order, {headers}
-        //     )
-        // }
-        // createOrder()
         const data = encodeURIComponent(JSON.stringify(productList));
         console.log(data);
         navigate(`/order/${data}`);
     }
-    // const getDate = () => {
-    //     let currDate = new Date();
-    //     const year = currDate.getFullYear();
-    //     const month = (currDate.getMonth() + 1).toString().padStart(2,'0');
-    //     const day = currDate.getDay().toString().padStart(2,'0');
-    //     return day + "-" + month + "-" + year;
-    // }
     const checkIfProductListIsEmpty = (productList) => {
         console.log(productList);
         if(productList.length === 0) {
@@ -146,32 +125,36 @@ export const Cart = () => {
                             <header className="product-header-container-cart">
                                 <h2>Koszyk</h2>
                             </header>
-                            <div className='grid-container-cart'>
-                                {productList.map((product) => {
-                                    return (
-                                    <div className="wrapper">
-                                        <div className="image">
-                                            <img src={product.image} alt="product-image"/>
-                                        </div>
-                                        <div className="rest">
-                                            <div className="p-container">
-                                                <p className="price">{product.price} zł</p>
-                                                <p>{product.productName}</p>
+                            <div className="main-grid-cart">
+                                <div className='grid-container-cart'>
+                                    {productList.map((product) => {
+                                        return (
+                                        <div className="wrapper">
+                                            <div className="image">
+                                                <img src={product.image} alt="product-image"/>
                                             </div>
-                                            <div className='btn-container'>
-                                                {/* <button onClick={() => setDetails(product)}>Zobacz</button> */}
-                                                {/* <button onClick={() => addToCart(product)} disabled={clickedButtons[product.productId]}>Dodaj</button> */}
+                                            <div className="rest">
+                                                <div className="p-container">
+                                                    <p className="price">{product.price} zł</p>
+                                                    <p>{product.productName}</p>
+                                                    <p>Sztuk: {product.cartItemsAmount}</p>
+                                                </div>
+                                                <div className="btn-container">
+                                                    <button onClick={() => setDetails(product)}>zobacz</button>
+                                                    <button onClick={() => deleteFromCart(product)}>Usun</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    )
-                                })}
+                                        )
+                                    })}
+                                </div>
                                 <div className="summary">
-                                    <Modal open={openModal} product={modalProduct} onClose={() => setOpenModal(false)} />
-                                    <p>Suma: {sum}</p>
-                                    <button onClick={goToOrder}>Przejdz do platnosci</button>
+                                        <p>Suma: {sum} zł</p>
+                                        <button onClick={goToOrder}>Przejdz do platnosci</button>
                                 </div>
                             </div>
+                            <Modal open={openModal} product={modalProduct} onClose={() => setOpenModal(false)} />
+
                             {/* <table>
                                 <thead>
                                     <tr>

@@ -68,7 +68,7 @@
     row-gap: 10px;
 }
 .p-container p {
-    margin: 0;
+    margin-top:5px;
     width:110px;
 }
 .btn-container button {

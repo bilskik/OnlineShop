@@ -39,6 +39,7 @@ export const Product = () => {
 
     const logout = () => {
         localStorage.setItem('token', null);
+        localStorage.setItem('clickedButtons',null);
         navigate('/')
 
     }

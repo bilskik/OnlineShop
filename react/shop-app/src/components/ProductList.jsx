@@ -45,7 +45,7 @@ export const ProductList = (props) => {
                 }
             )
             checkIfDisable(product);
-
+            window.location.reload();
         }
         catch(err) {
             
