@@ -7,11 +7,15 @@ export const Modal = ({open, product, onClose}) => {
     }
     return (
         <div className="overlay" onClick={onClose}>
-            <div className="modalContainer">
-                <p>{product.productDetails.details}</p>
-                <p>{product.productDetails.description}</p>
-                <p>{product.amount}</p>
-                <p onClick={onClose} className="closeBtn">X</p>
+            <div className="modal-container">
+                {/* <div className="left-column"> */}
+                    <img src={product.image} alt="product-image"/>
+                {/* </div> */}
+                <div className="down-row">
+                    <p clasname="description">{product.productDetails.details}</p>
+                    <p className="description">{product.productDetails.description}</p>
+                    <p>Liczba sztuk: {product.amount}</p>
+                </div> 
             </div>
         </div>
     )

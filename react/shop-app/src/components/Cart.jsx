@@ -3,6 +3,8 @@ import { myAxios } from "../api/axios"
 import { getHeaders } from "../api/getHeaders";
 import { Modal } from "./Modal"
 import { useNavigate } from "react-router-dom";
+import "../css/cart.css";
+
 const CART_URL = "/cart";
 const PRODUCT_URL = '/products';
 const ORDER_URL = '/orders';
@@ -75,6 +77,19 @@ export const Cart = () => {
         countDeletionSum(product);
         deleteProductFromCart(updatedProduct);
         deleteFromUseState(product.productId);
+        checkIfAmountZero(product);
+    }
+    const checkIfAmountZero = function(updatedProduct) {
+        console.log(updatedProduct);
+        if(updatedProduct.amount === 0) {
+            const productId = updatedProduct.productId;
+            let savedDisabledButtonObject = localStorage.getItem('clickedButtons');
+            const parsedDisabledButtonObject = JSON.parse(savedDisabledButtonObject);
+            delete parsedDisabledButtonObject[productId.toString()];
+            savedDisabledButtonObject = JSON.stringify(parsedDisabledButtonObject);
+            localStorage.setItem('clickedButtons',savedDisabledButtonObject);
+        }
+
     }
     const deleteFromUseState = function (productId) {
         const filteredData = productList.filter(item => item.productId !== productId);
@@ -128,7 +143,36 @@ export const Cart = () => {
                 ) : (
                     !isCartEmpty ? (
                         <>
-                            <table>
+                            <header className="product-header-container-cart">
+                                <h2>Koszyk</h2>
+                            </header>
+                            <div className='grid-container-cart'>
+                                {productList.map((product) => {
+                                    return (
+                                    <div className="wrapper">
+                                        <div className="image">
+                                            <img src={product.image} alt="product-image"/>
+                                        </div>
+                                        <div className="rest">
+                                            <div className="p-container">
+                                                <p className="price">{product.price} zł</p>
+                                                <p>{product.productName}</p>
+                                            </div>
+                                            <div className='btn-container'>
+                                                {/* <button onClick={() => setDetails(product)}>Zobacz</button> */}
+                                                {/* <button onClick={() => addToCart(product)} disabled={clickedButtons[product.productId]}>Dodaj</button> */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    )
+                                })}
+                                <div className="summary">
+                                    <Modal open={openModal} product={modalProduct} onClose={() => setOpenModal(false)} />
+                                    <p>Suma: {sum}</p>
+                                    <button onClick={goToOrder}>Przejdz do platnosci</button>
+                                </div>
+                            </div>
+                            {/* <table>
                                 <thead>
                                     <tr>
                                         <th>Nazwa Produktu:</th>
@@ -163,10 +207,8 @@ export const Cart = () => {
                                         })
                                     }
                                 </tbody>
-                            </table>
-                            <Modal open={openModal} product={modalProduct} onClose={() => setOpenModal(false)} />
-                            <p>Suma: {sum}</p>
-                            <button onClick={goToOrder}>Przejdz do platnosci</button>
+                            </table> */}
+
 
                         </>
                     ) : (

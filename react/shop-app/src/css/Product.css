@@ -12,6 +12,7 @@
 .product-header-container h2 {
     color:#fff;
     padding-left:20px;
+    font-size: 2rem;
 }
 .nav-bar img {
     cursor: pointer;
@@ -23,9 +24,10 @@
 .grid-container {
     margin:10px;
     display: grid;
+    justify-content: center;
     grid-template-columns: repeat(auto-fit, 20rem);
-    row-gap: 1rem;
-    column-gap: 1rem;
+    row-gap: 3rem;
+    column-gap: 3rem;
 }
 
 .wrapper {

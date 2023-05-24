@@ -1,19 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import '../index.css'
 import Modal from './Modal';
 import { myAxios } from '../api/axios';
 import { useState } from "react"
 import '../css/Modal.css'
 import { getHeaders } from '../api/getHeaders';
-
+import { ButtonContext } from "../context/ButtonContext"
 const CART_URL = '/cart';
 const PRODUCT_URL = '/products';
 
+
+//po wyjsciu z koszyka button nie jest nadal blokowany!
+
 export const ProductList = (props) => {
     const [productList,setProductList] = useState(props.productList);
-    const [clickedButtons, setClickedButtons] = useState({});
+    const [clickedButtons, setClickedButtons] = useState(() => {
+        return JSON.parse(localStorage.getItem('clickedButtons')) || {}
+    });
     const [openModal, setOpenModal] = useState(false);
     const [modalPoduct, setModalProduct] = useState({});
+
+    useEffect(() => {
+        localStorage.setItem('clickedButtons', JSON.stringify(clickedButtons));
+    },[clickedButtons])
+
+    // useEffect(() => {
+    //     const savedClickedButtons = localStorage.getItem('clickedButtons');
+    //     console.log(JSON.parse(savedClickedButtons));
+    //     if(savedClickedButtons) {
+    //         setClickedButtons(JSON.parse(savedClickedButtons));
+    //     }
+    // },[])
 
     const addToCart = async (product) => {
         const headers = getHeaders();
@@ -35,7 +52,9 @@ export const ProductList = (props) => {
         }
     }
     const disableButton = function(productId) {
+        // const buttonsDisabled = {...clickedButtons, [productId] : true}
         setClickedButtons({...clickedButtons, [productId] : true})
+        // console.log(buttonsDisabled);
     }
     const checkIfDisable = function(product) {
         const productId = product.productId;
@@ -49,8 +68,11 @@ export const ProductList = (props) => {
             updatedProductList[productIndex] = productUpdated;
             setProductList(updatedProductList);
             updateProduct(updatedProductList[productIndex]);
-            if(productUpdated.amount === 0) {
+            if(productUpdated.amount <= 0) {
+                console.log("CLICKED BUTTONS:")
+                console.log(clickedButtons);
                 disableButton(productId);
+
             }
 
         } 
@@ -77,49 +99,12 @@ export const ProductList = (props) => {
     }
     return (
         <div className='table'>
-            {/* <table>
-                <thead>
-                    <tr>
-                        <th>Nazwa Produktu:</th>
-                        <th>Cena produktu:</th>
-                        <th>Ilość produktu</th>
-                        <th>Zobacz szczegóły:</th>
-                        <th>Dodaj do koszyka:</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {productList.map(product => {
-                            return(
-                                <tr key = {product.productId}>                  
-                                    <td>
-                                        {product.productName}
-                                    </td>
-                                    <td>
-                                        {product.price} zł
-                                    </td>
-                                    <td>
-                                        {product.amount}
-                                    </td>
-                                    <td>
-                                        {product.productDetails.details}
-                                        <button onClick={() => setDetails(product)}>Zobacz</button>
-                                    </td>
-                                    <td>
-                                        <button onClick={() => addToCart(product)} disabled={clickedButtons[product.productId]}>Dodaj</button>
-                                    </td>
-                                </tr>
-                            )
-                        })
-                    }
-                </tbody>
-            
-            </table> */}
             <div className='grid-container'>
                 {productList.map((product) => {
                     return (
                     <div className="wrapper">
                         <div className="image">
-                            <img src={product.image} alt="image" />
+                            <img src={product.image} alt="product-image"/>
                         </div>
                         <div className="rest">
                             <div className="p-container">

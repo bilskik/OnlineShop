@@ -10,12 +10,37 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;;
 }
-.modalContainer {
+.modal-container {
     max-width: 80%;
     max-height: 80%;
     overflow: auto;
     background-color: white;
-    padding: 2rem;
+    /* padding: 2rem; */
     border-radius: 0.5rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-container img {
+    margin-top:5px;
+    width: 230px;
+    height: 180px;
+}
+.down-row {
+    margin:10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.down-row p {
+    text-align: center;
+    margin-bottom:5px;
+    max-width: 300px;
+}
+.description  {
+    font-weight: 600;
 }
