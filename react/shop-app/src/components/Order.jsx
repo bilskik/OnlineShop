@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { myAxios } from '../api/axios';
 import { getHeaders } from '../api/getHeaders';
-import { json, useNavigate, useParams } from 'react-router-dom';
-import { Table } from "./Table"
-const ORDER_URL = '/orders';
-const PRODUCT_URL = '/products'
+import {useNavigate, useParams } from 'react-router-dom';
+import { ProductCard } from "./ProductCard"
+import { ORDER_URL, PRODUCT_URL } from '../constraints/urls';
+import "../css/order.css";
+import {Modal} from "./Modal";
+import { ShippmentDetails } from './ShippmentDetails';
+import { PRODUCT_PAGE } from '../constraints/pages';
 
-//dodaj obsluge jak przycisk jest klikniety w momencie jak nie ma danych
 export const Order = () => {
     const [productList,setProductList] = useState();
     const [isLoading,setIsLoading] = useState(true);
@@ -23,23 +25,10 @@ export const Order = () => {
     const [isOrderAvailable,setIsOrderAvailable] = useState(false);
     const [isAddressEdited,setIsAddressEdited] = useState(false);
     const [paymentMethod,setPaymentMethod] = useState("Karta Płatnicza");
+    const [openModal,setOpenModal] = useState(false);
+    const [modalProduct, setModalProduct] = useState();
+
     const navigate = useNavigate();
-    // useEffect(() => {
-    //     const headers = getHeaders();
-    //     const getData = async () => {
-    //         const response = await myAxios.get(ORDER_URL,{
-    //             headers
-    //         })
-    //         console.log(response.data);
-    //         setOrder(response.data);
-    //         setProductList(response.data.productList);
-    //         setIsLoading(false);
-    //         console.log(response.data.productList);
-    //         countPrice(response.data.productList);
-    //     }
-    //     getData();
-        
-    // },[])
     useEffect(() => {
         
         const getOrder = async () => {
@@ -143,7 +132,7 @@ export const Order = () => {
                 {headers}
             )
         }
-        navigate("/products");
+        navigate(PRODUCT_PAGE);
     }
     const editAddress = () => {
         setOrderState(false);
@@ -188,26 +177,18 @@ export const Order = () => {
     }
     const deleteProductList = () => {
         performOperationOnProductList();
+        navigate(PRODUCT_PAGE);
     }
     const performOperationOnProductList = async function() {
         let productListWithAmountZero = productList.filter(product => product.amount === 0);
         let productListWithAmountDifferThanZero = productList.filter(product => product.amount !== 0);
-        console.log("Product with zero amount:")
-        console.log(productListWithAmountZero);
-        console.log(productListWithAmountZero.length);
-
-        console.log("Product with amount different than zero:")
-        console.log(productListWithAmountDifferThanZero);
-        console.log(productListWithAmountDifferThanZero.length);
 
         if(productListWithAmountZero.length === productList.length) { //delete logic
             const productIdsListToDelete = mapToProductIdsList(productListWithAmountZero);
-            console.log(productIdsListToDelete);
             deleteProductIdsFromDB(productIdsListToDelete)
         }
         else if(productListWithAmountZero.length !== 0) { //both logic
             const productIdsListToDelete = mapToProductIdsList(productListWithAmountZero);
-            console.log(productIdsListToDelete);
             deleteProductIdsFromDB(productIdsListToDelete)
             updateProductInDB(productListWithAmountDifferThanZero);
         }
@@ -216,18 +197,13 @@ export const Order = () => {
         }
     }
     const mapToProductIdsList = (productList) => {
-        console.log(productList)
         const productIds = productList.map(product => product.productId); 
-        console.log(productIds);
         return productIds;
     }
 
     
     const deleteProductIdsFromDB = async(productIdsList) => {
         const headers = getHeaders();
-        console.log("PRZED WYKONANIEM ");
-        console.log(productIdsList);
-        console.log(headers);
         const deleteHttpMethod = async(productIdsList,headers) => {
             const response = await myAxios.delete(PRODUCT_URL,    {
                 data: productIdsList,
@@ -239,10 +215,7 @@ export const Order = () => {
 
     }  
 
-
-
     const updateProductInDB = async(productList) => {
-
         const updateEachProduct = async (product,headers) => {
             const deleteProduct = await myAxios.put(PRODUCT_URL, product,
                 {headers}
@@ -254,13 +227,17 @@ export const Order = () => {
         for(const key in productList) {
             const product = productList[key];
             product.cartItemsAmount = 0;
-            console.log(headers);
             await updateEachProduct(product,headers);
         }
 
     }
+    const setDetails = (product) => {
+        setModalProduct(product);
+        setOpenModal(true);
+    }
     return (
-        <div>
+        <div className='product-page'>
+
             {
                 isLoading ? ( 
                     <p>is loading...</p>
@@ -269,53 +246,57 @@ export const Order = () => {
                     { isOrderAvailable ? (
 
                         <>
+                            <header className='product-header-container-cart'>
+                                <h2>Order</h2>
+                            </header>
                             { !orderState ? (
-                            <> 
-                                <Table productList={productList}/>
-                                <p>Do zaplaty: {price}</p>
-                                <form onSubmit={!isAddressEdited ? handleSubmit : handleAddressSubmit}>
-                                    <label htmlFor='county'>Państwo</label>
-                                    <input id='country' name='country' placeholder='city' onChange={(e) => setCountry(e.target.value)}/>
-                                    <label htmlFor='city'>Miasto</label>
-                                    <input id='city' name='city' placeholder='city' onChange={(e) => setCity(e.target.value)}/>
-                                    <label htmlFor=''>Ulica</label>
-                                    <input id='street' name='street' placeholder='street' onChange={(e) => setStreet(e.target.value)}/>
-                                    <label htmlFor='zip-code'>Kod Pocztowy</label>
-                                    <input id='zip-code' name='zip-code' placeholder='zip-code' onChange={(e) => setCode(e.target.value)}/>
-                                    <label>Metoda płatności:</label>
-                                    <select value={paymentMethod} onChange={(e) => {setPaymentMethod(e.target.value)}}>
-                                        <option value="Karta Płatnicza">Karta Płatnicza</option>
-                                        <option value="Google Pay">Google Pay</option>
-                                        <option value="Apple Pay">Apple Pay</option>
-                                        <option value="BLIK">BLIK</option>
-                                        <option value="Przelew">Przelew</option>
-                                    </select>
-                                    <button type='submit'>Submit</button>
-                                </form>
+                            <>
+                                <div className="main-grid-order">
+                                    <ProductCard productList={productList} setDetails={setDetails}/>
+ 
+                                    <div className="second-column-order">
+                                        <p className='to-pay'>Do zaplaty: {price} zł</p>
+                                        <form onSubmit={!isAddressEdited ? handleSubmit : handleAddressSubmit} className='form-container-order'>
+                                            <label htmlFor='county'>Państwo</label>
+                                            <input id='country' name='country' placeholder='country' onChange={(e) => setCountry(e.target.value)}/>
+                                            <label htmlFor='city'>Miasto</label>
+                                            <input id='city' name='city' placeholder='city' onChange={(e) => setCity(e.target.value)}/>
+                                            <label htmlFor=''>Ulica</label>
+                                            <input id='street' name='street' placeholder='street' onChange={(e) => setStreet(e.target.value)}/>
+                                            <label htmlFor='zip-code'>Kod Pocztowy</label>
+                                            <input id='zip-code' name='zip-code' placeholder='zip-code' onChange={(e) => setCode(e.target.value)}/>
+                                            <label>Metoda płatności:</label>
+                                            <select value={paymentMethod} onChange={(e) => {setPaymentMethod(e.target.value)}}>
+                                                <option value="Karta Płatnicza">Karta Płatnicza</option>
+                                                <option value="Google Pay">Google Pay</option>
+                                                <option value="Apple Pay">Apple Pay</option>
+                                                <option value="BLIK">BLIK</option>
+                                                <option value="Przelew">Przelew</option>
+                                            </select>
+                                            <button type='submit'>Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <Modal open={openModal} product={modalProduct} showAvailabilty={false} onClose={() => setOpenModal(false)} />
+
                             </>
                             ) : (
-                                <div>
-                                    <Table productList={productList}/>
-                                    <p>Do zaplaty : {price}</p>
-                                    <p>Szczegóły wysyłki:</p>
-                                    {
-                                        Object.keys(mappedAddress).map(key => {
-                                            return (
-                                                <>
-                                                    <p key={key}>
-                                                        {key} : {mappedAddress[key]}
-                                                    </p>
-                                                </>
-                                            )
-                                        })
-                                    }
-                                    <p>Metoda płatności : {paymentMethod}</p>
-                                    <button onClick={editAddress}>Edytuj dane</button>
-                                    
+                                <div className='main-grid-order'>
+                                    <ProductCard productList={productList} setDetails={setDetails}/>
+                                    <div className='second-column-order-display'>
+                                        <p className='to-pay-tag'>Do zaplaty : {price}</p>
+                                        <ShippmentDetails mappedAddress={mappedAddress}/>
+                                        <div className='btn-order'>
+                                            <button onClick={editAddress} className='edit-btn'>Edit data</button>
+                                        </div>
+                                        <p>Metoda płatności : {paymentMethod}</p>
+                                        <div className='btn-order'>
+                                            <button onClick={deleteProductList} className='buy-btn'>Buy</button>
+                                        </div>     
+                                    </div>
                                 </div>
                             )}
-                            <button onClick={deleteProductList}>Zapłać</button>
-                            <button onClick={deleteOrder}>Powrót</button>
+
                         </>
                     ) : (
                         <>

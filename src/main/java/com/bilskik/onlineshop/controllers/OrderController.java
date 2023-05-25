@@ -21,7 +21,6 @@ public class OrderController {
     }
     @PostMapping("/orders")
     public ResponseEntity<OrderDTO> createOrder(@RequestBody Order order) {
-        System.out.println("ARE YOU GOING TO WORK?????");
         return new ResponseEntity<>(orderService.saveOrder(order), HttpStatusCode.valueOf(200));
     }
     @PutMapping("/orders")

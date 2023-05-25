@@ -28,8 +28,6 @@ public class CustomerController {
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
     ) {
-        System.out.println(request);
-        logger.info(request.toString());
         return ResponseEntity.ok(service.register(request));
     }
     @PostMapping("/login")

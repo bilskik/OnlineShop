@@ -4,8 +4,9 @@ import { myAxios } from "../api/axios"
 import { useNavigate } from "react-router-dom";
 import  ProductList  from "./ProductList"
 import { getHeaders } from "../api/getHeaders";
+import { PRODUCT_URL } from "../constraints/urls";
 import "../css/Product.css"
-const PRODUCT_URL = '/products';
+import { CART_PAGE, HOME_PAGE } from "../constraints/pages";
 
 export const Product = () => {
 
@@ -40,14 +41,14 @@ export const Product = () => {
     const logout = () => {
         localStorage.setItem('token', null);
         localStorage.setItem('clickedButtons',null);
-        navigate('/')
+        navigate(HOME_PAGE)
 
     }
     const goToCart = () => {
-        navigate('/cart')
+        navigate(CART_PAGE)
     }
     const goToLoginPage = () => {
-        navigate('/');
+        navigate(HOME_PAGE);
     }
     return (
         <div className="product-page">

@@ -3,6 +3,9 @@ import { myAxios } from "../api/axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import "../css/Register.css"
 import { Alert } from "./Alert"
+import {monthData} from "../constraints/monthData.js"
+import { PRODUCT_PAGE } from "../constraints/pages";
+
 const REGISTER_URL = '/register';
 
 export const Register = (props) => {
@@ -20,11 +23,8 @@ export const Register = (props) => {
     const [error,setError] = useState(false);
     const [errMsg,setErrMsg] = useState('');
     const navigate = useNavigate();
-    //translate to eng
-    const monthData = [
-        "styczeń", "luty", "marzec", "kwiecień", "maj", "czerwiec", 
-        "lipiec", "sierpień", "wrzesień", "październik","listopad","grudzień"
-    ];
+
+
     useEffect(() => {
         setInitBirthDay()
         createData();
@@ -47,42 +47,60 @@ export const Register = (props) => {
         setDayData(dayData);
         setYearData(yearData);
     }
-    //data tez jest źle 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        try {
-            const response = await myAxios.post(REGISTER_URL,
-                {name,surename,email,dateOfBirth: date,gender,password:pass}, {
-                    headers: {
-                         'Content-Type' : 'application/json'
-                },
-                    withCredentials: true
-                }).then((response) => {
-                        localStorage.setItem('token', response.data.token);
-                        navigate('/products')
-                })
-        }
-        catch(err) {
-            setErrMsg(err.response.data.message)
+        if(pass.length < 5) {
+            setErrMsg("Password should contain at least 5 characters!");
             setError(true);
+        }
+        else {
+            try {
+                const createRegisterObject = {
+                    name,
+                    surename,
+                    email,
+                    dateOfBirth : date,
+                    gender,
+                    password: pass
+                };
+                const headers =  {
+                    'Content-Type' : 'application/json'
+                };
+                const response = await myAxios.post(REGISTER_URL,
+                    createRegisterObject, {
+                        headers,
+                        withCredentials: true
+                    }).then((response) => {
+                            localStorage.setItem('token', response.data.token);
+                            navigate(PRODUCT_PAGE)
+                    })
+            }
+            catch(err) {
+                setErrMsg(err.response.data.message)
+                setError(true);
+            }
         }
 
     }
     useEffect(() => {
-        let currIndex = 0;
-        let indexMonth = 0;
-        monthData.forEach(currMonth => {
-            if(currMonth === month) {
-                indexMonth = currIndex;
+        
+        function countIndexMonth() {
+            let currIndex = 1;
+            for(const currMonth of monthData) {
+                if(currMonth === month) {
+                    return currIndex;
+                }
+                currIndex++;
             }
-            currIndex++;
-        })
-        indexMonth++;
-        let day1= day.toString().padStart(2,'0');
-        let month1 = month.toString().padStart(2,'0');
-        console.log(day1 + "-" + month1 + "-" + year);
-        setDate(day1 + "-" + month1 + "-" + year);
+        }
+        let indexMonth = countIndexMonth();
+        if(indexMonth === undefined || indexMonth === null) {
+            indexMonth = month;
+        }
+        let convertedDayToHaveProperFormat = day.toString().padStart(2,'0');
+        let convertedMonthIntoNumber = indexMonth.toString().padStart(2,'0');
+        setDate(convertedDayToHaveProperFormat + "-" + convertedMonthIntoNumber + "-" + year);
     },[day,month,year])
 
     const handleDataFromChild = () => {

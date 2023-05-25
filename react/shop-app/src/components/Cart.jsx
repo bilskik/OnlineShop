@@ -3,11 +3,9 @@ import { myAxios } from "../api/axios"
 import { getHeaders } from "../api/getHeaders";
 import { Modal } from "./Modal"
 import { useNavigate } from "react-router-dom";
+import { CART_URL,PRODUCT_URL } from "../constraints/urls";
 import "../css/cart.css";
-
-const CART_URL = "/cart";
-const PRODUCT_URL = '/products';
-const ORDER_URL = '/orders';
+import { ORDER_PAGE } from "../constraints/pages";
 
 export const Cart = () => {
     
@@ -103,7 +101,7 @@ export const Cart = () => {
     const goToOrder = () => {
         const data = encodeURIComponent(JSON.stringify(productList));
         console.log(data);
-        navigate(`/order/${data}`);
+        navigate(ORDER_PAGE + `/${data}`);
     }
     const checkIfProductListIsEmpty = (productList) => {
         console.log(productList);
@@ -153,47 +151,8 @@ export const Cart = () => {
                                         <button onClick={goToOrder}>Przejdz do platnosci</button>
                                 </div>
                             </div>
-                            <Modal open={openModal} product={modalProduct} onClose={() => setOpenModal(false)} />
-
-                            {/* <table>
-                                <thead>
-                                    <tr>
-                                        <th>Nazwa Produktu:</th>
-                                        <th>Ilosc Produktow:</th>
-                                        <th>Cena Produktu:</th>
-                                        <th>Zobacz Szczegóły</th>
-                                        <th>Usun z koszyka</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                        productList.map(product => {
-                                            return (
-                                            <tr key = {product.productId}>
-                                                <td>
-                                                    {product.productName}
-                                                </td>
-                                                <td>
-                                                    {product.cartItemsAmount}
-                                                </td>
-                                                <td>
-                                                    {product.price} zł
-                                                </td>
-                                                <td>
-                                                    <button onClick={() => setDetails(product)}>zobacz</button>
-                                                </td>
-                                                <td>
-                                                    <button onClick={() => deleteFromCart(product)}>Usun</button>
-                                                </td>
-                                            </tr>
-                                            )
-                                        })
-                                    }
-                                </tbody>
-                            </table> */}
-
-
-                        </>
+                            <Modal open={openModal} product={modalProduct} showAvailabilty={false} onClose={() => setOpenModal(false)} />
+                      </>
                     ) : (
                         <>
                             <p>Twoj koszyk jest pusty!</p>

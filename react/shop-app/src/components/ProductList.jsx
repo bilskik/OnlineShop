@@ -1,16 +1,12 @@
 import React, { useContext, useEffect } from 'react';
-import '../index.css'
-import Modal from './Modal';
 import { myAxios } from '../api/axios';
 import { useState } from "react"
-import '../css/Modal.css'
 import { getHeaders } from '../api/getHeaders';
-import { ButtonContext } from "../context/ButtonContext"
-const CART_URL = '/cart';
-const PRODUCT_URL = '/products';
+import { CART_URL,PRODUCT_URL } from "../constraints/urls";
+import Modal from './Modal';
+import '../css/Modal.css'
+import '../index.css'
 
-
-//po wyjsciu z koszyka button nie jest nadal blokowany!
 
 export const ProductList = (props) => {
     const [productList,setProductList] = useState(props.productList);
@@ -23,14 +19,30 @@ export const ProductList = (props) => {
     useEffect(() => {
         localStorage.setItem('clickedButtons', JSON.stringify(clickedButtons));
     },[clickedButtons])
+    useEffect(() => {
+        const headers = getHeaders();
+        let token1 = localStorage.getItem('token');
+        token1 = 'Bearer ' + token1;
+        // const options = {
+        //     transportOptions: {
+        //         polling: {
+        //             extraHeaders: {
+        //                  'Authorization' : token
+        //             }
+        //         }
+        //     }
+        // }
+        // const socket = io.connect("http://localhost:8080", {
+        //     auth: {
+        //         token: token1
+        //     }
+        // });
+        // const socket = io("http://localhost:8080");
+        // socket.on('connect', () => {
+        //     console.log('Połączono z serwerem WebSocket');
+        //   });
 
-    // useEffect(() => {
-    //     const savedClickedButtons = localStorage.getItem('clickedButtons');
-    //     console.log(JSON.parse(savedClickedButtons));
-    //     if(savedClickedButtons) {
-    //         setClickedButtons(JSON.parse(savedClickedButtons));
-    //     }
-    // },[])
+    },[])
 
     const addToCart = async (product) => {
         const headers = getHeaders();
@@ -45,7 +57,7 @@ export const ProductList = (props) => {
                 }
             )
             checkIfDisable(product);
-            window.location.reload();
+            // window.location.reload();
         }
         catch(err) {
             
@@ -120,7 +132,7 @@ export const ProductList = (props) => {
                     )
                 })}
             </div>
-            <Modal open={openModal} product={modalPoduct} onClose={() => setOpenModal(false)}/>
+            <Modal open={openModal} product={modalPoduct} showAvailabilty={true} onClose={() => setOpenModal(false)}/>
          </div>
     )
 

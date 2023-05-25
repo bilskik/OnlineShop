@@ -1,0 +1,98 @@
+.main-grid-order {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.second-column-order {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.second-column-order .to-pay {
+    font-size: 2rem;
+    padding: 20px 0px;
+}
+.form-container-order {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.form-container-order label {
+    font-size: 1.7rem;
+}
+.form-container-order input {
+    font-size:20px;
+    padding:5px;
+    border-radius: 5px;
+    background: #e4e4e4;
+    margin: 5px;
+}
+.form-container-order select {
+    margin:10px;
+    transform: scale(1.3);
+}
+.form-container-order button {
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px bold black;
+    font-size: 1.8rem;
+    height: fit-content;
+    width: 55%;
+    padding: 6px;
+    margin-top: 10px;
+    background-color: rgba(255, 204, 153,0.6);
+}
+.form-container-order button:hover {
+    background-color: rgba(255, 204, 153,0.3);
+
+}
+
+@media only screen and (max-width: 550px) {
+    .main-grid-order {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+}
+.second-column-order-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.shippment-details {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1rem;
+}
+.shippment-details p {
+    margin:8px 0;
+}
+.to-pay-tag {
+    font-size: 1.5rem;
+    margin:10px 0;
+}
+.btn-order {
+    margin:10px 0;
+}
+.edit-btn {
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid black;
+    font-size: 1.5rem;
+    padding: 5px 10px;
+    background-color: rgba(255, 204, 153,0.6);
+}
+.edit-btn:hover {
+    background-color: rgba(255, 204, 153,0.3);
+}
+.buy-btn {
+    cursor: pointer;
+    border-radius: 5px;
+    border: 1px solid black;
+    font-size: 1.5rem;
+    padding: 10px 50px;
+    background-color: rgba(255, 204, 153, 1);
+}
+.buy-btn:hover {
+    background-color: rgba(255, 204, 153,0.6);
+}

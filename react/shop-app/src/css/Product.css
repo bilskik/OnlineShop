@@ -31,7 +31,6 @@
 }
 
 .wrapper {
-    /* background-color: rgba(40, 148, 191,0.8); */
     background: #e4e4e4;
     display: flex;
     flex-direction: column;

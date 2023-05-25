@@ -36,7 +36,8 @@ public class SecurityConfig {
                 .cors()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/error","/login", "/register","/seller/**")
+                .requestMatchers("/error","/login", "/register","/seller/**","/socket.io", "/app/**","/stomp-endpoint/**",
+                        "/app/**","/topic/**","/hello/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

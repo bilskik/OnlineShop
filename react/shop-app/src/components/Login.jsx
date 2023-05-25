@@ -5,7 +5,8 @@ import useAuth from "../hooks/useAuth";
 import '../css/Login.css'
 import '../css/Alert.css'
 import { Alert }  from "./Alert"
-const LOGIN_URL = '/login'
+import { LOGIN_URL } from "../constraints/urls";
+import { PRODUCT_PAGE } from "../constraints/pages";
 
 export const Login = (props) => {
     const { setAuth } = useAuth();
@@ -66,7 +67,7 @@ export const Login = (props) => {
                     setEmail('')
                     setPass('')
                     setSuccess(true);
-                    navigate('/products')
+                    navigate(PRODUCT_PAGE)
             })
             //clear input fields
         }
