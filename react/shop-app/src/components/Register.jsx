@@ -20,8 +20,10 @@ export const Register = (props) => {
     const [date,setDate] = useState('');
     const [dayData,setDayData] = useState([]);
     const [yearData,setYearData] = useState([]);
-    const [error,setError] = useState(false);
-    const [errMsg,setErrMsg] = useState('');
+    const [error,setError] = useState({
+        hasError : false,
+        message : ''
+    });
     const navigate = useNavigate();
 
 
@@ -48,13 +50,34 @@ export const Register = (props) => {
         setYearData(yearData);
     }
 
+    const isDataValid = () => {
+        if(pass.length < 5) {
+            setError({
+                hasError: true,
+                message: 'Password should contain at least 5 characters!'
+            })
+            return false;
+        }
+        else if(!name) {
+            setError({
+                hasError: true,
+                message: 'Name cannot be empty!'
+            })
+            return false;
+
+        } 
+        else if(!surename) {
+            setError({
+                hasError: true,
+                message: 'Surename cannot be empty!'
+            })
+            return false;
+        }
+        return true; 
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(pass.length < 5) {
-            setErrMsg("Password should contain at least 5 characters!");
-            setError(true);
-        }
-        else {
+        if(isDataValid()) {
             try {
                 const createRegisterObject = {
                     name,
@@ -77,8 +100,10 @@ export const Register = (props) => {
                     })
             }
             catch(err) {
-                setErrMsg(err.response.data.message)
-                setError(true);
+                setError({
+                    hasError: true,
+                    message: err.response.data.message
+                })
             }
         }
 
@@ -104,13 +129,16 @@ export const Register = (props) => {
     },[day,month,year])
 
     const handleDataFromChild = () => {
-        setError(false);
+        setError({
+            hasError: false,
+            message: ""
+        })
     }
 
     return (
         <div className="page-container">
-            { error && (
-                 <Alert defaultValue="show" sendDataToParent={handleDataFromChild} data={errMsg}/>
+            { error.hasError && (
+                 <Alert defaultValue="show" sendDataToParent={handleDataFromChild} data={error.message}/>
             )}
             <div className="login-container-register">
             <h1>Register</h1>

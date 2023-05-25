@@ -10,46 +10,23 @@ import { PRODUCT_PAGE } from "../constraints/pages";
 
 export const Login = (props) => {
     const { setAuth } = useAuth();
-    const emailRef = useRef();
-    const errRef = useRef();
-
+    // const errRef = useRef();
     const[email,setEmail] = useState('');
-    const [validEmail, setValidEmail] = useState(false);
-    const[emailFocus, setEmailFocus] = useState(false);
-
     const[pass,setPass] = useState('');
-    const [validPass, setValidPass] = useState(false);
-    const[passFocus, setPassFocus] = useState(false);
-
-    const [errMsg,setErrMsg] = useState('');
-    const [error,setError] = useState(false);
-    const [success, setSuccess] = useState(false);
-
+    const [error,setError] = useState({
+        hasError : false,
+        message : ''
+    });
     const navigate = useNavigate();
-    
-
-
     useEffect(() => {
-        setErrMsg('');
+        setError({
+            hasError: false,
+            message: ''
+        })
     },[email,pass])
-
-    // useEffect(() => {
-    //     const result = true;
-    //     setValidEmail(result);
-    // },[email])
-
-    // useEffect(() => {
-    //     const result = true;
-    //     setValidPass(result);
-    // },[pass])
-    
-    // useEffect( () => {
-    //     setErrMsg('');
-    // },[email,pass]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("SIEMA JESTEM HERe")
         try {
             
             const response = await myAxios.post(LOGIN_URL,
@@ -59,40 +36,48 @@ export const Login = (props) => {
                 }
             ).then((response) => {
                 console.log(response);
-                    console.log("im here!")
                     localStorage.setItem('token', response.data.token);
                     const accessToken = response.data.accessToken;
                     const roles = response.data.roles;
                     setAuth({ email, pass, accessToken});
                     setEmail('')
                     setPass('')
-                    setSuccess(true);
                     navigate(PRODUCT_PAGE)
             })
             //clear input fields
         }
         catch(err) {
-            console.log(err.response)
-
-            setError(true);
-            setErrMsg(err.response.data.message);
+            setError({
+                hasError: true,
+                message: err.response.data.message
+            });
         }
     }
     const handleDataFromChild = () => {
-        setError(false);
+        setError({
+            hasError: false,
+            message: ''
+        });
     }
+    useEffect(() => {
+        if(error.hasError) {
+            setTimeout(() => {
+                setError(false);
+            },5000)
+        }
+    },[error]);
     return (
         <>
         <div className="page-container">
-            { error && 
-                <Alert defaultValue="show" sendDataToParent={handleDataFromChild} data={errMsg}/>
+            { error.hasError && 
+                <Alert defaultValue="show" sendDataToParent={handleDataFromChild} data={error.message}/>
 
             }
 
             <div className="login-container">
                 <h1 className="h1">Login</h1>
                 <section className="section">
-                    <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive"></p>
+                    {/* <p ref={errRef} className={error.hasError ? "errmsg" : "offscreen"} aria-live="assertive"></p> */}
                     <form onSubmit={handleSubmit} className="form">
                         <label htmlFor="email">Email</label>
                         <input 

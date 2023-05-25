@@ -18,6 +18,7 @@
     justify-content: space-between;
     align-items: center;
     background-color: rgb(35, 35, 35);
+    z-index:1;
 }
 .product-header-container-cart h2 {
     color:#fff;

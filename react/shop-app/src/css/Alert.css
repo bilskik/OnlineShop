@@ -8,6 +8,7 @@
     top:10px;
     border-radius: 4px;
     border-left: 8px solid #ec0000;
+    z-index: 999;
 }
 .alert.show {
     animation: show_slide 1s ease forwards;

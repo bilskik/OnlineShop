@@ -8,6 +8,7 @@ import "../css/order.css";
 import {Modal} from "./Modal";
 import { ShippmentDetails } from './ShippmentDetails';
 import { PRODUCT_PAGE } from '../constraints/pages';
+import { Alert } from './Alert';
 
 export const Order = () => {
     const [productList,setProductList] = useState();
@@ -28,6 +29,11 @@ export const Order = () => {
     const [openModal,setOpenModal] = useState(false);
     const [modalProduct, setModalProduct] = useState();
 
+    const [error, setError] = useState({
+        hasError : false,
+        message : ''
+    });
+
     const navigate = useNavigate();
     useEffect(() => {
         
@@ -36,8 +42,6 @@ export const Order = () => {
             const response = await myAxios.get(ORDER_URL,
                 {headers}
             ).then(response => {
-                console.log("JESTEM W GECIE!");
-                console.log(response.data);
                 if(response.data) {
                     setOrder(response.data);
                     setProductList(response.data.productList);
@@ -47,7 +51,6 @@ export const Order = () => {
                     mapNamesInAddress(response.data.address);
                     checkIfProdutListIsEmpty(response.data.productList);
                     setPaymentMethod(response.data.paymentType)
-                    console.log(response.data.paymentType);
                 }
                 else {
                     loadDataFromURL();
@@ -70,31 +73,41 @@ export const Order = () => {
         productList.forEach(product => {
             sum += product.cartItemsAmount*product.price;
         })
-        console.log(sum);
         setPrice(sum);
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log("SIEMAAAAAAAAAAAAAAAAAAAAAAAAA")
         const date = getDate();
         const address = getAddress();
-        const order = {
-            total : price,
-            orderDate : date,
-            address : address,
-            paymentType : paymentMethod
+        console.log(address);
+        if(address !== null) {
+            const order = {
+                total : price,
+                orderDate : date,
+                address : address,
+                paymentType : paymentMethod
+            }
+            const isValid = isValidForm(order);
+            const headers = getHeaders();
+            const postData = async () => {
+                const response = await myAxios.post(ORDER_URL,
+                    order
+                ,{
+                    headers
+                }).then(response => {
+                    reloadPageFunction()
+                })
+            }
+            postData();
+            setAddressValueToEmpty();
         }
-        const isValid = isValidForm(order);
-        const headers = getHeaders();
-        const postData = async () => {
-            const response = await myAxios.post(ORDER_URL,
-                order
-            ,{
-                headers
-            }).then(response => {
-                reloadPageFunction()
-            })
-        }
-        postData();
+    }
+    const setAddressValueToEmpty = () => {
+        setCountry('');
+        setCity('');
+        setCode('');
+        setStreet('');
     }
     const isValidForm = (order) => {
         const isValid = Object.values(order).every(value => value != '');
@@ -107,14 +120,7 @@ export const Order = () => {
         const day = currDate.getDay().toString().padStart(2,'0');
         return day + "-" + month + "-" + year;
     }
-    const getAddress = () => {
-        return {
-            "country" : country,
-            "city": city,
-            "street" : street,
-            "zipCode" : code
-        }
-    }
+
     const mapNamesInAddress = function(address) {
         const updatedAddress = {
             "Państwo" : address.country,
@@ -147,25 +153,71 @@ export const Order = () => {
             setIsOrderAvailable(true);
         }
     }
+    const addressError = (addressType) => {
+        if(!country) {
+            setError({
+                hasError: true,
+                message: "Country cannot be empty!"
+            })
+            return true;
+        }
+        else if(!city) {
+            setError({
+                hasError: true,
+                message: "City cannot be empty!"
+            })
+            return true;
+        }
+        else if(!street) {
+            setError({
+                hasError: true,
+                message: "Street cannot be empty!"
+            })
+            return true;
+        }
+        else if(!code) {
+            setError({
+                hasError: true,
+                message: "Code cannot be empty!"
+            })
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    const getAddress = () => {
+        let error = addressError();
+        return error ? 
+        null : {
+            "country" : country,
+            "city": city,
+            "street" : street,
+            "zipCode" : code
+        } 
+    }
     const handleAddressSubmit = (e) => {
         e.preventDefault();
+        console.log("SIEMAAAA")
         const address = getAddress();
-        const order = {
-            address,
-            paymentType : paymentMethod
-        }
         console.log(address);
-        const headers = getHeaders();
-        const updateAddress = async () => {
-            const response = await myAxios.put(ORDER_URL,
-                order,
-                {headers}
-            ).then(response => {
-                reloadPageFunction()
-                setOrderState(true);
-            })
-        }
-        updateAddress();
+        if(address !== null) {
+            const order = {
+                address,
+                paymentType : paymentMethod
+            }
+            const headers = getHeaders();
+            const updateAddress = async () => {
+                const response = await myAxios.put(ORDER_URL,
+                    order,
+                    {headers}
+                ).then(response => {
+                    reloadPageFunction()
+                    setOrderState(true);
+                })
+            }
+            updateAddress();
+        } 
     }
     const reloadPageFunction = function() {
         if(reloadPage) {
@@ -235,9 +287,29 @@ export const Order = () => {
         setModalProduct(product);
         setOpenModal(true);
     }
+    const handleErrorDisplaying = () => {
+        setError({
+            ...error,
+            hasError: false
+        });
+    }
+    useEffect(() => {
+        if(error.hasError) {
+            setTimeout(() => {
+                setError({
+                    ...error,
+                    hasError: false
+                });
+            },5000)
+        }
+    },[error.hasError]);
     return (
         <div className='product-page'>
-
+            {
+                error.hasError && (
+                    <Alert defaultValue="show" sendDataToParent={handleErrorDisplaying} data={error.message}/>
+                )
+            }
             {
                 isLoading ? ( 
                     <p>is loading...</p>
@@ -253,7 +325,6 @@ export const Order = () => {
                             <>
                                 <div className="main-grid-order">
                                     <ProductCard productList={productList} setDetails={setDetails}/>
- 
                                     <div className="second-column-order">
                                         <p className='to-pay'>Do zaplaty: {price} zł</p>
                                         <form onSubmit={!isAddressEdited ? handleSubmit : handleAddressSubmit} className='form-container-order'>
