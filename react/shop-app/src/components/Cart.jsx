@@ -5,7 +5,7 @@ import { Modal } from "./Modal"
 import { useNavigate } from "react-router-dom";
 import { CART_URL,PRODUCT_URL } from "../constraints/urls";
 import "../css/cart.css";
-import { ORDER_PAGE } from "../constraints/pages";
+import { ORDER_PAGE, HOME_PAGE } from "../constraints/pages";
 import { Loading } from "./Loading";
 import { NoContent } from "./NoContent";
 
@@ -114,6 +114,11 @@ export const Cart = () => {
             setIsCartEmpty(false);
         }
     }
+    const logout = () => {
+        localStorage.setItem('token', null);
+        localStorage.setItem('clickedButtons',null);
+        navigate(HOME_PAGE)
+    }
     return (
         <div>
             {
@@ -124,6 +129,9 @@ export const Cart = () => {
                         <>
                             <header className="product-header-container-cart">
                                 <h2>Koszyk</h2>
+                                <nav className="nav-bar">
+                                    <img src="/img/exit.png" alt="logout" onClick={logout}/>
+                                </nav>
                             </header>
                             <div className="main-grid-cart">
                                 <div className='grid-container-cart'>

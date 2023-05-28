@@ -40,15 +40,21 @@ public class OrderService {
 
     public OrderDTO getOrder() {
         Optional<Customer> customer = customerRepository.findByEmail(userEmailDTO.getEmail());
+        System.out.println(customer.get().getEmail());
         if(customer.isEmpty()) {
             throw new NoSuchElementException("There is no customer!");
         }
         int customerId = customer.get().getCustomerId();
+        System.out.println(customerId);
         Optional<Order> order = orderRepository.findByCustomerId(customerId);
+//        System.out.println(order);
+//        System.out.println(order.get().getCustomer().getEmail());
+//        System.out.println(order.get().getCustomer());
         if(order.isEmpty()) {
             return null;
+        } else {
+            return orderMapper.toDTO(order.get());
         }
-        return orderMapper.toDTO(order.get());
     }
     public OrderDTO saveOrder(Order order) {
         System.out.println(order.getAddress());

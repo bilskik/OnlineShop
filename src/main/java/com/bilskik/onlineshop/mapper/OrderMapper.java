@@ -9,7 +9,6 @@ public class OrderMapper extends MapperImpl<Order, OrderDTO> {
     @Override
     public OrderDTO toDTO(Order order) {
         OrderDTO orderDTO = getModelMapper().map(order,OrderDTO.class);
-        orderDTO.setCustomer(orderDTO.getCustomer());
         orderDTO.setProductList(order.getCart().getProductList());
         return orderDTO;
     }

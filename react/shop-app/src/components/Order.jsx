@@ -7,11 +7,10 @@ import { ORDER_URL, PRODUCT_URL } from '../constraints/urls';
 import "../css/order.css";
 import {Modal} from "./Modal";
 import { ShippmentDetails } from './ShippmentDetails';
-import { PRODUCT_PAGE } from '../constraints/pages';
+import { HOME_PAGE, PRODUCT_PAGE } from '../constraints/pages';
 import { Alert } from './Alert';
 import { Loading } from './Loading';
 import { NoContent } from './NoContent';
-import { click } from '@testing-library/user-event/dist/click';
 export const Order = () => {
     const [productList,setProductList] = useState();
     const [isLoading,setIsLoading] = useState(true);
@@ -79,10 +78,8 @@ export const Order = () => {
     }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("SIEMAAAAAAAAAAAAAAAAAAAAAAAAA")
         const date = getDate();
         const address = getAddress();
-        console.log(address);
         if(address !== null) {
             const order = {
                 total : price,
@@ -90,7 +87,6 @@ export const Order = () => {
                 address : address,
                 paymentType : paymentMethod
             }
-            console.log(order);
             const isValid = isValidForm(order);
             const headers = getHeaders();
             const postData = async () => {
@@ -202,9 +198,7 @@ export const Order = () => {
     }
     const handleAddressSubmit = (e) => {
         e.preventDefault();
-        console.log("SIEMAAAA")
         const address = getAddress();
-        console.log(address);
         if(address !== null) {
             const order = {
                 address,
@@ -298,7 +292,6 @@ export const Order = () => {
         for(const productId of productIds) {
             delete clickedButtons[productId];
         }
-        console.log(clickedButtons);
         localStorage.setItem('clickedButtons',JSON.stringify(clickedButtons));
     }
     const handleErrorDisplaying = () => {
@@ -317,6 +310,11 @@ export const Order = () => {
             },5000)
         }
     },[error.hasError]);
+    const logout = () => {
+        localStorage.setItem('token', null);
+        localStorage.setItem('clickedButtons', null);
+        navigate(HOME_PAGE)
+    }
     return (
         <div className='product-page'>
             {
@@ -334,6 +332,9 @@ export const Order = () => {
                         <>
                             <header className='product-header-container-cart'>
                                 <h2>Order</h2>
+                                <nav className='nav-bar'>
+                                    <img src="/img/exit.png" alt="logout" onClick={logout}/>
+                                </nav>
                             </header>
                             { !orderState ? (
                             <>

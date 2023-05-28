@@ -10,7 +10,6 @@ import { PRODUCT_PAGE } from "../constraints/pages";
 
 export const Login = (props) => {
     const { setAuth } = useAuth();
-    // const errRef = useRef();
     const[email,setEmail] = useState('');
     const[pass,setPass] = useState('');
     const [error,setError] = useState({
@@ -35,7 +34,6 @@ export const Login = (props) => {
                     withCredentials: true
                 }
             ).then((response) => {
-                console.log(response);
                     localStorage.setItem('token', response.data.token);
                     const accessToken = response.data.accessToken;
                     const roles = response.data.roles;
@@ -44,7 +42,6 @@ export const Login = (props) => {
                     setPass('')
                     navigate(PRODUCT_PAGE)
             })
-            //clear input fields
         }
         catch(err) {
             setError({

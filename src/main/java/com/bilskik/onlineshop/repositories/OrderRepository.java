@@ -21,8 +21,10 @@ public interface OrderRepository extends JpaRepository<Order,Integer> {
                    @Param("customer_id") int customerId
     );
 
+//    Optional<Order> findByCustomerId(int customerId);
 
-    @Query(value = "Select * from orders o where o.customer_id = customer_id",nativeQuery = true)
+
+    @Query(value = "select * from orders o where o.customer_id = :customer_id",nativeQuery = true)
     Optional<Order> findByCustomerId(@Param("customer_id") int customerId);
 
 //    @Modifying

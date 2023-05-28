@@ -110,7 +110,7 @@ public class DataLoader implements CommandLineRunner {
 //        productRepository.save(product2);
 //        productRepository.save(product3);
 //        productRepository.save(product4);
-        for(int i=0; i<3; i++) {
+        for(int i=0; i<10; i++) {
             Faker fakeData = new Faker();
             int sentecensDescription = 1;
             int sentencesDetails = 1;

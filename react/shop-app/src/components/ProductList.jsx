@@ -54,10 +54,7 @@ export const ProductList = (props) => {
             setProductList(updatedProductList);
             updateProduct(updatedProductList[productIndex]);
             if(productUpdated.amount <= 0) {
-                console.log("CLICKED BUTTONS:")
-                console.log(clickedButtons);
                 disableButton(productId);
-
             }
 
         } 
