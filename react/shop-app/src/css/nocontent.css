@@ -1,0 +1,21 @@
+.nocontent-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(228, 228, 228,0.7);    
+}
+.message-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50vh;
+    height: 50vh;
+    border: 1px solid black;
+    border-radius: 30px;
+    background: rgba(228, 228, 228);
+}
+.message-container h2 {
+    color: #5e666c;
+}

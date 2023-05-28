@@ -83,8 +83,6 @@ public class OrderService {
         order.get().setAddress(responseOrder.getAddress());
         order.get().setPaymentType(responseOrder.getPaymentType());
         orderRepository.save(order.get());
-//        orderRepository.updateOrder(orderId,address.getCountry(),address.getCity(), address.getStreet(), address.getZipCode());
-//        return addressMapper.toDTO(address);
         return null;
     }
 }

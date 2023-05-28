@@ -9,7 +9,9 @@ import {Modal} from "./Modal";
 import { ShippmentDetails } from './ShippmentDetails';
 import { PRODUCT_PAGE } from '../constraints/pages';
 import { Alert } from './Alert';
-
+import { Loading } from './Loading';
+import { NoContent } from './NoContent';
+import { click } from '@testing-library/user-event/dist/click';
 export const Order = () => {
     const [productList,setProductList] = useState();
     const [isLoading,setIsLoading] = useState(true);
@@ -88,6 +90,7 @@ export const Order = () => {
                 address : address,
                 paymentType : paymentMethod
             }
+            console.log(order);
             const isValid = isValidForm(order);
             const headers = getHeaders();
             const postData = async () => {
@@ -117,7 +120,7 @@ export const Order = () => {
         let currDate = new Date();
         const year = currDate.getFullYear();
         const month = (currDate.getMonth() + 1).toString().padStart(2,'0');
-        const day = currDate.getDay().toString().padStart(2,'0');
+        const day = currDate.getDate().toString().padStart(2,'0');
         return day + "-" + month + "-" + year;
     }
 
@@ -136,9 +139,10 @@ export const Order = () => {
             const response = await myAxios.delete(ORDER_URL,
                 order,
                 {headers}
-            )
+            ).then(response => {
+                navigate(PRODUCT_PAGE);
+            })
         }
-        navigate(PRODUCT_PAGE);
     }
     const editAddress = () => {
         setOrderState(false);
@@ -229,7 +233,6 @@ export const Order = () => {
     }
     const deleteProductList = () => {
         performOperationOnProductList();
-        navigate(PRODUCT_PAGE);
     }
     const performOperationOnProductList = async function() {
         let productListWithAmountZero = productList.filter(product => product.amount === 0);
@@ -257,11 +260,14 @@ export const Order = () => {
     const deleteProductIdsFromDB = async(productIdsList) => {
         const headers = getHeaders();
         const deleteHttpMethod = async(productIdsList,headers) => {
+            updateClickedButtonsLocalStorage(productIdsList);
             const response = await myAxios.delete(PRODUCT_URL,    {
                 data: productIdsList,
                 headers: headers
               }
-            )
+            ).then(() => {
+                navigate(PRODUCT_PAGE);
+            })
         }
         deleteHttpMethod(productIdsList,headers);
 
@@ -272,7 +278,7 @@ export const Order = () => {
             const deleteProduct = await myAxios.put(PRODUCT_URL, product,
                 {headers}
             ).then(() => {
-    
+                navigate(PRODUCT_PAGE);
             })
         }
         const headers = getHeaders();
@@ -286,6 +292,14 @@ export const Order = () => {
     const setDetails = (product) => {
         setModalProduct(product);
         setOpenModal(true);
+    }
+    const updateClickedButtonsLocalStorage = (productIds) => {
+        const clickedButtons = JSON.parse(localStorage.getItem('clickedButtons'));
+        for(const productId of productIds) {
+            delete clickedButtons[productId];
+        }
+        console.log(clickedButtons);
+        localStorage.setItem('clickedButtons',JSON.stringify(clickedButtons));
     }
     const handleErrorDisplaying = () => {
         setError({
@@ -312,7 +326,7 @@ export const Order = () => {
             }
             {
                 isLoading ? ( 
-                    <p>is loading...</p>
+                    <Loading/>
                 ) : (
                     <>
                     { isOrderAvailable ? (
@@ -371,7 +385,7 @@ export const Order = () => {
                         </>
                     ) : (
                         <>
-                            <p>Nie ma wybranego produktu do kupienia!</p>
+                             <NoContent message={"Your order is empty!"}/>
                         </>  
                     )}
                     </>

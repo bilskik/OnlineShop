@@ -26,16 +26,15 @@ export const Register = (props) => {
     });
     const navigate = useNavigate();
 
-
     useEffect(() => {
         setInitBirthDay()
         createData();
     },[])
     const setInitBirthDay = () => {
         const currDate = new Date();
-        setYear(currDate.getFullYear());
-        setMonth(currDate.getMonth() + 1)
-        setDay(currDate.getDay())
+        setYear("2002");
+        setMonth("1")
+        setDay("01")
     }
     const createData = function() {
         let dayData = [];
@@ -79,14 +78,16 @@ export const Register = (props) => {
         e.preventDefault();
         if(isDataValid()) {
             try {
+                console.log(date);
                 const createRegisterObject = {
                     name,
                     surename,
                     email,
-                    dateOfBirth : date,
+                    dateOfBirth : "01-01-2022",
                     gender,
                     password: pass
                 };
+                console.log(createRegisterObject);
                 const headers =  {
                     'Content-Type' : 'application/json'
                 };
@@ -109,7 +110,6 @@ export const Register = (props) => {
 
     }
     useEffect(() => {
-        
         function countIndexMonth() {
             let currIndex = 1;
             for(const currMonth of monthData) {
@@ -123,6 +123,7 @@ export const Register = (props) => {
         if(indexMonth === undefined || indexMonth === null) {
             indexMonth = month;
         }
+        console.log(date);
         let convertedDayToHaveProperFormat = day.toString().padStart(2,'0');
         let convertedMonthIntoNumber = indexMonth.toString().padStart(2,'0');
         setDate(convertedDayToHaveProperFormat + "-" + convertedMonthIntoNumber + "-" + year);

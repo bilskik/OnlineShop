@@ -1,22 +1,17 @@
 package com.bilskik.onlineshop.services;
 
 import com.bilskik.onlineshop.dto.ProductDTO;
-import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.entities.ProductCategory;
 import com.bilskik.onlineshop.mapper.MapperImpl;
 import com.bilskik.onlineshop.repositories.ProductCategoryRepository;
 import com.bilskik.onlineshop.repositories.ProductRepository;
 import jakarta.transaction.Transactional;
-import lombok.extern.java.Log;
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -122,6 +117,4 @@ public class ProductService {
             return productMapper.toDTO(product);
         }
     }
-
-
 }

@@ -5,35 +5,44 @@ import { useNavigate } from "react-router-dom";
 import  ProductList  from "./ProductList"
 import { getHeaders } from "../api/getHeaders";
 import { PRODUCT_URL } from "../constraints/urls";
+import { Loading } from "./Loading";
 import "../css/Product.css"
 import { CART_PAGE, HOME_PAGE } from "../constraints/pages";
+import { NoContent } from "./NoContent";
 
+//No products to buy
 export const Product = () => {
 
     const [products,setProducts] = useState([]);
     const [isLoading,setIsLoading] = useState(true);
+    const [error,setError] = useState({
+        hasError : false,
+        message : ""
+    });
     const navigate = useNavigate();
 
     useEffect(() => {
         const controller = new AbortController();
-        let isMounted = true;
         const headers = getHeaders();
         const getUsers = async () => {
             try {
                 const response = await myAxios.get(PRODUCT_URL, {
                     headers,
                     signal: controller.signal
+                }).then(response => {
+                    setProducts(response.data);
+                    setIsLoading(false);
                 })
-                setProducts(response.data);
-                setIsLoading(false);
             }
             catch(err) {
-                console.log(err);
+                setError({
+                    hasError : true,
+                    message : err.response.data.message
+                })
             }
         }
         getUsers();
         return () => {
-            isMounted = false;
             controller.abort();
         }
     },[])
@@ -42,7 +51,6 @@ export const Product = () => {
         localStorage.setItem('token', null);
         localStorage.setItem('clickedButtons',null);
         navigate(HOME_PAGE)
-
     }
     const goToCart = () => {
         navigate(CART_PAGE)
@@ -51,23 +59,31 @@ export const Product = () => {
         navigate(HOME_PAGE);
     }
     return (
-        <div className="product-page">
-            <header className='product-header-container'>
-                <h2>Shop</h2>
-                <nav className="nav-bar">
-                        <img src="/img/user-interface.png" alt="login" onClick={goToLoginPage}/>
-                        <img src="/img/shopping-cart.png" alt="shopping-cart" onClick={goToCart}/>
-                        <img src="/img/exit.png" alt="logout" onClick={logout}/>
-                </nav>
-            </header>
-            {
-                isLoading ? (
-                    <p>LOADING...</p>
-                ) : (
-                   <ProductList productList= {products}/>
-                )
-            }
-        </div>
+        <>
+        {
+            error.hasError ? (
+                <NoContent message={error.message}/>
+            ) : (
+            isLoading ? (
+                <Loading/>
+            ) : (
+                <div className="product-page">
+                    <header className='product-header-container'>
+                        <h2>Shop</h2>
+                        <nav className="nav-bar">
+                                <img src="/img/user-interface.png" alt="login" onClick={goToLoginPage}/>
+                                <img src="/img/shopping-cart.png" alt="shopping-cart" onClick={goToCart}/>
+                                <img src="/img/exit.png" alt="logout" onClick={logout}/>
+                        </nav>
+                    </header>
+                    <ProductList productList= {products}/>
+                </div>
+            )
+        )
+
+        }
+
+        </>
         
     )
 }

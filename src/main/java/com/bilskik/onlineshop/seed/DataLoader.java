@@ -7,6 +7,7 @@ import com.bilskik.onlineshop.entities.*;
 import com.bilskik.onlineshop.enumeration.OrderStatus;
 import com.bilskik.onlineshop.enumeration.Role;
 import com.bilskik.onlineshop.repositories.*;
+import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,55 +61,69 @@ public class DataLoader implements CommandLineRunner {
 
     private void loadProduct(Cart cart, List<ProductCategory> c) {
         //not added details and product category
-        System.out.println("ELEMNENT:");
-        System.out.println(c.get(0).getCategoryId());
-        Product product1 = Product.builder()
-                .productId(1)
-                .productName("Gazeta")
-                .amount(10)
-                .cartItemsAmount(0)
-                .price(10)
-                .image("https://i.ibb.co/7YT7tGQ/newspaper.jpg")
-//                .cart(cart)
-                .productDetails(new ProductDetails("Gazeta wyborcza", "Sed u commodi illum qui dolorem eum fugiat quo voluptas nulla pariatur?"))
-                .productCategory(c.get(0))
-                .build();
-        Product product2 = Product.builder()
-                .productId(2)
-                .productName("Ksiazka")
-                .amount(5)
-                .image("https://i.ibb.co/vsYwgst/book.jpg")
-                .cartItemsAmount(0)
-                .price(10)
-//                .cart(cart)
-                .productDetails(new ProductDetails("Ksiazka do języka Angielskiego poziom C1", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque."))
-                .productCategory(c.get(0))
-                .build();
-        Product product3 = Product.builder()
-                .productId(3)
-                .productName("Laptop")
-                .amount(3)
-                .cartItemsAmount(0)
-                .image("https://i.ibb.co/nb4YdB0/student.jpg")
-                .price(12)
-                .productCategory(c.get(0))
-                .productDetails(new ProductDetails("Laptop HP 271p", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque."))
-                .build();
-        Product product4 = Product.builder()
-                .productId(4)
-                .productName("Komputer")
-                .amount(1)
-                .cartItemsAmount(0)
-                .image("https://i.ibb.co/cXJhRns/komputer.jpg")
-                .price(1200)
-                .productDetails(new ProductDetails("Komputer Lenovo","Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque."))
-                .productCategory(c.get(1))
-                .build();
-        System.out.println(product1.getProductCategory().getCategoryId());
-        productRepository.save(product1);
-        productRepository.save(product2);
-        productRepository.save(product3);
-        productRepository.save(product4);
+//        System.out.println("ELEMNENT:");
+//        System.out.println(c.get(0).getCategoryId());
+//        Product product1 = Product.builder()
+//                .productId(1)
+//                .productName("Gazeta")
+//                .amount(10)
+//                .cartItemsAmount(0)
+//                .price(10)
+//                .image("https://i.ibb.co/7YT7tGQ/newspaper.jpg")
+////                .cart(cart)
+//                .productDetails(new ProductDetails("Gazeta wyborcza", "Sed u commodi illum qui dolorem eum fugiat quo voluptas nulla pariatur?"))
+//                .productCategory(c.get(0))
+//                .build();
+//        Product product2 = Product.builder()
+//                .productId(2)
+//                .productName("Ksiazka")
+//                .amount(5)
+//                .image("https://i.ibb.co/vsYwgst/book.jpg")
+//                .cartItemsAmount(0)
+//                .price(10)
+////                .cart(cart)
+//                .productDetails(new ProductDetails("Ksiazka do języka Angielskiego poziom C1", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque."))
+//                .productCategory(c.get(0))
+//                .build();
+//        Product product3 = Product.builder()
+//                .productId(3)
+//                .productName("Laptop")
+//                .amount(3)
+//                .cartItemsAmount(0)
+//                .image("https://i.ibb.co/nb4YdB0/student.jpg")
+//                .price(12)
+//                .productCategory(c.get(0))
+//                .productDetails(new ProductDetails("Laptop HP 271p", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque."))
+//                .build();
+//        Product product4 = Product.builder()
+//                .productId(4)
+//                .productName("Komputer")
+//                .amount(1)
+//                .cartItemsAmount(0)
+//                .image("https://i.ibb.co/cXJhRns/komputer.jpg")
+//                .price(1200)
+//                .productDetails(new ProductDetails("Komputer Lenovo","Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque."))
+//                .productCategory(c.get(1))
+//                .build();
+//        System.out.println(product1.getProductCategory().getCategoryId());
+//        productRepository.save(product1);
+//        productRepository.save(product2);
+//        productRepository.save(product3);
+//        productRepository.save(product4);
+        for(int i=0; i<3; i++) {
+            Faker fakeData = new Faker();
+            int sentecensDescription = 1;
+            int sentencesDetails = 1;
+            Product product = Product.builder()
+                    .productName(fakeData.name().firstName())
+                    .amount(fakeData.random().nextInt(1, 2))
+                    .cartItemsAmount(0)
+                    .image("https://i.ibb.co/cXJhRns/komputer.jpg")
+                    .price(fakeData.random().nextInt(1, 2000))
+                    .productDetails(new ProductDetails(fakeData.lorem().paragraph(sentencesDetails), fakeData.lorem().paragraph(sentecensDescription)))
+                    .build();
+            productRepository.save(product);
+        }
     }
 
     private Customer loadCustomer(Cart cart) {

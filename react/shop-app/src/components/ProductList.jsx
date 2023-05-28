@@ -19,30 +19,6 @@ export const ProductList = (props) => {
     useEffect(() => {
         localStorage.setItem('clickedButtons', JSON.stringify(clickedButtons));
     },[clickedButtons])
-    useEffect(() => {
-        const headers = getHeaders();
-        let token1 = localStorage.getItem('token');
-        token1 = 'Bearer ' + token1;
-        // const options = {
-        //     transportOptions: {
-        //         polling: {
-        //             extraHeaders: {
-        //                  'Authorization' : token
-        //             }
-        //         }
-        //     }
-        // }
-        // const socket = io.connect("http://localhost:8080", {
-        //     auth: {
-        //         token: token1
-        //     }
-        // });
-        // const socket = io("http://localhost:8080");
-        // socket.on('connect', () => {
-        //     console.log('Połączono z serwerem WebSocket');
-        //   });
-
-    },[])
 
     const addToCart = async (product) => {
         const headers = getHeaders();
@@ -57,16 +33,13 @@ export const ProductList = (props) => {
                 }
             )
             checkIfDisable(product);
-            // window.location.reload();
         }
         catch(err) {
             
         }
     }
     const disableButton = function(productId) {
-        // const buttonsDisabled = {...clickedButtons, [productId] : true}
         setClickedButtons({...clickedButtons, [productId] : true})
-        // console.log(buttonsDisabled);
     }
     const checkIfDisable = function(product) {
         const productId = product.productId;

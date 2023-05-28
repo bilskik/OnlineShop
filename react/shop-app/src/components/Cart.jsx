@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { CART_URL,PRODUCT_URL } from "../constraints/urls";
 import "../css/cart.css";
 import { ORDER_PAGE } from "../constraints/pages";
+import { Loading } from "./Loading";
+import { NoContent } from "./NoContent";
 
 export const Cart = () => {
     
@@ -116,7 +118,7 @@ export const Cart = () => {
         <div>
             {
                 isLoading ? (
-                    <p>Is Loading...</p>
+                    <Loading/>
                 ) : (
                     !isCartEmpty ? (
                         <>
@@ -155,7 +157,7 @@ export const Cart = () => {
                       </>
                     ) : (
                         <>
-                            <p>Twoj koszyk jest pusty!</p>
+                            <NoContent message={"Your cart is empty!"}/>
                         </>
                     )
                     
