@@ -21,35 +21,30 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    @CrossOrigin(origins = "http://localhost:3000")
+//    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        return new ResponseEntity<>(productService.getAllProducts(),HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(productService.getAllProducts(),HttpStatus.OK);
     }
     @GetMapping("/products/{productId}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable int productId) {
-        return new ResponseEntity<>(productService.getProduct(productId), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(productService.getProduct(productId), HttpStatus.OK);
     }
     @PostMapping("/products")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody Product product) {
-        return ResponseEntity.ok(productService.saveProduct(product));
+        return new ResponseEntity<>(productService.saveProduct(product), HttpStatus.CREATED);
     }
     @PutMapping("/products")
     public ResponseEntity<ProductDTO> updateProduct(@RequestBody Product product) {
-        return new ResponseEntity<>(productService.updateProduct(product), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(productService.updateProduct(product), HttpStatus.OK);
     }
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<Void> deleteProduct(@PathVariable int productId) {
         productService.deleteProduct(productId);
-        return new ResponseEntity<>(HttpStatusCode.valueOf(204));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     @DeleteMapping("/products")
     public ResponseEntity<String> deleteProductList(@RequestBody List<Integer> productIdList) {
-        try {
-            productService.deleteProductList(productIdList);
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                    "Failed to delete products " + e.getMessage());
-        }
-        return new ResponseEntity<>(HttpStatusCode.valueOf(204));
+        productService.deleteProductList(productIdList);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

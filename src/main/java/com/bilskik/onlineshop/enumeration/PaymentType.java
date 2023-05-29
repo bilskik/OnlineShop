@@ -4,7 +4,7 @@ import jakarta.persistence.Enumerated;
 
 public enum PaymentType {
     BLIK,
-    KartaPłatnicza,
+    KartaPlatnicza,
     GooglePay,
     ApplePay,
     Przelew

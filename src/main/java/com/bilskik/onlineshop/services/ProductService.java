@@ -3,6 +3,7 @@ package com.bilskik.onlineshop.services;
 import com.bilskik.onlineshop.dto.ProductDTO;
 import com.bilskik.onlineshop.entities.Product;
 import com.bilskik.onlineshop.entities.ProductCategory;
+import com.bilskik.onlineshop.exception.NoProductException;
 import com.bilskik.onlineshop.mapper.MapperImpl;
 import com.bilskik.onlineshop.repositories.ProductCategoryRepository;
 import com.bilskik.onlineshop.repositories.ProductRepository;
@@ -32,7 +33,7 @@ public class ProductService {
         List<Product> list = productRepository.findAll();
 
         if(list.isEmpty()) {
-            throw new NoSuchElementException("There is no product available!");
+            throw new NoProductException("List of products is empty!");
         }
         return list.stream()
                 .map(elem -> (productMapper.toDTO(elem)))
@@ -41,7 +42,7 @@ public class ProductService {
     public ProductDTO getProduct(int productId) {
         Optional<Product> product = productRepository.findById(productId);
         if(product.isEmpty()) {
-            throw new NoSuchElementException("There is no product with given id!");
+            throw new NoProductException("There is no product with given id!");
         }
         return productMapper.toDTO(product.get());
     }
@@ -62,7 +63,7 @@ public class ProductService {
     public void deleteProduct(int productId) {
         Optional<Product> product = productRepository.findById(productId);
         if(product.isEmpty()) {
-            throw new NoSuchElementException("There is no product available in DB!");
+            throw new NoProductException("There is no product to delete!");
         }
         product.get().setCart(null);
         logger.info(String.valueOf(product.get().getAmount()));
@@ -70,28 +71,20 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
     public void deleteProductList(List<Integer> productIdList) {
-        productIdList.forEach(System.out::println);
         for(var productId : productIdList) {
-            logger.info(productId.toString());
             Optional<Product> product = productRepository.findById(productId);
-            logger.info(String.valueOf(product.get().getProductId()));
             if(product.isEmpty()) {
-                throw new NoSuchElementException("Product is not found");
+                throw new NoProductException("There is no product with given id!");
             }
             product.get().setCart(null);
-//            Cart cart = product.get().getCart();
-//            if(cart != null) {
-//                cart.removeProduct(productId);
-//            }
             productRepository.deleteById(productId);
-            System.out.println("SIEMA!!!");
         }
     }
 
     @Transactional
     public ProductDTO updateProduct(Product product) {
         if(product == null) {
-            throw new NoSuchElementException("Product is null!");
+            throw new NoProductException("Product is null!");
         }
         int result;
         if(product.getCartItemsAmount() == 0) {
@@ -110,7 +103,7 @@ public class ProductService {
                 return productMapper.toDTO(productOptional.get());
             }
             else {
-                throw new NoSuchElementException("Product was not found!");
+                throw new NoProductException("Product to update was not found!");
             }
         }
         else {

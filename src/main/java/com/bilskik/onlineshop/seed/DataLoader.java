@@ -1,10 +1,8 @@
 package com.bilskik.onlineshop.seed;
 
 
-import com.bilskik.onlineshop.embedded.Address;
 import com.bilskik.onlineshop.embedded.ProductDetails;
 import com.bilskik.onlineshop.entities.*;
-import com.bilskik.onlineshop.enumeration.OrderStatus;
 import com.bilskik.onlineshop.enumeration.Role;
 import com.bilskik.onlineshop.repositories.*;
 import com.github.javafaker.Faker;
@@ -29,8 +27,6 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private ProductCategoryRepository productCategoryRepository;
     @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
 
@@ -46,8 +42,7 @@ public class DataLoader implements CommandLineRunner {
         Cart cart = loadCart();
         List<ProductCategory> c = createCategory();
         loadProduct(cart,c);
-        Customer customer = loadCustomer(cart);
-        loadOrder(customer,cart);
+        loadCustomer(cart);
     }
 
 
@@ -55,61 +50,10 @@ public class DataLoader implements CommandLineRunner {
         Cart cart = Cart.builder()
                 .productList(new ArrayList<>())
                 .build();
-//        cartRepository.save(cart);
         return cart;
     }
 
     private void loadProduct(Cart cart, List<ProductCategory> c) {
-        //not added details and product category
-//        System.out.println("ELEMNENT:");
-//        System.out.println(c.get(0).getCategoryId());
-//        Product product1 = Product.builder()
-//                .productId(1)
-//                .productName("Gazeta")
-//                .amount(10)
-//                .cartItemsAmount(0)
-//                .price(10)
-//                .image("https://i.ibb.co/7YT7tGQ/newspaper.jpg")
-////                .cart(cart)
-//                .productDetails(new ProductDetails("Gazeta wyborcza", "Sed u commodi illum qui dolorem eum fugiat quo voluptas nulla pariatur?"))
-//                .productCategory(c.get(0))
-//                .build();
-//        Product product2 = Product.builder()
-//                .productId(2)
-//                .productName("Ksiazka")
-//                .amount(5)
-//                .image("https://i.ibb.co/vsYwgst/book.jpg")
-//                .cartItemsAmount(0)
-//                .price(10)
-////                .cart(cart)
-//                .productDetails(new ProductDetails("Ksiazka do języka Angielskiego poziom C1", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque."))
-//                .productCategory(c.get(0))
-//                .build();
-//        Product product3 = Product.builder()
-//                .productId(3)
-//                .productName("Laptop")
-//                .amount(3)
-//                .cartItemsAmount(0)
-//                .image("https://i.ibb.co/nb4YdB0/student.jpg")
-//                .price(12)
-//                .productCategory(c.get(0))
-//                .productDetails(new ProductDetails("Laptop HP 271p", "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque."))
-//                .build();
-//        Product product4 = Product.builder()
-//                .productId(4)
-//                .productName("Komputer")
-//                .amount(1)
-//                .cartItemsAmount(0)
-//                .image("https://i.ibb.co/cXJhRns/komputer.jpg")
-//                .price(1200)
-//                .productDetails(new ProductDetails("Komputer Lenovo","Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque."))
-//                .productCategory(c.get(1))
-//                .build();
-//        System.out.println(product1.getProductCategory().getCategoryId());
-//        productRepository.save(product1);
-//        productRepository.save(product2);
-//        productRepository.save(product3);
-//        productRepository.save(product4);
         for(int i=0; i<10; i++) {
             Faker fakeData = new Faker();
             int sentecensDescription = 1;
@@ -131,7 +75,6 @@ public class DataLoader implements CommandLineRunner {
                 .productList(new ArrayList<>())
                 .build();
         Customer customer = Customer.builder()
-//                .customerId(1000)
                 .name("Kamil")
                 .surename("Bilski")
                 .email("test@123")
@@ -142,7 +85,6 @@ public class DataLoader implements CommandLineRunner {
                 .cart(cart)
                 .build();
         Customer customer2 = Customer.builder()
-//                .customerId(2000)
                 .name("tescik")
                 .surename("siemanko")
                 .email("123@123")
@@ -171,24 +113,4 @@ public class DataLoader implements CommandLineRunner {
 
         return List.of(category1,category2);
     }
-    private void loadOrder(Customer customer, Cart cart) {
-//        Address address1 = Address.builder()
-//                .id(1)
-//                .street("Zielona")
-//                .city("Warszawa")
-//                .country("Polska")
-//                .zipCode("21-310")
-//                .build();
-//        Order order = Order.builder()
-//                .orderId(1)
-//                .orderDate(LocalDate.of(2023,5,17))
-//                .orderStatus(OrderStatus.PROCESSING)
-//                .total(2000L)
-//                .address(address1)
-//                .customer(customer)
-//                .cart(cart)
-//                .build();
-//        orderRepository.save(order);
-    }
-
 }

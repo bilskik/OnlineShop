@@ -7,6 +7,9 @@ import com.bilskik.onlineshop.embedded.Address;
 import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.entities.Customer;
 import com.bilskik.onlineshop.entities.Order;
+import com.bilskik.onlineshop.exception.NoCustomerException;
+import com.bilskik.onlineshop.exception.NoEmailException;
+import com.bilskik.onlineshop.exception.NoOrderException;
 import com.bilskik.onlineshop.mapper.MapperImpl;
 import com.bilskik.onlineshop.mapper.OrderMapper;
 import com.bilskik.onlineshop.repositories.CustomerRepository;
@@ -35,21 +38,14 @@ public class OrderService {
     private CustomerRepository customerRepository;
     @Autowired
     private UserEmailDTO userEmailDTO;
-    @Autowired
-    private MapperImpl<Address,AddressDTO> addressMapper;
 
     public OrderDTO getOrder() {
         Optional<Customer> customer = customerRepository.findByEmail(userEmailDTO.getEmail());
-        System.out.println(customer.get().getEmail());
         if(customer.isEmpty()) {
-            throw new NoSuchElementException("There is no customer!");
+            throw new NoEmailException("Email doesn't exist!");
         }
         int customerId = customer.get().getCustomerId();
-        System.out.println(customerId);
         Optional<Order> order = orderRepository.findByCustomerId(customerId);
-//        System.out.println(order);
-//        System.out.println(order.get().getCustomer().getEmail());
-//        System.out.println(order.get().getCustomer());
         if(order.isEmpty()) {
             return null;
         } else {
@@ -57,14 +53,12 @@ public class OrderService {
         }
     }
     public OrderDTO saveOrder(Order order) {
-        System.out.println(order.getAddress());
-        System.out.println(order.getOrderDate());
         Optional<Customer> customer = customerRepository.findByEmail(userEmailDTO.getEmail());
         if(customer.isEmpty()) {
-            throw new NoSuchElementException("There is no customer!");
+            throw new NoEmailException("Email doesn't exist!");
         }
         if(order == null) {
-            throw new NoSuchElementException("Order does not exist!");
+            throw new NoOrderException("Order does not exist!");
         }
         order.setCustomer(customer.get());
         order.setCart(customer.get().getCart());
@@ -72,7 +66,7 @@ public class OrderService {
         return orderMapper.toDTO(order);
     }
     @Transactional
-    public AddressDTO updateAddress(Order responseOrder) {
+    public Void updateAddress(Order responseOrder) {
 
         Optional<Customer> customer = customerRepository.findByEmail(userEmailDTO.getEmail());
         if(responseOrder == null) {

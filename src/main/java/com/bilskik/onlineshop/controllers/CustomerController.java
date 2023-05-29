@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,6 @@ import java.util.List;
 @CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
 public class CustomerController {
 
-    Logger logger = LoggerFactory.getLogger(CustomerController.class);
     @Autowired
     private CustomerService service;
     @PostMapping("/register")
@@ -38,11 +38,11 @@ public class CustomerController {
     }
     @GetMapping("/customers")
     public ResponseEntity<List<CustomerDTO>> getCustomers() {
-        return new ResponseEntity<>(service.getCustomersList(), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(service.getCustomersList(), HttpStatus.OK);
     }
     @GetMapping("/customers/{id}")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable int id) {
-        return new ResponseEntity<>(service.getCustomerById(id), HttpStatusCode.valueOf(200));
+        return new ResponseEntity<>(service.getCustomerById(id), HttpStatus.OK);
     }
 
 

@@ -1,8 +1,6 @@
 package com.bilskik.onlineshop.entities;
 
 import com.bilskik.onlineshop.embedded.Address;
-import com.bilskik.onlineshop.enumeration.OrderStatus;
-import com.bilskik.onlineshop.enumeration.PaymentType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;

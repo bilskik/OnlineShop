@@ -2,9 +2,7 @@ package com.bilskik.onlineshop.dto;
 
 
 import com.bilskik.onlineshop.embedded.Address;
-import com.bilskik.onlineshop.entities.Customer;
 import com.bilskik.onlineshop.entities.Product;
-import com.bilskik.onlineshop.enumeration.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;

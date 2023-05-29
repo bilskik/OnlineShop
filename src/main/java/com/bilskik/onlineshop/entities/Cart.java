@@ -21,29 +21,4 @@ public class Cart {
     @JsonManagedReference(value = "product_cart")
     @OneToMany(mappedBy = "cart",orphanRemoval = true)
     private List<Product> productList;
-    public void addProduct(Product product)  {
-        if(productList == null) {
-            productList = new ArrayList<>();
-        }
-        productList.add(product);
-    }
-    public void removeProduct(int productId) {
-        if(productList == null) {
-            throw new NullPointerException("ProductList is null!");
-        }
-        else {
-            int index = 0;
-            for(var product : productList) {
-                if(product.getProductId() == productId) {
-                    break;
-                }
-                index++;
-            }
-            productList.remove(index);
-        }
-        for(var product : productList) {
-            System.out.println(product);
-        }
-
-    }
 }

@@ -4,6 +4,7 @@ import com.bilskik.onlineshop.auth.JwtService;
 import com.bilskik.onlineshop.controllers.CustomerController;
 import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.exception.DuplicateEntryException;
+import com.bilskik.onlineshop.exception.NoCustomerException;
 import com.bilskik.onlineshop.http.AuthenticationRequest;
 import com.bilskik.onlineshop.http.AuthenticationResponse;
 import com.bilskik.onlineshop.http.RegisterRequest;
@@ -35,22 +36,16 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
-    Logger logger = LoggerFactory.getLogger(CustomerService.class);
-
     private final CustomerRepository customerRepository;
-    private final CartRepository cartRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-//    private final Mapper modelMapper;
     @Autowired
     private MapperImpl<Customer,CustomerDTO> customerMapper;
-//    private final Mapper<Customer,CustomerDTO> map;
     public AuthenticationResponse register(RegisterRequest request) {
         Cart cart = Cart.builder()
                 .productList(new ArrayList<>())
                 .build();
-//        cartRepository.save(cart);
         Customer customer = Customer.builder()
                 .name(request.getName())
                 .surename(request.getSurename())
@@ -62,12 +57,9 @@ public class CustomerService {
                 .cart(cart)
                 .build();
         try {
-            logger.info(customer.getEmail());
-
             customerRepository.save(customer);
         }
         catch(DataIntegrityViolationException  e) {
-            logger.info(e.toString());
             throw new DuplicateEntryException("Email already exist!");
         }
         String jwtToken = jwtService.generateToken(customer);
@@ -79,7 +71,7 @@ public class CustomerService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         Optional<Customer> user = customerRepository.findByEmail(request.getEmail());
         if(user.isEmpty()) {
-            throw new NoSuchElementException("Email doesn't exist!");
+            throw new NoCustomerException("Email doesn't exist!");
         }
         try {
             authenticationManager.authenticate(
@@ -93,7 +85,6 @@ public class CustomerService {
             throw new BadCredentialsException("Invalid Password!");
         }
         String jwtToken = jwtService.generateToken(user.get());
-        logger.info(jwtToken);
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -109,12 +100,9 @@ public class CustomerService {
     public CustomerDTO getCustomerById(int id) {
         Optional<Customer> customer = customerRepository.findById(id);
         if(customer.isEmpty()) {
-            throw new NoSuchElementException("There is no such an element!");
+            throw new NoCustomerException("There is no customer with given Id!");
         }
         return customerMapper.toDTO(customer.get());
     }
 
-//    private CustomerDTO convertEntityToDTO(Customer customer) {
-//        return modelMapper.map(customer,CustomerDTO.class);
-//    }
 }
