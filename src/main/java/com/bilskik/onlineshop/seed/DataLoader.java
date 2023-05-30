@@ -21,8 +21,6 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private CustomerRepository customerRepository;
     @Autowired
-    private CartRepository cartRepository;
-    @Autowired
     private ProductRepository productRepository;
     @Autowired
     private ProductCategoryRepository productCategoryRepository;

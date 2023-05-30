@@ -28,8 +28,6 @@ import java.util.Optional;
 
 @Service
 public class OrderService {
-
-    private final Logger log = LoggerFactory.getLogger(OrderService.class);
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
