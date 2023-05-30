@@ -30,8 +30,6 @@ export const Product = () => {
                     headers,
                     signal: controller.signal
                 }).then(response => {
-                    console.log(response.data);
-                    // updateClickedButtonsLocalStorage(response.data);
                     setProducts(response.data);
                     setIsLoading(false);
                 })
@@ -50,7 +48,6 @@ export const Product = () => {
     },[])
     const updateClickedButtonsLocalStorage = (products) => {
         const productIds = products.filter(product => product.amount === 0);
-        console.log(productIds);
         const clickedButtons = JSON.parse(localStorage.getItem('clickedButtons'));
         if(!clickedButtons) {
             return
@@ -58,7 +55,6 @@ export const Product = () => {
         for(const productId of productIds) {
             delete clickedButtons[productId];
         }
-        console.log(clickedButtons);
         localStorage.setItem('clickedButtons',JSON.stringify(clickedButtons));
     }
     const logout = () => {

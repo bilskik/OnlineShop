@@ -28,7 +28,6 @@ export const Cart = () => {
                 headers
             })
             .then(response => {
-                console.log(response.data)
                 checkIfProductListIsEmpty(response.data.productList);
                 setProductList(response.data.productList);
                 setCart(response.data);
@@ -80,7 +79,6 @@ export const Cart = () => {
         checkIfAmountZero(product);
     }
     const checkIfAmountZero = function(updatedProduct) {
-        console.log(updatedProduct);
         if(updatedProduct.amount === 0) {
             const productId = updatedProduct.productId;
             let savedDisabledButtonObject = localStorage.getItem('clickedButtons');
@@ -102,11 +100,9 @@ export const Cart = () => {
     }
     const goToOrder = () => {
         const data = encodeURIComponent(JSON.stringify(productList));
-        console.log(data);
         navigate(ORDER_PAGE + `/${data}`);
     }
     const checkIfProductListIsEmpty = (productList) => {
-        console.log(productList);
         if(productList.length === 0) {
             setIsCartEmpty(true);
         }
@@ -128,7 +124,7 @@ export const Cart = () => {
                     !isCartEmpty ? (
                         <>
                             <header className="product-header-container-cart">
-                                <h2>Koszyk</h2>
+                                <h2>Cart</h2>
                                 <nav className="nav-bar">
                                     <img src="/img/exit.png" alt="logout" onClick={logout}/>
                                 </nav>
@@ -145,11 +141,11 @@ export const Cart = () => {
                                                 <div className="p-container">
                                                     <p className="price">{product.price} zł</p>
                                                     <p>{product.productName}</p>
-                                                    <p>Sztuk: {product.cartItemsAmount}</p>
+                                                    <p>Amount: {product.cartItemsAmount}</p>
                                                 </div>
                                                 <div className="btn-container">
-                                                    <button onClick={() => setDetails(product)}>zobacz</button>
-                                                    <button onClick={() => deleteFromCart(product)}>Usun</button>
+                                                    <button onClick={() => setDetails(product)}>See details</button>
+                                                    <button onClick={() => deleteFromCart(product)}>Remove</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,7 +154,7 @@ export const Cart = () => {
                                 </div>
                                 <div className="summary">
                                         <p>Suma: {sum} zł</p>
-                                        <button onClick={goToOrder}>Przejdz do platnosci</button>
+                                        <button onClick={goToOrder}>Go to payment</button>
                                 </div>
                             </div>
                             <Modal open={openModal} product={modalProduct} showAvailabilty={false} onClose={() => setOpenModal(false)} />

@@ -74,11 +74,9 @@ export const Login = (props) => {
             <div className="login-container">
                 <h1 className="h1">Login</h1>
                 <section className="section">
-                    {/* <p ref={errRef} className={error.hasError ? "errmsg" : "offscreen"} aria-live="assertive"></p> */}
                     <form onSubmit={handleSubmit} className="form">
                         <label htmlFor="email">Email</label>
                         <input 
-                            // className="input"
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)}
                             type="email" 

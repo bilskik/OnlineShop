@@ -23,8 +23,6 @@ export const ProductList = (props) => {
     const addToCart = async (product) => {
         const headers = getHeaders();
         try {
-            console.log("przed response");
-            console.log(product);
             const response = await myAxios.post(CART_URL,
                 { productId : product.productId },
                 {
@@ -64,10 +62,7 @@ export const ProductList = (props) => {
         setOpenModal(true);
     }
     const updateProduct = async (product) => {
-        console.log("PRODUCTTT");
-        console.log(product);
         const headers = getHeaders();
-        console.log(headers.Authorization);
         try {
             const response = await myAxios.put(PRODUCT_URL,
                 product, 
@@ -76,7 +71,7 @@ export const ProductList = (props) => {
             })
         }
         catch(err) {
-            console.log(err);
+            // add error handler
         }
     }
     return (
@@ -94,8 +89,8 @@ export const ProductList = (props) => {
                                 <p>{product.productName}</p>
                             </div>
                             <div className='btn-container'>
-                                <button onClick={() => setDetails(product)}>Zobacz</button>
-                                <button onClick={() => addToCart(product)} disabled={clickedButtons[product.productId]}>Dodaj</button>
+                                <button onClick={() => setDetails(product)}>See details</button>
+                                <button onClick={() => addToCart(product)} disabled={clickedButtons[product.productId]}>Add</button>
                             </div>
                         </div>
                     </div>

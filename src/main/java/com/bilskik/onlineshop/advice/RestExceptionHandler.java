@@ -1,7 +1,6 @@
 package com.bilskik.onlineshop.advice;
 
-import com.bilskik.onlineshop.exception.DuplicateEntryException;
-import com.bilskik.onlineshop.exception.JwtException;
+import com.bilskik.onlineshop.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
@@ -25,12 +24,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<Object> handleSQLIntegrityConstraintViolationException(HttpServletRequest request, SQLIntegrityConstraintViolationException ex) {
-        String error = "Error: " + ex.getMessage();
+        String error = ex.getMessage();
         return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST,error));
     }
     @ExceptionHandler(JwtException.class)
     public ResponseEntity<Object> handleJwtException(HttpServletRequest request, JwtException ex) {
-        String error = "Error: " + ex.getMessage();
+        String error = ex.getMessage();
         return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST,error));
     }
     @ExceptionHandler(BadCredentialsException.class)
@@ -39,9 +38,34 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(new ErrorResponse(HttpStatus.FORBIDDEN,error));
     }
     @ExceptionHandler(DuplicateEntryException.class)
-    public ResponseEntity<Object> handleBadCredentialsException(DuplicateEntryException ex) {
+    public ResponseEntity<Object> handleDuplicateentryException(DuplicateEntryException ex) {
         String error = ex.getMessage();
-        return buildResponseEntity(new ErrorResponse(HttpStatus.FORBIDDEN,error));
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST,error));
+    }
+    @ExceptionHandler(NoCartException.class)
+    public ResponseEntity<Object> handleNoCartException(NoCartException ex) {
+        String error = ex.getMessage();
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST,error));
+    }
+    @ExceptionHandler(NoCustomerException.class)
+    public ResponseEntity<Object> handleNoCustomerException(NoCustomerException ex) {
+        String error = ex.getMessage();
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST,error));
+    }
+    @ExceptionHandler(NoEmailException.class)
+    public ResponseEntity<Object> handleNoEmailException(NoEmailException ex) {
+        String error = ex.getMessage();
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST,error));
+    }
+    @ExceptionHandler(NoOrderException.class)
+    public ResponseEntity<Object> handleNoOrderException(NoOrderException ex) {
+        String error = ex.getMessage();
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST,error));
+    }
+    @ExceptionHandler(NoProductException.class)
+    public ResponseEntity<Object> handleNoProductException(NoProductException ex) {
+        String error = ex.getMessage();
+        return buildResponseEntity(new ErrorResponse(HttpStatus.BAD_REQUEST,error));
     }
 
     private ResponseEntity<Object> buildResponseEntity(ErrorResponse errorResponse) {

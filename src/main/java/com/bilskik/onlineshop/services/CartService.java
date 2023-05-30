@@ -6,7 +6,6 @@ import com.bilskik.onlineshop.dto.UserEmailDTO;
 import com.bilskik.onlineshop.entities.Cart;
 import com.bilskik.onlineshop.entities.Customer;
 import com.bilskik.onlineshop.entities.Product;
-import com.bilskik.onlineshop.entities.User;
 import com.bilskik.onlineshop.exception.NoCartException;
 import com.bilskik.onlineshop.exception.NoCustomerException;
 import com.bilskik.onlineshop.exception.NoEmailException;
@@ -34,7 +33,6 @@ public class CartService {
     private MapperImpl<Product,ProductDTO> productMapper;
     @Autowired
     private CartMapper cartMapper;
-    //CartDTO?
     public CartDTO getAllProductsFromCart() {
         String email = userEmailDTO.getEmail();
         if(email == null) {

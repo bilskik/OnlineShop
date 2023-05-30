@@ -32,7 +32,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
         final String authHeader = request.getHeader("Authorization");
-        System.out.println("token: " + authHeader);
         final String jwt;
         final String userEmail;
         if(authHeader == null || !authHeader.startsWith("Bearer ")) {
@@ -43,7 +42,6 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         jwt = authHeader.substring(BEGIN_JWT_INDEX);
         userEmail = jwtService.extractUsername(jwt);
         userEmailDTO.setEmail(userEmail);
-        System.out.println("userEmail = " + userEmail);
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
             if(jwtService.isTokenValid(jwt,userDetails)) {

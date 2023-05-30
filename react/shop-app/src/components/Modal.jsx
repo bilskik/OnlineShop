@@ -14,7 +14,7 @@ export const Modal = ({open, product, showAvailabilty, onClose}) => {
                     <p className="description">{product.productDetails.description}</p>
                     {
                         showAvailabilty && (
-                            <p>Liczba sztuk: {product.amount}</p>
+                            <p>Amount: {product.amount}</p>
                         )
                     }
                 </div> 

@@ -3,7 +3,7 @@ import "../css/order.css"
 export const ShippmentDetails = ({mappedAddress}) => {
     return (
         <div className="shippment-details">
-            <p>Szczegóły wysyłki:</p>
+            <p>Address details:</p>
             {
                 Object.keys(mappedAddress).map(key => {
                     return (

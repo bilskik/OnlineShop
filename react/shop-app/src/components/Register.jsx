@@ -78,7 +78,6 @@ export const Register = (props) => {
         e.preventDefault();
         if(isDataValid()) {
             try {
-                console.log(date);
                 const createRegisterObject = {
                     name,
                     surename,
@@ -87,7 +86,6 @@ export const Register = (props) => {
                     gender,
                     password: pass
                 };
-                console.log(createRegisterObject);
                 const headers =  {
                     'Content-Type' : 'application/json'
                 };
@@ -123,7 +121,6 @@ export const Register = (props) => {
         if(indexMonth === undefined || indexMonth === null) {
             indexMonth = month;
         }
-        console.log(date);
         let convertedDayToHaveProperFormat = day.toString().padStart(2,'0');
         let convertedMonthIntoNumber = indexMonth.toString().padStart(2,'0');
         setDate(convertedDayToHaveProperFormat + "-" + convertedMonthIntoNumber + "-" + year);

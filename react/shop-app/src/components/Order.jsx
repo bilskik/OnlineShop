@@ -341,23 +341,23 @@ export const Order = () => {
                                 <div className="main-grid-order">
                                     <ProductCard productList={productList} setDetails={setDetails}/>
                                     <div className="second-column-order">
-                                        <p className='to-pay'>Do zaplaty: {price} zł</p>
+                                        <p className='to-pay'>To pay: {price} zł</p>
                                         <form onSubmit={!isAddressEdited ? handleSubmit : handleAddressSubmit} className='form-container-order'>
-                                            <label htmlFor='county'>Państwo</label>
+                                            <label htmlFor='county'>Country</label>
                                             <input id='country' name='country' placeholder='country' onChange={(e) => setCountry(e.target.value)}/>
-                                            <label htmlFor='city'>Miasto</label>
+                                            <label htmlFor='city'>City</label>
                                             <input id='city' name='city' placeholder='city' onChange={(e) => setCity(e.target.value)}/>
-                                            <label htmlFor=''>Ulica</label>
+                                            <label htmlFor=''>Street</label>
                                             <input id='street' name='street' placeholder='street' onChange={(e) => setStreet(e.target.value)}/>
-                                            <label htmlFor='zip-code'>Kod Pocztowy</label>
+                                            <label htmlFor='zip-code'>Zip Code</label>
                                             <input id='zip-code' name='zip-code' placeholder='zip-code' onChange={(e) => setCode(e.target.value)}/>
-                                            <label>Metoda płatności:</label>
+                                            <label>Payment method:</label>
                                             <select value={paymentMethod} onChange={(e) => {setPaymentMethod(e.target.value)}}>
-                                                <option value="Karta Płatnicza">Karta Płatnicza</option>
+                                                <option value="Karta Płatnicza">Debit card</option>
                                                 <option value="Google Pay">Google Pay</option>
                                                 <option value="Apple Pay">Apple Pay</option>
                                                 <option value="BLIK">BLIK</option>
-                                                <option value="Przelew">Przelew</option>
+                                                <option value="Przelew">Bank transfer</option>
                                             </select>
                                             <button type='submit'>Submit</button>
                                         </form>
@@ -370,12 +370,12 @@ export const Order = () => {
                                 <div className='main-grid-order'>
                                     <ProductCard productList={productList} setDetails={setDetails}/>
                                     <div className='second-column-order-display'>
-                                        <p className='to-pay-tag'>Do zaplaty : {price}</p>
+                                        <p className='to-pay-tag'>To pay : {price}</p>
                                         <ShippmentDetails mappedAddress={mappedAddress}/>
                                         <div className='btn-order'>
                                             <button onClick={editAddress} className='edit-btn'>Edit data</button>
                                         </div>
-                                        <p>Metoda płatności : {paymentMethod}</p>
+                                        <p>Payment method : {paymentMethod}</p>
                                         <div className='btn-order'>
                                             <button onClick={deleteProductList} className='buy-btn'>Buy</button>
                                         </div>     

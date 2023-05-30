@@ -19,10 +19,10 @@ export const ProductCard = (props) => {
                     <div className="p-container">
                         <p className="price">{product.price} zł</p>
                         <p>{product.productName}</p>
-                        <p>Sztuk: {product.cartItemsAmount}</p>
+                        <p>Amount: {product.cartItemsAmount}</p>
                     </div>
                     <div className="btn-container">
-                        <button onClick={() => handleSetDetailsFromChild(product)}>zobacz</button>
+                        <button onClick={() => handleSetDetailsFromChild(product)}>See details</button>
                     </div>
                 </div>
             </div>
