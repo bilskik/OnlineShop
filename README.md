@@ -21,18 +21,18 @@ This is a full-stack application developed during the 4th semester at Warsaw Uni
 # Screenshots:
 
 - Login page:
-  ![](/documentacy/login.png)
+  ![](/documentacy/screens/login.png)
 - Register page:
-  ![](/documentacy/register.png)
+  ![](/documentacy/screens/register.png)
 - Main page:
-  ![](/documentacy/main.png)
+  ![](/documentacy/screens/main.png)
 - Cart page:
-  ![](/documentacy/cart.png)
+  ![](/documentacy/screens/cart.png)
 - Order page:
-  ![](/documentacy/order.png)
+  ![](/documentacy/screens/order.png)
 - product with details:
-  ![](/documentacy/productDetails.png)
+  ![](/documentacy/screens/productDetails.png)
 - payment:
-  ![](/documentacy/payment.png)
+  ![](/documentacy/screens/payment.png)
 - Not found page:
-  ![](/documentacy/empty.png)
+  ![](/documentacy/screens/empty.png)
