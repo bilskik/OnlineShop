@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import '../css/Modal.css';
+import '../css/modal.css';
 
 export const Modal = ({open, product, showAvailabilty, onClose}) => {
     if(!open) {

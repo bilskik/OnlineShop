@@ -1,4 +1,3 @@
-import axios from "axios"
 import React, { useEffect, useState } from "react"
 import { myAxios } from "../api/axios"
 import { useNavigate } from "react-router-dom";
@@ -6,7 +5,7 @@ import  ProductList  from "./ProductList"
 import { getHeaders } from "../api/getHeaders";
 import { PRODUCT_URL } from "../constraints/urls";
 import { Loading } from "./Loading";
-import "../css/Product.css"
+import "../css/product.css"
 import { CART_PAGE, HOME_PAGE } from "../constraints/pages";
 import { NoContent } from "./NoContent";
 
@@ -22,6 +21,8 @@ export const Product = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log("Wersja Reacta: " + React.version);
+
         const controller = new AbortController();
         const headers = getHeaders();
         const getUsers = async () => {

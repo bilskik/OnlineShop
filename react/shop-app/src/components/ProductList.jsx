@@ -4,7 +4,7 @@ import { useState } from "react"
 import { getHeaders } from '../api/getHeaders';
 import { CART_URL,PRODUCT_URL } from "../constraints/urls";
 import Modal from './Modal';
-import '../css/Modal.css'
+import '../css/modal.css'
 import '../index.css'
 
 

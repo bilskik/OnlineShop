@@ -2,8 +2,8 @@ import React, { useEffect, useState, useRef } from "react"
 import { myAxios } from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import '../css/Login.css'
-import '../css/Alert.css'
+import '../css/login.css'
+import '../css/alert.css'
 import { Alert }  from "./Alert"
 import { LOGIN_URL } from "../constraints/urls";
 import { PRODUCT_PAGE } from "../constraints/pages";

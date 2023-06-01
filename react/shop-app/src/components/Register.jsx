@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { myAxios } from "../api/axios";
 import { Navigate, useNavigate } from "react-router-dom";
-import "../css/Register.css"
+import "../css/register.css"
 import { Alert } from "./Alert"
 import {monthData} from "../constraints/monthData.js"
 import { PRODUCT_PAGE } from "../constraints/pages";
