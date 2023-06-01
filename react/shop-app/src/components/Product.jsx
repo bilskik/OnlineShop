@@ -21,8 +21,6 @@ export const Product = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log("Wersja Reacta: " + React.version);
-
         const controller = new AbortController();
         const headers = getHeaders();
         const getUsers = async () => {

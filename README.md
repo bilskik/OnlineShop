@@ -2,7 +2,7 @@
 
 This is a full-stack application developed during the 4th semester at Warsaw University of Technology. The objective is to create a basic online shop.
 
-## Technology
+## Tech stack:
 
 - JavaScript v16.16.0,
 - React v18.2.0,
@@ -20,19 +20,49 @@ This is a full-stack application developed during the 4th semester at Warsaw Uni
 
 # Screenshots:
 
-- Login page:
+- ## Login page:
+
+  <br><br>
   ![](/documentacy/screens/login.png)
-- Register page:
+
+- ## Register page:
+
+  <br><br>
+
   ![](/documentacy/screens/register.png)
-- Main page:
+
+- ## Main page:
+
+  <br><br>
+
   ![](/documentacy/screens/main.png)
-- Cart page:
+
+- ## Cart page:
+
+  <br><br>
+
   ![](/documentacy/screens/cart.png)
-- Order page:
+
+- ## Order page:
+
+  <br><br>
+
   ![](/documentacy/screens/order.png)
-- product with details:
+
+- ## product with details:
+
+  <br><br>
+
   ![](/documentacy/screens/productDetails.png)
-- payment:
+
+- ## payment:
+
+  <br><br>
+
   ![](/documentacy/screens/payment.png)
-- Not found page:
+
+- ## Not found page:
+
+  <br><br>
+
   ![](/documentacy/screens/empty.png)
