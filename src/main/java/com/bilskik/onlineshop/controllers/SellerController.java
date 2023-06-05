@@ -13,26 +13,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequestMapping("/sellers")
 public class SellerController {
     @Autowired
     public SellerService sellerService;
-    @PostMapping("/seller/register")
+    @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
             ) {
         return new ResponseEntity<>(sellerService.register(request), HttpStatus.CREATED);
     }
-    @PostMapping("/seller/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(
             @RequestBody RegisterRequest request
     ) {
         return new ResponseEntity<>(sellerService.authenticate(request), HttpStatus.CREATED);
     }
-    @GetMapping("/sellers")
+    @GetMapping()
     public ResponseEntity<List<SellerDTO>> getAllSellers() {
         return new ResponseEntity<>(sellerService.getAllSellers(), HttpStatus.OK);
     }
-    @GetMapping("/sellers/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<SellerDTO> getSellerWithId(@PathVariable int id) {
         return new ResponseEntity<>(sellerService.getSellerWithId(id), HttpStatus.OK);
     }

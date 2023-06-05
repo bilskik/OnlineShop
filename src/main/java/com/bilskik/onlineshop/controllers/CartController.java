@@ -14,20 +14,21 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = {"http://localhost:3000"}, allowCredentials = "true")
+@RequestMapping("/cart")
 public class CartController {
     @Autowired
     public CartService cartService;
-    @GetMapping("/cart")
+    @GetMapping
     public ResponseEntity<CartDTO> getCartFromCustomer() {
         return new ResponseEntity<>(cartService.getAllProductsFromCart(), HttpStatus.OK);
     }
-    @PostMapping(path = "/cart")
+    @PostMapping
     @PreAuthorize("hasRole('CUSTOMER')")
     public ResponseEntity<ProductDTO> addProductToCart(@RequestBody Map<String,Integer> request) {
         int product = request.get("productId");
         return new ResponseEntity<>(cartService.addProductToCart(product), HttpStatus.CREATED);
     }
-    @DeleteMapping(path = "/cart/{product}")
+    @DeleteMapping("/{product}")
     public ResponseEntity<Void> deleteProductFromCart(@PathVariable int product) {
         cartService.deleteProductFromCart(product);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

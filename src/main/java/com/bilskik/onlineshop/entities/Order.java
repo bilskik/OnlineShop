@@ -28,27 +28,26 @@ public class Order {
             strategy = GenerationType.SEQUENCE
     )
     @Column(name = "order_id")
-    private int orderId;
+    public int orderId;
     @JsonProperty("orderDate")
     @JsonFormat(pattern = "dd-MM-yyyy")
-//    @NotNull(message = "Date of order cannot be null!")
     @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate orderDate;
-    private String paymentType;
+    public LocalDate orderDate;
+    public String paymentType;
     @Embedded
     public Address address;
-    private Long total;
+    public Long total;
     @OneToOne
     @JoinColumn(
             name = "customerId",
             referencedColumnName = "customerId"
     )
-    private Customer customer;
+    public Customer customer;
     @OneToOne
     @JoinColumn(
             name = "cartId",
             referencedColumnName = "cartId"
     )
-    private Cart cart;
+    public Cart cart;
 
 }

@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class Seller extends User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int sellerId;
+    public int sellerId;
     @Builder
     public Seller(String name, String surename, String email, String gender, LocalDate dateOfBirth, String password, Role role) {
         super(name,surename,email,gender,dateOfBirth,password,role);

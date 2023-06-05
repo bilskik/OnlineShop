@@ -22,12 +22,12 @@ public class Product {
             generator = "seq_product",
             strategy = GenerationType.IDENTITY
     )
-    private int productId;
-    private String productName;
-    private int amount;
-    private String image;
-    private int cartItemsAmount;
-    private double price;
+    public int productId;
+    public String productName;
+    public int amount;
+    public String image;
+    public int cartItemsAmount;
+    public double price;
     @JsonBackReference(value = "product_category")
     @ManyToOne(
             cascade = CascadeType.PERSIST,
@@ -37,7 +37,7 @@ public class Product {
             name = "category_product_id",
             referencedColumnName = "categoryId"
     )
-    private ProductCategory productCategory;
+    public ProductCategory productCategory;
 
     @JsonBackReference(value = "product_cart")
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -45,8 +45,8 @@ public class Product {
             name = "cartId",
             referencedColumnName = "cartId"
     )
-    private Cart cart;
+    public Cart cart;
     @Embedded
-    private ProductDetails productDetails;
+    public ProductDetails productDetails;
 
 }

@@ -10,8 +10,8 @@ import lombok.*;
 @Getter
 @Setter
 public class Address {
-    private String street;
-    private String city;
-    private String country;
-    private String zipCode;
+    public String street;
+    public String city;
+    public String country;
+    public String zipCode;
 }

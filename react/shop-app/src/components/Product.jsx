@@ -9,7 +9,6 @@ import "../css/product.css"
 import { CART_PAGE, HOME_PAGE } from "../constraints/pages";
 import { NoContent } from "./NoContent";
 
-//No products to buy
 export const Product = () => {
 
     const [products,setProducts] = useState([]);

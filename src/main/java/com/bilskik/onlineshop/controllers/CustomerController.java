@@ -44,6 +44,4 @@ public class CustomerController {
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable int id) {
         return new ResponseEntity<>(service.getCustomerById(id), HttpStatus.OK);
     }
-
-
 }
